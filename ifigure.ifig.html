@@ -486,7 +486,7 @@ function import_cellLib(){
             let input=this.input;
             this.print("> "+input.value)
             try {
-                eval(magic_syntax(input.value))
+                limitEval(magic_syntax(input.value), () => void 0, 1000)
             }
             catch(err) {
                 this.ErrorPrint(err);
@@ -584,7 +584,7 @@ plot(x,0,'k.');`
                     thiscell_code.name_input.focus(); 
                     return
                 }
-                eval('delete '+thiscell_code.iscript.name)
+                eval('delete ' + thiscell_code.iscript.name)
                 thiscell_code.iscript.name=name;
                 thiscell_code.iscript.arguments_string=arguments_string;
                 thiscell_code.name_input.value=name+arguments_string;
@@ -767,13 +767,13 @@ ball.x+=0.1`
         }
         function Go(cell_parent){
             try {
-                this.Stop()
-                cell_parent.dt_pause=1000*eval(cell_parent.dt_pause_var.value);
+                this.Stop();
+                cell_parent.dt_pause = 1000 * eval(cell_parent.dt_pause_var.value);
                 cell_parent.loop_string='(function(){'+magic_syntax(cell_parent.textarea.value)+'})()';
         	    cell_parent.Repeat_every_id=setInterval(function(){repeat(cell_parent)},cell_parent.dt_pause)
             }
             catch(err) {
-				this.Stop()
+				this.Stop();
 				ErrorPrint(err);
 			}
         }
@@ -941,9 +941,6 @@ function import_figureLib(){
     
     var window_h=500;
 	var window_w=500;
-
-
-        
 
 	function Axis(){
 		this.xmin= -5; this.xmax= 5; this.ymin= -5; this.ymax=5;
@@ -2821,7 +2818,41 @@ function import_MagicSyntax(){
         let lc=command_strings.indexOf(string)
         return lc;
     }
-    //*** parsing 
+    //*** safe eval, safe execute
+    function limitEval(code, fnOnStop, opt_timeoutInMS) {
+        var id = Math.random() + 1,
+            blob = new Blob(
+            ['onmessage=function(a){a=a.data;postMessage({i:a.i+1});postMessage({r:eval.call(this,a.c),i:a.i})};'],
+            { type:'text/javascript' }
+            ),
+            myWorker = new Worker(URL.createObjectURL(blob));
+
+        function onDone() {
+            URL.revokeObjectURL(blob);
+            fnOnStop.apply(this, arguments);
+        }
+
+        myWorker.onmessage = function (data) {
+            data = data.data;
+            if (data) {
+            if (data.i === id) {
+                id = 0;
+                onDone(true, data.r);
+            }
+            else if (data.i === id + 1) {
+                setTimeout(function() {
+                if (id) {
+                    myWorker.terminate();
+                    onDone(false);
+                }
+                }, opt_timeoutInMS || 1000);
+            }
+            }
+        };
+
+        myWorker.postMessage({ c: code, i: id });
+    }
+    //*** parsing
     function magic_syntax(code_str){
         if(code_str.slice(0,3)=='***'){return code_str.slice(3)}
         magic_replace_operators=1;
@@ -3224,11 +3255,14 @@ function import_MagicSyntax(){
     function magic_function(name,arguments_string,script){
         try{
             let parsed=magic_syntax(script)
-            eval(name+'=function'+arguments_string+
-                 '{try{'+parsed+'} catch(err){err.message="in ' + name + ', "+err.message; throw(err) } }')
+            limitEval(
+                name+'=function'+arguments_string+'{try{'+parsed+'} catch(err){err.message="in '+ name +', "+err.message; throw(err) } }',
+                () => void 0,
+                1000
+            )
         }
         catch(err){
-            eval(name +'=function(){}')
+            limitEval(name + '=function(){}', () => void 0, 1000)
             throw(err)
         }
     }
@@ -3644,8 +3678,8 @@ function ChangeInstructions(){
     ballab.instructions.contents=prompt('Modify the instructions below',ballab.instructions.contents)
 }
     
-// *** about ballab
-function AboutBallab(){
+// *** about iFigures
+function AboutiFigures(){
 alert(
 'ifigures version '+ballab.metadata.version +'\n\n'
 +
@@ -3924,7 +3958,7 @@ const xmlns = "http://www.w3.org/2000/svg";
         ballab.top_menu=top_menu
         
         let balla=new TopMenuList('ifigures',top_menu)
-        new TopMenuItem('About ifigures',balla,AboutBallab)
+        new TopMenuItem('About ifigures',balla,AboutiFigures)
         new TopMenuItem('Set code font size',balla,ballab.SetCodeFontSize)
         let file=new TopMenuList('File',top_menu)
         new TopMenuItem('Download as .html file',file,SaveAs)
