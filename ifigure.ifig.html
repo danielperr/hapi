@@ -14,11 +14,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <style>
-	* {
-	    font: 15px "Courier New";
-	}
+	* { font: 15px "Consolas"; /*, Monaco, monospace";*/ }
 	tab { padding-left: 4em; }
-    html, body {height: 100%; margin:0} /*overflow-y: hidden}*/
+    html, body { height: 100%; margin:0; } /*overflow-y: hidden}*/
     .alert{
         position:absolute;
         left: 50px;
@@ -188,7 +186,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         border-radius: 20px;
         width: 480px;
         height: 500px;*/
-        font-family: "Courier New";
         margin: 20px auto;
         padding: 20px;
         /*padding-top:60px;*/
@@ -215,7 +212,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       top: 5px;
       border-radius: 20px;
       width: 480px;
-      font-family: "Courier New";
       margin: 100px auto;
       padding: 20px;
     }
@@ -418,6 +414,62 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <!-- End of head, anything else up to the </head> will be removed --></head>
 <body>
 <script>//<!-- internal functions -->
+  
+//*** safe eval, safe execute
+
+var max_timeout = 150; // 150 ms timeout when executing code.
+
+function funcOnDone(success, opt_returnValue=0) {
+    console.log(success);
+}
+
+function limitEval(code, fnOnStop, opt_timeoutInMS) {
+  var id = Math.random() + 1;
+  var blob = new Blob(
+    [
+			`onmessage=function(a) {
+    		a = a.data;
+    		postMessage(JSON.parse(JSON.stringify( {i: a.i + 1} )));
+    		postMessage(JSON.parse(JSON.stringify( {r: eval.call(this, a.c), i: a.i} )));
+			};`
+		],
+		{
+      type: 'text/javascript'
+    }
+  );
+  urlBlob = URL.createObjectURL(blob)
+  var myWorker = new Worker(urlBlob);
+
+  function onDone() {
+    URL.revokeObjectURL(urlBlob);
+    fnOnStop.apply(this, arguments);
+  }
+
+  myWorker.onmessage = function(data) {
+    data = data.data;
+    if (data) {
+      if (data.i === id) {
+        id = 0;
+        onDone(true, data.r);
+      } else if (data.i === id + 1) {
+        setTimeout(
+					function() {
+          	if (id) {
+            	myWorker.terminate();
+            	onDone(false);
+          	}
+        	}, opt_timeoutInMS || 1000
+				);
+      }
+    }
+  };
+
+  myWorker.postMessage({
+    c: code,
+    i: id
+  });
+}
+
 // *** internal libraries
 function import_cellLib(){
     return (function(){
@@ -486,7 +538,10 @@ function import_cellLib(){
             let input=this.input;
             this.print("> "+input.value)
             try {
-                limitEval(magic_syntax(input.value), () => void 0, 1000)
+                let code = magic_syntax(input.value);
+                console.log(code);
+                eval(code);
+                //limitEval(code, funcOnDone, max_timeout);
             }
             catch(err) {
                 this.ErrorPrint(err);
@@ -748,7 +803,6 @@ ball.x+=0.1`
         this.dt_pause_var.className="banner_text"
         this.dt_pause_var.placeholder='Interval';
         this.dt_pause_var.style.textAlign='center'
-        //this.dt_pause_var.style.fontSize = "10px";
         this.dt_pause_var.style.width = "60px";
         
         this.buttons=Add_banner(this);
@@ -758,7 +812,8 @@ ball.x+=0.1`
         this.Repeat_every_id=null;
         function repeat(cell_parent){
         	try {
-				eval(cell_parent.loop_string)
+				let code = cell_parent.loop_string;
+                limitEval(code, funcOnDone, 150);
 			}
 			catch(err) {
 				Stop(cell_parent)
@@ -769,8 +824,8 @@ ball.x+=0.1`
             try {
                 this.Stop();
                 cell_parent.dt_pause = 1000 * eval(cell_parent.dt_pause_var.value);
-                cell_parent.loop_string='(function(){'+magic_syntax(cell_parent.textarea.value)+'})()';
-        	    cell_parent.Repeat_every_id=setInterval(function(){repeat(cell_parent)},cell_parent.dt_pause)
+                cell_parent.loop_string = '(function(){'+magic_syntax(cell_parent.textarea.value)+'})()';
+        	    cell_parent.Repeat_every_id = setInterval(function(){repeat(cell_parent)},cell_parent.dt_pause)
             }
             catch(err) {
 				this.Stop();
@@ -1396,7 +1451,8 @@ function import_figureLib(){
             return copy;
         }
 	}
-        // *** svgs
+      
+    // *** svgs
     class Svg {
         constructor(fig,svg_type,svg_params){
             this.fig=fig;
@@ -2818,40 +2874,7 @@ function import_MagicSyntax(){
         let lc=command_strings.indexOf(string)
         return lc;
     }
-    //*** safe eval, safe execute
-    function limitEval(code, fnOnStop, opt_timeoutInMS) {
-        var id = Math.random() + 1,
-            blob = new Blob(
-            ['onmessage=function(a){a=a.data;postMessage({i:a.i+1});postMessage({r:eval.call(this,a.c),i:a.i})};'],
-            { type:'text/javascript' }
-            ),
-            myWorker = new Worker(URL.createObjectURL(blob));
 
-        function onDone() {
-            URL.revokeObjectURL(blob);
-            fnOnStop.apply(this, arguments);
-        }
-
-        myWorker.onmessage = function (data) {
-            data = data.data;
-            if (data) {
-            if (data.i === id) {
-                id = 0;
-                onDone(true, data.r);
-            }
-            else if (data.i === id + 1) {
-                setTimeout(function() {
-                if (id) {
-                    myWorker.terminate();
-                    onDone(false);
-                }
-                }, opt_timeoutInMS || 1000);
-            }
-            }
-        };
-
-        myWorker.postMessage({ c: code, i: id });
-    }
     //*** parsing
     function magic_syntax(code_str){
         if(code_str.slice(0,3)=='***'){return code_str.slice(3)}
@@ -3255,14 +3278,13 @@ function import_MagicSyntax(){
     function magic_function(name,arguments_string,script){
         try{
             let parsed=magic_syntax(script)
-            limitEval(
-                name+'=function'+arguments_string+'{try{'+parsed+'} catch(err){err.message="in '+ name +', "+err.message; throw(err) } }',
-                () => void 0,
-                1000
-            )
+            let code = name+'=function'+arguments_string+'{try{'+parsed+'} catch(err){err.message="in '+ name +', "+err.message; throw(err) } }';
+            console.log(code);
+            limitEval(code, funcOnDone, 150);
         }
         catch(err){
-            limitEval(name + '=function(){}', () => void 0, 1000)
+            let code = name + '=function(){}';
+            limitEval(code, funcOnDone, 150);
             throw(err)
         }
     }
@@ -3387,6 +3409,7 @@ function import_MagicSyntax(){
     })();
 }   
 
+  
 // *** Layout
 function set_to_grid(div,parent,columns,rows){
 	parent.appendChild(div);
@@ -3742,8 +3765,8 @@ function ifigureSetup(){
             let iscript=ballab.iscriptLibrary.getIscriptByName(name);
             if(desplayedIscripts.indexOf(iscript)>-1){throw({message:'this iscript is currently displayed and cannot be removed'})}
             iscript.RemoveMe();
-            eval('delete '+name)
-            print('deleted iscript '+name)
+            eval('delete ' + name)
+            print('deleted iscript ' + name)
         }
     }// *** iscript setup
     {// *** figure setup
@@ -3847,7 +3870,7 @@ const xmlns = "http://www.w3.org/2000/svg";
         ballab.SetCodeFontSize=function(){
             let Elems=document.getElementsByClassName('codearea');
             let size=prompt('Set the font size of the code areas')
-            setCSSClassStyle('codearea','fontSize',size+'px')
+            setCSSClassStyle('codearea', 'fontSize', size+'px')
         }
     }// *** style
     {//*** math setup
@@ -3957,8 +3980,8 @@ const xmlns = "http://www.w3.org/2000/svg";
         let top_menu=new TopMenu(document.body);
         ballab.top_menu=top_menu
         
-        let balla=new TopMenuList('ifigures',top_menu)
-        new TopMenuItem('About ifigures',balla,AboutiFigures)
+        let balla=new TopMenuList('iFigures',top_menu)
+        new TopMenuItem('About iFigures',balla,AboutiFigures)
         new TopMenuItem('Set code font size',balla,ballab.SetCodeFontSize)
         let file=new TopMenuList('File',top_menu)
         new TopMenuItem('Download as .html file',file,SaveAs)
