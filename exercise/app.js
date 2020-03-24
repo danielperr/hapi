@@ -32,24 +32,24 @@ ques2args = {
 }
 
 ques3args = {
-    name: 'ball',
+    name: 'code1',
     question: 'העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו. מה קרה?',
     answers: ['2019', '1825', '2020', '2077'],
     correctAnswer: 2,
 }
 
 ques4args = {
-    name: 'language',
+    name: 'code2',
     question: 'הריצו את התא שוב ושוב. מה קורה?',
     answers: ['יהודית', 'אנגלית', 'יידיש', 'עברית'],
     correctAnswer: 3,
 }
 
 ques5args = {
-    name: 'language',
+    name: 'code3',
     question: 'העתיקו את הקוד השני (בצד שמאל מתחת לחלון code2, ראו תמונה מצורפת). והריצו אותו שוב ושוב. מה קורה?',
     answers: ['יהודית', 'אנגלית', 'יידיש', 'עברית'],
-    correctAnswer: 2,
+    correctAnswer: 1,
 }
 
 ReactDOM.render(
