@@ -33,7 +33,7 @@ class ClosedQuestion extends React.Component {
       return React.createElement("div", {
             className: 'question ' + stateClassName,
             id: 'question-' + this.props.name
-        }, React.createElement("span", null, this.props.children), React.createElement('div', {
+        }, React.createElement("span", null, this.props.question), React.createElement('div', {
             className: 'closed-answers'
         }, answers));
     }

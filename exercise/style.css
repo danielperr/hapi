@@ -1,15 +1,21 @@
 @import url('https://fonts.googleapis.com/css?family=Heebo&display=swap');
 
+:root {
+    --main-color:  #bdbdbd;
+    --secondery-color: black;
+    --thrid-color: white;
+}
 
 html {
     padding-top: 16px;
+    padding-bottom: 16px;
 }
 
 body {
     text-align: right;
     font-family: "Heebo", sans-serif;
     margin: 0px;
-    background-color: #bdbdbd;
+    background-color: var(--main-color);
 }
 
 h1 {
@@ -22,7 +28,7 @@ label {
 
 .main-container {
     background-color: white;
-    width: 1000px;
+    width: 1100px;
     top: 0;
     border-radius: 2px;
     padding: 20px 50px;
@@ -57,9 +63,26 @@ label {
 
 .closed-answers {
     padding: 10px;
+    border-top: 1px solid var(--main-color);
 }
 
 .closed-answer {
     padding: 2px 10px;
+}
+
+.embed {
+    width: 1100px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+    margin: 25px 0px;
+    display: block;
+    overflow: "hidden";
+}
+
+.ifigure-embed {
+    height: 600px;
+}
+
+.youtube-embed {
+    height: 550px;
 }
 
