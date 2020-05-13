@@ -7,19 +7,318 @@
   </head>
   <body dir="rtl">
 
-    <div id="root"></div>
+    <div id="root" dir="rtl"></div>
 
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-    <script src="components/main-container.js"></script>
+    <!-- <script src="components/main-container.js"></script>
     <script src="components/closed-answer.js"></script>
     <script src="components/closed-question.js"></script>
     <script src="components/ifigure-embed.js"></script>
     <script src="components/youtube-embed.js"></script>
     <script src="components/section.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js"></script> -->
+
+    <script>
+      class MultiChoiceAnswer extends React.Component {
+        render() {
+          const radioId = this.props.name + '-radio';
+          return /*#__PURE__*/React.createElement("div", {
+            key: this.props.name + '-inner-div'
+          }, /*#__PURE__*/React.createElement("input", {
+            type: "radio",
+            name: this.props.inputName,
+            value: this.props.name,
+            id: radioId,
+            key: radioId
+          }), /*#__PURE__*/React.createElement("label", {
+            htmlFor: radioId,
+            key: this.props.name + '-label'
+          }, this.props.text));
+        }
+
+      }
+
+      class MultiChoiceElement extends React.Component {
+        render() {
+          const answers = [];
+          const name = this.props.name + '-answer';
+          let index = 0;
+          this.props.correct.forEach(answer => {
+            answers.push( /*#__PURE__*/React.createElement(MultiChoiceAnswer, {
+              text: answer,
+              inputName: this.props.name,
+              name: name + index,
+              key: name + index
+            }));
+            index++;
+          });
+          this.props.incorrect.forEach(answer => {
+            answers.push( /*#__PURE__*/React.createElement(MultiChoiceAnswer, {
+              text: answer,
+              inputName: this.props.name,
+              name: name + index,
+              key: name + index
+            }));
+            index++;
+          });
+          return /*#__PURE__*/React.createElement("div", {
+            className: "multi-choice-element",
+            key: this.props.name + '-innner-div'
+          }, /*#__PURE__*/React.createElement("label", {
+            key: this.props.name + '-label'
+          }, this.props.text), /*#__PURE__*/React.createElement("div", {
+            className: "answers",
+            key: this.props.name + '-answers-div'
+          }, answers));
+        }
+
+      }
+
+      class TextInputElement extends React.Component {
+        render() {
+          return /*#__PURE__*/React.createElement("div", {
+            className: "text-input-element",
+            tag: this.props.name + '-inner-div'
+          }, /*#__PURE__*/React.createElement("label", {
+            key: this.props.name + '-label'
+          }, this.props.text), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("input", {
+            type: "text",
+            name: this.props.name,
+            tag: this.props.name + '-input'
+          }));
+        }
+
+      }
+
+      class LabelElement extends React.Component {
+        render() {
+          return /*#__PURE__*/React.createElement("label", {
+            className: "label-element",
+            key: this.props.name,
+            dangerouslySetInnerHTML: {
+              __html: this.props.text
+            }
+          });
+        }
+
+      }
+
+      class ImageElement extends React.Component {
+        render() {
+          return /*#__PURE__*/React.createElement("img", {
+            className: "image-element",
+            src: this.props.src,
+            key: this.props.name
+          });
+        }
+
+      }
+
+      class YoutubeElement extends React.Component {
+        render() {
+          return /*#__PURE__*/React.createElement("iframe", {
+            className: "multichoice-element",
+            width: "560",
+            height: "315",
+            src: this.props.src,
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true,
+            key: this.props.name
+          });
+        }
+
+      }
+
+      class SectionHeader extends React.Component {
+        render() {
+          return /*#__PURE__*/React.createElement("h2", {
+            className: "section-header",
+            name: this.props.name
+          }, this.props.text);
+        }
+
+      }
+
+      class Section extends React.Component {
+        render() {
+          const elements = [];
+          this.props.elements.forEach((element, index) => {
+            let obj;
+            const name = this.props.name + '-element' + index;
+
+            switch (element.type) {
+              case 'label':
+                obj = /*#__PURE__*/React.createElement(LabelElement, {
+                  text: element.text,
+                  name: name,
+                  key: name
+                });
+                break;
+
+              case 'image':
+                obj = /*#__PURE__*/React.createElement(ImageElement, {
+                  src: element.src,
+                  name: name,
+                  key: name
+                });
+                break;
+
+              case 'youtube':
+                obj = /*#__PURE__*/React.createElement(YoutubeElement, {
+                  src: element.src,
+                  name: name,
+                  key: name
+                });
+                break;
+
+              case 'textinput':
+                obj = /*#__PURE__*/React.createElement(TextInputElement, {
+                  text: element.text,
+                  name: name,
+                  key: name
+                });
+                break;
+
+              case 'multichoice':
+                obj = /*#__PURE__*/React.createElement(MultiChoiceElement, {
+                  text: element.text,
+                  correct: element.correct,
+                  incorrect: element.incorrect,
+                  name: name,
+                  key: name
+                });
+                break;
+
+              default:
+                obj = /*#__PURE__*/React.createElement("label", {
+                  key: name
+                }, "element type not available.");
+            }
+
+            elements.push( /*#__PURE__*/React.createElement("div", {
+              className: "element",
+              key: name + '-div'
+            }, obj, /*#__PURE__*/React.createElement("br", null)));
+          });
+          return /*#__PURE__*/React.createElement("div", {
+            className: "section"
+          }, /*#__PURE__*/React.createElement(SectionHeader, {
+            text: this.props.header,
+            name: this.props.name + '-header'
+          }), /*#__PURE__*/React.createElement("div", {
+            className: "section-elements",
+            key: this.props.name + '-div'
+          }, elements));
+        }
+
+      }
+
+      class MainHeader extends React.Component {
+        render() {
+          return /*#__PURE__*/React.createElement("h1", {
+            className: "main-header"
+          }, this.props.text);
+        }
+
+      }
+
+      class App extends React.Component {
+        render() {
+          const sections = [];
+          this.props.data.sections.forEach((section, index) => {
+            const sectionName = 'section' + index;
+            sections.push( /*#__PURE__*/React.createElement(Section, {
+              header: section.header,
+              elements: section.elements,
+              name: sectionName,
+              key: sectionName
+            }));
+          });
+          return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement(MainHeader, {
+            text: this.props.data.mainHeader
+          }), /*#__PURE__*/React.createElement("div", {
+            className: "container"
+          }, sections)));
+        }
+
+      }
+
+      const PEILUT = {
+        "mainHeader": "תרגול - הדמית תנועה",
+        "sections": [{
+          "header": "צפו בסרטון הבא",
+          "elements": [{
+            "type": "youtube",
+            "src": "https://youtu.be/HPpvh1-ZeLQ"
+          }, {
+            "type": "textinput",
+            "text": "כתבו במילים שלכם, כיצד גורמים לאשליה שעיגול נע על המסך?"
+          }]
+        }, {
+          "header": "הקוד הראשון",
+          "elements": [{
+            "type": "label",
+            "text": "פתחו דף ifigures חדש ע״י לחיצה על הקישור הבא <a href='https://google.com'>empty ifigure</a>"
+          }, {
+            "type": "label",
+            "text": "השתמשו בחלון שלפניכם, העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו."
+          }, {
+            "type": "image",
+            "src": "https://image.shutterstock.com/image-photo/colorful-flower-on-dark-tropical-260nw-721703848.jpg"
+          }, {
+            "type": "multichoice",
+            "text": "לאחר שהרצתם, מה קרה?",
+            "correct": ["נוצר עיגול כחול על המסך ולא קרה שום דבר נוסף."],
+            "incorrect": ["לא קרה כלום שניתן לראות.", "נוצרה הדמיה של כדור זז"]
+          }, {
+            "type": "multichoice",
+            "text": "הריצו את התא שוב ושוב. מה קורה?",
+            "correct": ["לא נראה שקורה משהו."],
+            "incorrect": ["בכל פעם העיגול זז.", "כשלוחצים שוב העיגול נעלם."]
+          }]
+        }, {
+          "header": "הקוד השני",
+          "elements": [{
+            "type": "label",
+            "text": "העתיקו את הקוד השני (בצד שמאל מתחת לחלון code2, ראו תמונה מצורפת)."
+          }, {
+            "type": "image",
+            "src": "https://www.bigstockphoto.com/images/homepage/module-6.jpg"
+          }, {
+            "type": "multichoice",
+            "text": "הריצו אותו שוב ושוב. מה קורה?",
+            "correct": ["בכל פעם העיגול זז."],
+            "incorrect": ["לא נראה שקורה משהו.", "העיגול נעלם."]
+          }, {
+            "type": "multichoice",
+            "text": "מה מטרת הפקודה clf לדעתכם?",
+            "correct": ["לנקות את המסך כל פעם לפני שמציירים את העיגול במקום החדש."],
+            "incorrect": ["אין לה מטרה.", "להכריז שהולכים להיות מוגדרים משתנים בהמשך."]
+          }]
+        }]
+      };
+      ReactDOM.render( /*#__PURE__*/React.createElement(App, {
+        data: PEILUT
+      }), document.getElementById('root'));
+      /* OTHER FUNCTIONS */
+
+      function shuffle(a) {
+        var j, x, i;
+
+        for (i = a.length - 1; i > 0; i--) {
+          j = Math.floor(Math.random() * (i + 1));
+          x = a[i];
+          a[i] = a[j];
+          a[j] = x;
+        }
+
+        return a;
+      }
+    </script>
     
   </body>
 </html>
