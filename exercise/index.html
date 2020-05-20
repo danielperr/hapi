@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="he">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <title>פעילות דוגמה</title>
     <link rel="stylesheet" href="style.css" />
-  </head>
-  <body dir="rtl">
+</head>
 
-    <div id="root" dir="rtl"></div>
+<body dir="rtl">
+    
+    <div id="root"></div>
 
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
@@ -16,7 +18,8 @@
     <script src="./utils.js"></script>
     <script src="./components/label-element.js"></script>
     <script src="./components/image-element.js"></script>
-    <script src="./components/text-input-element.js"></script>
+    <script src="./components/multi-line-text-input-element.js"></script>
+    <script src="./components/single-line-text-input-element.js"></script>
     <script src="./components/youtube-element.js"></script>
     <script src="./components/multi-choice-answer.js"></script>
     <script src="./components/multi-choice-element.js"></script>
@@ -26,66 +29,66 @@
     <script src="./components/app.js"></script>
 
     <script>
-      const PEILUT = {
-        "mainHeader": "תרגול - הדמית תנועה",
-        "sections": [{
-          "header": "צפו בסרטון הבא",
-          "elements": [{
-            "type": "youtube",
-            "src": "https://youtu.be/HPpvh1-ZeLQ"
-          }, {
-            "type": "textinput",
-            "text": "כתבו במילים שלכם, כיצד גורמים לאשליה שעיגול נע על המסך?"
-          }]
-        }, {
-          "header": "הקוד הראשון",
-          "elements": [{
-            "type": "label",
-            "text": "פתחו דף ifigures חדש ע״י לחיצה על הקישור הבא <a href='https://google.com'>empty ifigure</a>"
-          }, {
-            "type": "label",
-            "text": "השתמשו בחלון שלפניכם, העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו."
-          }, {
-            "type": "image",
-            "src": "https://image.shutterstock.com/image-photo/colorful-flower-on-dark-tropical-260nw-721703848.jpg"
-          }, {
-            "type": "multichoice",
-            "text": "לאחר שהרצתם, מה קרה?",
-            "correct": ["נוצר עיגול כחול על המסך ולא קרה שום דבר נוסף."],
-            "incorrect": ["לא קרה כלום שניתן לראות.", "נוצרה הדמיה של כדור זז"]
-          }, {
-            "type": "multichoice",
-            "text": "הריצו את התא שוב ושוב. מה קורה?",
-            "correct": ["לא נראה שקורה משהו."],
-            "incorrect": ["בכל פעם העיגול זז.", "כשלוחצים שוב העיגול נעלם."]
-          }]
-        }, {
-          "header": "הקוד השני",
-          "elements": [{
-            "type": "label",
-            "text": "העתיקו את הקוד השני (בצד שמאל מתחת לחלון code2, ראו תמונה מצורפת)."
-          }, {
-            "type": "image",
-            "src": "https://www.bigstockphoto.com/images/homepage/module-6.jpg"
-          }, {
-            "type": "multichoice",
-            "text": "הריצו אותו שוב ושוב. מה קורה?",
-            "correct": ["בכל פעם העיגול זז."],
-            "incorrect": ["לא נראה שקורה משהו.", "העיגול נעלם."]
-          }, {
-            "type": "multichoice",
-            "text": "מה מטרת הפקודה clf לדעתכם?",
-            "correct": ["לנקות את המסך כל פעם לפני שמציירים את העיגול במקום החדש."],
-            "incorrect": ["אין לה מטרה.", "להכריז שהולכים להיות מוגדרים משתנים בהמשך."]
-          }]
-        }]
-      };
+        const PEILUT = {
+            "mainHeader": "תרגול - הדמית תנועה",
+            "sections": [{
+                "header": "צפו בסרטון הבא",
+                "elements": [{
+                    "type": "youtube",
+                    "youtubeId": "E7wJTI-1dvQ"
+                }, {
+                    "type": "single-line-text-input",
+                    "text": "כתבו במילים שלכם, כיצד גורמים לאשליה שעיגול נע על המסך?"
+                }]
+            }, {
+                "header": "הקוד הראשון",
+                "elements": [{
+                    "type": "label",
+                    "text": "פתחו דף ifigures חדש ע״י לחיצה על הקישור הבא <a href='https://google.com'>empty ifigure</a>"
+                }, {
+                    "type": "label",
+                    "text": "השתמשו בחלון שלפניכם, העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו."
+                }, {
+                    "type": "image",
+                    "src": "https://image.shutterstock.com/image-photo/colorful-flower-on-dark-tropical-260nw-721703848.jpg"
+                }, {
+                    "type": "multi-choice",
+                    "text": "לאחר שהרצתם, מה קרה?",
+                    "correct": ["נוצר עיגול כחול על המסך ולא קרה שום דבר נוסף."],
+                    "incorrect": ["לא קרה כלום שניתן לראות.", "נוצרה הדמיה של כדור זז"]
+                }, {
+                    "type": "multi-choice",
+                    "text": "הריצו את התא שוב ושוב. מה קורה?",
+                    "correct": ["לא נראה שקורה משהו."],
+                    "incorrect": ["בכל פעם העיגול זז.", "כשלוחצים שוב העיגול נעלם."]
+                }]
+            }, {
+                "header": "הקוד השני",
+                "elements": [{
+                    "type": "label",
+                    "text": "העתיקו את הקוד השני (בצד שמאל מתחת לחלון code2, ראו תמונה מצורפת)."
+                }, {
+                    "type": "image",
+                    "src": "https://www.bigstockphoto.com/images/homepage/module-6.jpg"
+                }, {
+                    "type": "multi-choice",
+                    "text": "הריצו אותו שוב ושוב. מה קורה?",
+                    "correct": ["בכל פעם העיגול זז."],
+                    "incorrect": ["לא נראה שקורה משהו.", "העיגול נעלם."]
+                }, {
+                    "type": "multi-choice",
+                    "text": "מה מטרת הפקודה clf לדעתכם?",
+                    "correct": ["לנקות את המסך כל פעם לפני שמציירים את העיגול במקום החדש."],
+                    "incorrect": ["אין לה מטרה.", "להכריז שהולכים להיות מוגדרים משתנים בהמשך."]
+                }]
+            }]
+        };
 
-
-      ReactDOM.render( React.createElement(App, {
-        data: PEILUT
-      }), document.getElementById('root'));
+        ReactDOM.render(React.createElement(App, {
+            data: PEILUT
+        }), document.getElementById('root'));
     </script>
-    
-  </body>
+
+</body>
+
 </html>

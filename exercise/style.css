@@ -1,6 +1,121 @@
 @import url('https://fonts.googleapis.com/css?family=Heebo&display=swap');
 
+:root {
+  --main-color:  #bdbdbd;
+  --secondery-color: black;
+  --thrid-color: white;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid var(--main-color);
+}
+
+html {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
 
 body {
-  font-family: 'Heebo', sans-serif;
+  font-family: "Heebo", sans-serif;
+  text-align: right;
+  margin: 0px;
+  background-color: var(--main-color);
+}
+
+.main-header {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.section {
+  background-color: white;
+  width: 1100px;
+  top: 0;
+  border-radius: 2px;
+  padding: 20px 50px;
+  margin-bottom: 50px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+  text-align: right;
+}
+
+.image-element {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: 72px;
+}
+
+label {
+  font-size: 16px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.question:not(:last-child) {
+  padding-bottom: 25px;
+}
+
+.question span {
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 800;
+  transition: background-color 0.1s;
+}
+
+.correct span {
+  background-color: rgb(199, 255, 115);
+}
+
+.incorrect span {
+  background-color: rgb(211, 0, 35);
+  color: white;
+}
+
+.closed-answers {
+  padding: 10px;
+  border-top: 1px solid var(--main-color);
+}
+
+.closed-answer {
+  padding: 2px 10px;
+}
+
+.embed {
+  width: 1100px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+  display: block;
+  overflow: "hidden";
+}
+
+.ifigure-embed {
+  height: 600px;
+}
+
+.youtube-embed {
+  height: 550px;
 }
