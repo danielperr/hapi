@@ -1,4 +1,7 @@
-class MultiChoiceAnswer extends React.Component {
+import React from 'react';
+
+
+export class MultiChoiceAnswer extends React.Component {
     render() {
         const radioId = this.props.name + '-radio';
         return /*#__PURE__*/React.createElement("div", {

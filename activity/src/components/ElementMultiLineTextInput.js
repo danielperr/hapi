@@ -1,4 +1,7 @@
-class SingleLineTextInputElement extends React.Component {
+import React from 'react';
+
+
+export class ElementMultiLineTextInput extends React.Component {
     render() {
         return /*#__PURE__*/React.createElement("div", {
             className: "text-input-element",

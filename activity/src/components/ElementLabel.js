@@ -1,4 +1,7 @@
-class LabelElement extends React.Component {
+import React from 'react';
+
+
+export class ElementLabel extends React.Component {
     render() {
         return /*#__PURE__*/React.createElement("label", {
             className: "label-element",

@@ -1,4 +1,14 @@
-class Section extends React.Component {
+import React from 'react';
+import { ElementLabel } from './ElementLabel';
+import { ElementImage } from "./ElementImage";
+import { ElementYoutube } from "./ElementYoutube";
+import { ElementSingleLineTextInput } from "./ElementSingleLineTextInput";
+import { ElementMultiLineTextInput } from "./ElementMultiLineTextInput";
+import { ElementMultiChoice } from "./ElementMultiChoice";
+import { SectionHeader } from "./SectionHeader";
+
+
+export class Section extends React.Component {
     render() {
         const elements = [];
         this.props.elements.forEach((element, index) => {
@@ -7,7 +17,7 @@ class Section extends React.Component {
 
             switch (element.type) {
                 case 'label':
-                    obj = /*#__PURE__*/React.createElement(LabelElement, {
+                    obj = /*#__PURE__*/React.createElement(ElementLabel, {
                         text: element.text,
                         name: name,
                         key: name
@@ -15,7 +25,7 @@ class Section extends React.Component {
                     break;
 
                 case 'image':
-                    obj = /*#__PURE__*/React.createElement(ImageElement, {
+                    obj = /*#__PURE__*/React.createElement(ElementImage, {
                         src: element.src,
                         name: name,
                         key: name
@@ -23,7 +33,7 @@ class Section extends React.Component {
                     break;
 
                 case 'youtube':
-                    obj = /*#__PURE__*/React.createElement(YoutubeElement, {
+                    obj = /*#__PURE__*/React.createElement(ElementYoutube, {
                         youtubeId: element.youtubeId,
                         name: name,
                         key: name
@@ -31,7 +41,7 @@ class Section extends React.Component {
                     break;
 
                 case 'single-line-text-input':
-                    obj = /*#__PURE__*/React.createElement(SingleLineTextInputElement, {
+                    obj = /*#__PURE__*/React.createElement(ElementSingleLineTextInput, {
                         text: element.text,
                         name: name,
                         key: name
@@ -39,7 +49,7 @@ class Section extends React.Component {
                     break;
 
                 case 'multi-line-text-input':
-                        obj = /*#__PURE__*/React.createElement(MultiLineTextInputElement, {
+                        obj = /*#__PURE__*/React.createElement(ElementMultiLineTextInput, {
                             text: element.text,
                             name: name,
                             key: name
@@ -47,7 +57,7 @@ class Section extends React.Component {
                         break;
 
                 case 'multi-choice':
-                    obj = /*#__PURE__*/React.createElement(MultiChoiceElement, {
+                    obj = /*#__PURE__*/React.createElement(ElementMultiChoice, {
                         text: element.text,
                         correct: element.correct,
                         incorrect: element.incorrect,
@@ -76,8 +86,5 @@ class Section extends React.Component {
             className: "section-elements",
             key: this.props.name + '-div'
         }, elements));
-
-        
     }
-
 }

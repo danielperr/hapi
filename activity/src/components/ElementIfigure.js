@@ -1,4 +1,7 @@
-class IfigureEmbed extends React.Component {
+import React from 'react';
+
+
+export class ElementIfigure extends React.Component {
     render() { 
         return React.createElement("iframe", {
             className: "ifigure-embed embed",

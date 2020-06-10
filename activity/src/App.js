@@ -1,4 +1,6 @@
-
+import React from 'react';
+import { Section } from './components/Section'
+import { MainHeader } from './components/MainHeader'
 
 document.addEventListener('keypress', function (e) {
     if (e.keyCode === 13 || e.which === 13) {
@@ -7,7 +9,7 @@ document.addEventListener('keypress', function (e) {
     }
 });
 
-class App extends React.Component {
+export class App extends React.Component {
     render() {
         const sections = [];
         this.props.data.sections.forEach((section, index) => {
@@ -26,4 +28,3 @@ class App extends React.Component {
         }, sections)));
     }
 }
-

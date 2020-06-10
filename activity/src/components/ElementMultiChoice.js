@@ -1,4 +1,7 @@
-class MultiChoiceElement extends React.Component {
+import React from 'react';
+import { MultiChoiceAnswer } from './MultiChoiceAnswer';
+
+export class ElementMultiChoice extends React.Component {
     render() {
         const answers = [];
         const name = this.props.name + '-answer';

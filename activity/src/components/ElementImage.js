@@ -1,4 +1,7 @@
-class ImageElement extends React.Component {
+import React from 'react';
+
+
+export class ElementImage extends React.Component {
     render() {
         return /*#__PURE__*/React.createElement("img", {
             className: "image-element center",

@@ -1,6 +1,7 @@
-"use strict";
+import React from 'react';
 
-class YoutubeElement extends React.Component {
+
+export class ElementYoutube extends React.Component {
     render() {
         // When creating this element pass the yotube Id only
 

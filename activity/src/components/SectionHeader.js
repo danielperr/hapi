@@ -1,4 +1,7 @@
-class SectionHeader extends React.Component {
+import React from 'react';
+
+
+export class SectionHeader extends React.Component {
     render() {
         return /*#__PURE__*/React.createElement("h2", {
             className: "section-header",
