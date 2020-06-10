@@ -14,7 +14,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <style>
-	* { font: 15px "Consolas"; /*, Monaco, monospace";*/ }
+	* { font: 15px Consolas, monaco, monospace;}
 	tab { padding-left: 4em; }
     html, body { height: 100%; margin:0; } /*overflow-y: hidden}*/
     .alert{
@@ -70,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     .terminal_output {
 		margin:0;
         padding:3px;
-		height:277px;
+		height:227px;
 		resize:vertical;
         border:solid 0.1px #979797;
 		/*border-top-style:none;
@@ -234,7 +234,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		align-items: stretch;
 		height:2em;
         border-style:none;
-        margin-bottom:10px;
+        margin-bottom:20px;
         
 		/*margin:1em 0;*/
 	}
@@ -414,62 +414,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <!-- End of head, anything else up to the </head> will be removed --></head>
 <body>
 <script>//<!-- internal functions -->
-  
-//*** safe eval, safe execute
-
-var max_timeout = 150; // 150 ms timeout when executing code.
-
-function funcOnDone(success, opt_returnValue=0) {
-    console.log(success);
-}
-
-function limitEval(code, fnOnStop, opt_timeoutInMS) {
-  var id = Math.random() + 1;
-  var blob = new Blob(
-    [
-			`onmessage=function(a) {
-    		a = a.data;
-    		postMessage(JSON.parse(JSON.stringify( {i: a.i + 1} )));
-    		postMessage(JSON.parse(JSON.stringify( {r: eval.call(this, a.c), i: a.i} )));
-			};`
-		],
-		{
-      type: 'text/javascript'
-    }
-  );
-  urlBlob = URL.createObjectURL(blob)
-  var myWorker = new Worker(urlBlob);
-
-  function onDone() {
-    URL.revokeObjectURL(urlBlob);
-    fnOnStop.apply(this, arguments);
-  }
-
-  myWorker.onmessage = function(data) {
-    data = data.data;
-    if (data) {
-      if (data.i === id) {
-        id = 0;
-        onDone(true, data.r);
-      } else if (data.i === id + 1) {
-        setTimeout(
-					function() {
-          	if (id) {
-            	myWorker.terminate();
-            	onDone(false);
-          	}
-        	}, opt_timeoutInMS || 1000
-				);
-      }
-    }
-  };
-
-  myWorker.postMessage({
-    c: code,
-    i: id
-  });
-}
-
 // *** internal libraries
 function import_cellLib(){
     return (function(){
@@ -539,9 +483,7 @@ function import_cellLib(){
             this.print("> "+input.value)
             try {
                 let code = magic_syntax(input.value);
-                console.log(code);
                 eval(code);
-                //limitEval(code, funcOnDone, max_timeout);
             }
             catch(err) {
                 this.ErrorPrint(err);
@@ -813,7 +755,7 @@ ball.x+=0.1`
         function repeat(cell_parent){
         	try {
 				let code = cell_parent.loop_string;
-                limitEval(code, funcOnDone, 150);
+                eval(code);
 			}
 			catch(err) {
 				Stop(cell_parent)
@@ -3279,12 +3221,11 @@ function import_MagicSyntax(){
         try{
             let parsed=magic_syntax(script)
             let code = name+'=function'+arguments_string+'{try{'+parsed+'} catch(err){err.message="in '+ name +', "+err.message; throw(err) } }';
-            console.log(code);
-            limitEval(code, funcOnDone, 150);
+            eval(code);
         }
         catch(err){
             let code = name + '=function(){}';
-            limitEval(code, funcOnDone, 150);
+            eval(code);
             throw(err)
         }
     }
