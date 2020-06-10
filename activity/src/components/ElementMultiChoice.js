@@ -1,6 +1,7 @@
 import React from 'react';
 import { MultiChoiceAnswer } from './MultiChoiceAnswer';
 
+
 export class ElementMultiChoice extends React.Component {
     render() {
         const answers = [];
@@ -24,14 +25,13 @@ export class ElementMultiChoice extends React.Component {
             }));
             index++;
         });
-        return /*#__PURE__*/React.createElement("div", {
-            className: "multi-choice-element",
-            key: this.props.name + '-innner-div'
-        }, /*#__PURE__*/React.createElement("label", {
-            key: this.props.name + '-label'
-        }, this.props.text), /*#__PURE__*/React.createElement("div", {
-            className: "answers",
-            key: this.props.name + '-answers-div'
-        }, answers));
+        return (<div className="multi-choice-element"
+                     key={this.props.name + "-inner-div"}>
+                         <label key={this.props.name + "-label"}>{this.props.text}</label>
+                         <div className="answers"
+                              key={this.props.name + "-answers-div"}>
+                                  {answers}
+                         </div>
+                </div>);
     }
 }

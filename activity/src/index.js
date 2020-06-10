@@ -55,9 +55,13 @@ const PEILUT = {
           "text": "מה מטרת הפקודה clf לדעתכם?",
           "correct": ["לנקות את המסך כל פעם לפני שמציירים את העיגול במקום החדש."],
           "incorrect": ["אין לה מטרה.", "להכריז שהולכים להיות מוגדרים משתנים בהמשך."]
+      }, {
+          "type": "multi-line-text-input",
+          "text": "תכתבו הרבה שורות פה"
       }]
   }]
 };
+
 
 ReactDOM.render(
   <React.StrictMode>
