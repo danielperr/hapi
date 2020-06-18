@@ -1,4 +1,5 @@
 import React from 'react';
+import { RichLabel } from './RichLabel';
 
 
 export class MultiChoiceAnswer extends React.Component {
@@ -10,8 +11,10 @@ export class MultiChoiceAnswer extends React.Component {
                            value={this.props.name}
                            id={radioId}
                            key={radioId} />
-                    <label htmlFor={radioId}
-                           key={this.props.name + "-label"}>{this.props.text}</label>
+                    <RichLabel htmlFor={radioId}
+                               key={this.props.name + "-label"}>
+                                   {this.props.text}
+                    </RichLabel>
                 </div>);
     }
 }

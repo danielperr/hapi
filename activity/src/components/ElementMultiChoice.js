@@ -1,5 +1,6 @@
 import React from 'react';
 import { MultiChoiceAnswer } from './MultiChoiceAnswer';
+import { RichLabel } from './RichLabel';
 
 
 export class ElementMultiChoice extends React.Component {
@@ -27,7 +28,7 @@ export class ElementMultiChoice extends React.Component {
         });
         return (<div className="multi-choice-element"
                      key={this.props.name + "-inner-div"}>
-                         <label key={this.props.name + "-label"}>{this.props.text}</label>
+                         <RichLabel key={this.props.name + "-label"}>{this.props.text}</RichLabel>
                          <div className="answers"
                               key={this.props.name + "-answers-div"}>
                                   {answers}

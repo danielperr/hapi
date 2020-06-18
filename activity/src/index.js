@@ -19,10 +19,7 @@ const PEILUT = {
       "header": "הקוד הראשון",
       "elements": [{
           "type": "label",
-          "text": "פתחו דף ifigures חדש ע״י לחיצה על הקישור הבא <a href='https://google.com'>empty ifigure</a>"
-      }, {
-          "type": "label",
-          "text": "השתמשו בחלון שלפניכם, העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו."
+          "text": "פתחו דף ifigures חדש ע״י לחיצה על הקישור הבא [empty ifigure](https://www.google.com)\n\nהשתמשו בחלון שלפניכם, העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו."
       }, {
           "type": "image",
           "src": "https://image.shutterstock.com/image-photo/colorful-flower-on-dark-tropical-260nw-721703848.jpg"

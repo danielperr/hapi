@@ -1,12 +1,14 @@
 import React from 'react';
+import { RichLabel } from './RichLabel';
 
 
 export class ElementMultiLineTextInput extends React.Component {
     render() {
         return (<div className="text-input-element"
                      tag={this.props.name + "-innder-div"}>
-                         <label key={this.props.name + "-label"}>{this.props.text}</label>
-                         <br />
+                         <RichLabel key={this.props.name + "-label"}>
+                             {this.props.text}
+                         </RichLabel>
                          <input type="text"
                                 name={this.props.name}
                                 tag={this.props.name + "-input"} />
