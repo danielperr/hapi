@@ -9,9 +9,10 @@ export class ElementMultiLineTextInput extends React.Component {
                          <RichLabel key={this.props.name + "-label"}>
                              {this.props.text}
                          </RichLabel>
-                         <input type="text"
-                                name={this.props.name}
-                                tag={this.props.name + "-input"} />
+                         <textarea name={this.props.name}
+                                   tag={this.props.name + "-input"}
+                                   placeholder="טקסט"
+                                   className="multiline-input-element" />
                 </div>);
     }
 }
