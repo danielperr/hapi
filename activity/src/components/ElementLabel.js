@@ -5,7 +5,7 @@ import { RichLabel } from './RichLabel';
 export class ElementLabel extends React.Component {
     render() {
         return <RichLabel className="label-element"
-                          key={this.props.name}>
+                          name={this.props.name}>
                               {this.props.text}
                           </RichLabel>
                       // Setting HTML this way to allow rich text formatting and links
