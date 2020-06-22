@@ -55,6 +55,9 @@ const PEILUT = {
       }, {
           "type": "multi-line-text-input",
           "text": "תכתבו הרבה שורות פה"
+      }, {
+          "type": "math-input",
+          "text": "בטא את השיפוע באמצעות x ו־t:"
       }]
   }]
 };

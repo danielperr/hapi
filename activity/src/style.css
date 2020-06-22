@@ -63,6 +63,22 @@ body {
   margin-bottom: 12px;
 }
 
+.math-input-div {
+  width: 100%;
+  text-align: center;
+  direction: ltr;
+}
+
+.mq-editable-field {
+  padding: 4px;
+  width: 100px;
+  text-align: left;
+}
+
+.mq-root-block {
+  height: 100%;
+}
+
 h1 {
   font-size: 72px;
 }
@@ -116,7 +132,10 @@ textarea.multiline-input-element {
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
-  min-height: 40px;
+  min-height: 60px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .embed {

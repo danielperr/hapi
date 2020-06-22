@@ -6,6 +6,7 @@ import { ElementSingleLineTextInput } from "./ElementSingleLineTextInput";
 import { ElementMultiLineTextInput } from "./ElementMultiLineTextInput";
 import { ElementMultiChoice } from "./ElementMultiChoice";
 import { SectionHeader } from "./SectionHeader";
+import { ElementMathInput } from './ElementMathInput';
 
 
 export class Section extends React.Component {
@@ -46,6 +47,12 @@ export class Section extends React.Component {
                                               incorrect={element.incorrect}
                                               name={name}
                                               key={name} />;
+                    break;
+                case 'math-input':
+                    obj = <ElementMathInput text={element.text}
+                                            value={element.value}
+                                            name={name}
+                                            key={name} />
                     break;
                 default:
                     obj = <label key={name}>{"אלמנט לא מזוהה"}</label>;
