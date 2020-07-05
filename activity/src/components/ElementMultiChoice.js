@@ -20,6 +20,7 @@ export class ElementMultiChoice extends React.Component {
         this.props.correct.forEach(answer => {
             answers.push(<MultiChoiceAnswer text={answer.text}
                                             inputName={this.props.id}
+                                            checked={(this.props.answer && answer.id == this.props.answer)}
                                             onAnswer={this.handleAnswer}
                                             id={answer.id}
                                             key={answer.id} />)
@@ -27,6 +28,7 @@ export class ElementMultiChoice extends React.Component {
         this.props.incorrect.forEach(answer => {
             answers.push(<MultiChoiceAnswer text={answer.text}
                                             inputName={this.props.id}
+                                            checked={(this.props.answer && answer.id == this.props.answer)}
                                             onAnswer={this.handleAnswer}
                                             id={answer.id}
                                             key={answer.id} />)

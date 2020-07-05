@@ -19,6 +19,7 @@ export class MultiChoiceAnswer extends React.Component {
                      key={this.props.id + "-D"}>
                     <input type="radio"
                            name={this.props.inputName}
+                           checked={this.props.checked}
                            onChange={this.handleChange}
                            id={this.props.id + "-R"}
                            key={this.props.id + "-R"} />

@@ -4,6 +4,7 @@ import './style.css';
 import { App } from './App';
 
 const structure = {
+    "serialNumber": "bJbiiGDGd29p7xJPI4xk",
     "mainHeader": "תרגול - הדמית תנועה",
     "sections": [{
         "header": "צפו בסרטון הבא",

@@ -20,6 +20,7 @@ export class ElementSingleLineTextInput extends React.Component {
                              {this.props.text}
                          </RichLabel>
                          <input type="text"
+                                value={this.props.answer}
                                 onChange={this.handleChange}
                                 id={this.props.id}
                                 key={this.props.id + "-input"} />

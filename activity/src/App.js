@@ -15,12 +15,23 @@ export class App extends React.Component {
         this.answers = {};
         //
         this.handleAnswer = this.handleAnswer.bind(this);
+        this.importAnswers = this.importAnswers.bind(this);
+    }
+    
+    componentDidMount() {
+        this.importAnswers();
     }
 
     handleAnswer(sectionAnswers) {
-        console.log('App::handleAnswer()')
         Object.assign(this.answers, sectionAnswers);
+        this.forceUpdate();
+        localStorage.setItem(this.props.structure.serialNumber, JSON.stringify(this.answers));
         console.log(this.answers)
+    }
+
+    importAnswers() {
+        this.answers = JSON.parse(localStorage.getItem(this.props.structure.serialNumber)) || {};
+        this.forceUpdate();
     }
 
     render() {
@@ -28,6 +39,7 @@ export class App extends React.Component {
         this.props.structure.sections.forEach((section) => {
             sections.push(<Section header={section.header}
                                    elements={section.elements}
+                                   answers={this.answers}
                                    onAnswer={this.handleAnswer}
                                    id={section.id}
                                    key={section.id} />);

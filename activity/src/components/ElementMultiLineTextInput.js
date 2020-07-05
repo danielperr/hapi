@@ -5,8 +5,8 @@ import { RichLabel } from './RichLabel';
 export class ElementMultiLineTextInput extends React.Component {
     constructor(props) {
         super(props);
-        /* */
         this.answer = "";
+        /* */
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -21,7 +21,8 @@ export class ElementMultiLineTextInput extends React.Component {
                         <RichLabel>
                             {this.props.text}
                         </RichLabel>
-                        <textarea onChange={this.handleChange}
+                        <textarea value={this.props.answer}
+                                  onChange={this.handleChange}
                                   placeholder="טקסט"
                                   className="multiline-input-element" 
                                   key={this.props.id + "-I"} />

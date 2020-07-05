@@ -25,8 +25,9 @@ export class Section extends React.Component {
 
     render() {
         const elements = [];
-        this.props.elements.forEach((element, index) => {
+        this.props.elements.forEach((element) => {
             let obj;
+            const answer = this.props.answers[element.id] || "";
             switch (element.type) {
                 case 'label':
                     obj = <ElementLabel text={element.text}
@@ -45,12 +46,14 @@ export class Section extends React.Component {
                     break;
                 case 'single-line-text-input':
                     obj = <ElementSingleLineTextInput text={element.text}
+                                                      answer={answer}
                                                       onAnswer={this.handleAnswer}
                                                       id={element.id}
                                                       key={element.id} />;
                     break;
                 case 'multi-line-text-input':
                         obj = <ElementMultiLineTextInput text={element.text}
+                                                         answer={answer}
                                                          onAnswer={this.handleAnswer}
                                                          id={element.id}
                                                          key={element.id} />;
@@ -59,6 +62,7 @@ export class Section extends React.Component {
                     obj = <ElementMultiChoice text={element.text}
                                               correct={element.correct}
                                               incorrect={element.incorrect}
+                                              answer={answer}
                                               onAnswer={this.handleAnswer}
                                               id={element.id}
                                               key={element.id} />;
