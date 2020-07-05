@@ -14,7 +14,7 @@ export class ElementMathInput extends React.Component {
     render() {
         return (<div className="math-input-element"
                      key={this.props.name + "-innder-div1"}>
-                         <RichLabel key={this.props.name + "-label"}>
+                         <RichLabel>
                              {this.props.text}
                          </RichLabel>
                          <input type="hidden"

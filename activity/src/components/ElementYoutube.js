@@ -21,8 +21,7 @@ export class ElementYoutube extends React.Component {
                                  frameBorder="0"
                                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                  allowFullScreen={true}
-                                 title="video"
-                                 key={this.props.name}></iframe>
+                                 title="video"></iframe>
                 </div>);
     }
 }

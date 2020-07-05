@@ -3,16 +3,26 @@ import { RichLabel } from './RichLabel';
 
 
 export class MultiChoiceAnswer extends React.Component {
+    constructor(props) {
+        super(props);
+        //
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange() {
+        console.log('MultiChoiceAnswer::handleSelect()')
+        this.props.onAnswer(this.props.id)
+    }
+
     render() {
-        const radioId = this.props.name + '-radio';
-        return (<div key={this.props.name + "-inner-div"}>
+        return (<div id={this.props.id}
+                     key={this.props.id + "-D"}>
                     <input type="radio"
                            name={this.props.inputName}
-                           value={this.props.name}
-                           id={radioId}
-                           key={radioId} />
-                    <RichLabel htmlFor={radioId}
-                               key={this.props.name + "-label"}>
+                           onChange={this.handleChange}
+                           id={this.props.id + "-R"}
+                           key={this.props.id + "-R"} />
+                    <RichLabel htmlFor={this.props.id + "-R"}>
                                    {this.props.text}
                     </RichLabel>
                 </div>);

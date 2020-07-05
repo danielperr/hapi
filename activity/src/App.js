@@ -10,21 +10,37 @@ document.addEventListener('keypress', function (e) {
 });
 
 export class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.answers = {};
+        //
+        this.handleAnswer = this.handleAnswer.bind(this);
+    }
+
+    handleAnswer(sectionAnswers) {
+        console.log('App::handleAnswer()')
+        Object.assign(this.answers, sectionAnswers);
+        console.log(this.answers)
+    }
+
     render() {
         const sections = [];
-        this.props.data.sections.forEach((section, index) => {
-            const sectionName = 'section' + index;
-            sections.push(React.createElement(Section, {
-                header: section.header,
-                elements: section.elements,
-                name: sectionName,
-                key: sectionName
-            }));
+        this.props.structure.sections.forEach((section) => {
+            sections.push(<Section header={section.header}
+                                   elements={section.elements}
+                                   onAnswer={this.handleAnswer}
+                                   id={section.id}
+                                   key={section.id} />);
         });
-        return React.createElement("div", null, React.createElement("form", null, React.createElement(MainHeader, {
-            text: this.props.data.mainHeader
-        }), React.createElement("div", {
-            className: "container"
-        }, sections)));
+        return (<div>
+                    <form>
+                        <center>
+                            <MainHeader text={this.props.structure.mainHeader} />
+                            <div className="container">
+                                {sections}
+                            </div>
+                        </center>
+                    </form>
+                </div>);
     }
 }

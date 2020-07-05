@@ -3,15 +3,26 @@ import { RichLabel } from './RichLabel';
 
 
 export class ElementSingleLineTextInput extends React.Component {
+    constructor(props) {
+        super(props);
+        //
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(e) {
+        this.props.onAnswer(this.props.id, e.target.value)
+    }
+
     render() {
         return (<div className="text-input-element"
-                     tag={this.props.name + "-innder-div"}>
-                         <RichLabel name={this.props.name + "-label"}>
+                     key={this.props.id + "-D"}>
+                         <RichLabel>
                              {this.props.text}
                          </RichLabel>
                          <input type="text"
-                                name={this.props.name}
-                                tag={this.props.name + "-input"} />
+                                onChange={this.handleChange}
+                                id={this.props.id}
+                                key={this.props.id + "-input"} />
                 </div>);
     }
 }

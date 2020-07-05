@@ -13,10 +13,10 @@ export class RichLabel extends React.Component {
         console.log(this.md.render(this.props.children));
     }
     render() {
-        return <label className={this.props.className}
-                      key={this.props.name}
+        return (<label className={this.props.className}
                       htmlFor={this.props.htmlFor}
-                      dangerouslySetInnerHTML={{__html: this.md.render(this.props.children)}}></label>
+                      dangerouslySetInnerHTML={{__html: this.md.render(this.props.children)}}>
+               </label>);
                       // Setting HTML this way to allow rich text formatting and links
                       // FIXME (xss vulnerability): make use of formatting components?
     }

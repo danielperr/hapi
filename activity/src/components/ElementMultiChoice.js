@@ -4,33 +4,41 @@ import { RichLabel } from './RichLabel';
 
 
 export class ElementMultiChoice extends React.Component {
+    constructor(props) {
+        super(props);
+        //
+        this.handleAnswer = this.handleAnswer.bind(this);
+    }
+
+    handleAnswer(answer) {
+        console.log('ElementMultiChoice::handleAnswer()')
+        this.props.onAnswer(this.props.id, answer);
+    }
+
     render() {
         const answers = [];
-        const name = this.props.name + '-answer';
-        let index = 0;
         this.props.correct.forEach(answer => {
-            answers.push( /*#__PURE__*/React.createElement(MultiChoiceAnswer, {
-                text: answer,
-                inputName: this.props.name,
-                name: name + index,
-                key: name + index
-            }));
-            index++;
+            answers.push(<MultiChoiceAnswer text={answer.text}
+                                            inputName={this.props.id}
+                                            onAnswer={this.handleAnswer}
+                                            id={answer.id}
+                                            key={answer.id} />)
         });
         this.props.incorrect.forEach(answer => {
-            answers.push( /*#__PURE__*/React.createElement(MultiChoiceAnswer, {
-                text: answer,
-                inputName: this.props.name,
-                name: name + index,
-                key: name + index
-            }));
-            index++;
+            answers.push(<MultiChoiceAnswer text={answer.text}
+                                            inputName={this.props.id}
+                                            onAnswer={this.handleAnswer}
+                                            id={answer.id}
+                                            key={answer.id} />)
         });
         return (<div className="multi-choice-element"
-                     key={this.props.name + "-inner-div"}>
-                         <RichLabel name={this.props.name + "-label"}>{this.props.text}</RichLabel>
+                     id={this.props.id}
+                     key={this.props.id + "-D"}>
+                         <RichLabel>
+                             {this.props.text}
+                         </RichLabel>
                          <div className="answers"
-                              key={this.props.name + "-answers-div"}>
+                              key={this.props.id + "-AD"}>
                                   {answers}
                          </div>
                 </div>);
