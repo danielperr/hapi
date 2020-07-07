@@ -1,6 +1,7 @@
 import React from 'react';
 import { MultiChoiceAnswer } from './MultiChoiceAnswer';
 import { RichLabel } from './RichLabel';
+import { shuffle } from '../utils'
 
 
 export class ElementMultiChoice extends React.Component {
@@ -16,17 +17,10 @@ export class ElementMultiChoice extends React.Component {
     }
 
     render() {
-        const answers = [];
-        this.props.correct.forEach(answer => {
-            answers.push(<MultiChoiceAnswer text={answer.text}
-                                            inputName={this.props.id}
-                                            checked={(this.props.answer && answer.id == this.props.answer)}
-                                            onAnswer={this.handleAnswer}
-                                            id={answer.id}
-                                            key={answer.id} />)
-        });
-        this.props.incorrect.forEach(answer => {
-            answers.push(<MultiChoiceAnswer text={answer.text}
+        const answers = shuffle([...this.props.correct, ...this.props.incorrect]);
+        const answerComponents = [];
+        answers.forEach(answer => {
+            answerComponents.push(<MultiChoiceAnswer text={answer.text}
                                             inputName={this.props.id}
                                             checked={(this.props.answer && answer.id == this.props.answer)}
                                             onAnswer={this.handleAnswer}
@@ -41,7 +35,7 @@ export class ElementMultiChoice extends React.Component {
                          </RichLabel>
                          <div className="answers"
                               key={this.props.id + "-AD"}>
-                                  {answers}
+                                  {answerComponents}
                          </div>
                 </div>);
     }
