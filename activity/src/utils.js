@@ -1,4 +1,5 @@
-function shuffle(a) {
+
+export function shuffle(a) {
     var j, x, i;
 
     for (i = a.length - 1; i > 0; i--) {
@@ -9,4 +10,4 @@ function shuffle(a) {
     }
 
     return a;
-  }
+}

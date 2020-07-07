@@ -84,6 +84,10 @@ label {
   font-size: 16px;
 }
 
+.markdown-image {
+  width: 50%;
+}
+
 .clickable {
   cursor: pointer;
 }

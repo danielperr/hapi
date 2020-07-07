@@ -6,7 +6,7 @@ export class ElementMultiLineTextInput extends React.Component {
     constructor(props) {
         super(props);
         this.answer = "";
-        /* */
+        //
         this.handleChange = this.handleChange.bind(this);
     }
 

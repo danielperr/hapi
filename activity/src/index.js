@@ -6,28 +6,29 @@ import { App } from './App';
 const structure = {
     "serialNumber": "bJbiiGDGd29p7xJPI4xk",
     "mainHeader": "תרגול - הדמית תנועה",
-    "sections": [{
+    "sections": [
+      {
         "header": "צפו בסרטון הבא",
         "id": "cwcXgOAKpC",
         "elements": [{
             "type": "youtube",
-            "youtubeId": "E7wJTI-1dvQ",
+            "youtubeId": "HPpvh1-ZeLQ",
             "id": "Xg77GHD91r"
         }, {
             "type": "single-line-text-input",
             "text": "כתבו במילים שלכם, כיצד גורמים לאשליה שעיגול נע על המסך?",
             "id": "HHbrsIPQD4"
         }]
-    }, {
+      }, {
         "header": "הקוד הראשון",
         "id": "9Icl3Pg1Jn",
         "elements": [{
             "type": "label",
-            "text": "פתחו דף ifigures חדש ע״י לחיצה על הקישור הבא [empty ifigure](https://www.google.com)\n\nהשתמשו בחלון שלפניכם, העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו.",
+            "text": "פתחו דף ifigures חדש ע״י לחיצה על הקישור הבא [empty ifigure](https://webhome.weizmann.ac.il/home/ifigures/ifigure.ifig.html)\n\nהשתמשו בחלון שלפניכם, העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו.",
             "id": "KjaUH3GiYA"
         }, {
             "type": "image",
-            "src": "https://image.shutterstock.com/image-photo/colorful-flower-on-dark-tropical-260nw-721703848.jpg",
+            "src": "assets/img/1.png",
             "id": "RdF0Nw2lHr"
         }, {
             "type": "multi-choice",
@@ -60,7 +61,7 @@ const structure = {
                 "id": "Xqf0Qri5VA"
             }]
         }]
-    }, {
+      }, {
         "header": "הקוד השני",
         "id": "g1sJYxF4Z1",
         "elements": [{
@@ -69,7 +70,7 @@ const structure = {
             "id": "oOnvOgSxKn"
         }, {
             "type": "image",
-            "src": "https://www.bigstockphoto.com/images/homepage/module-6.jpg",
+            "src": "assets/img/2.png",
             "id": "HF1JBwk7x1"
         }, {
             "type": "multi-choice",
@@ -101,12 +102,140 @@ const structure = {
                 "text": "להכריז שהולכים להיות מוגדרים משתנים בהמשך.",
                 "id": "zpbcJlh9GC"
             }]
+            
+        }, {
+            "type": "multi-choice",
+            "text": "בתוך הקוד השני, מחקו את השורה עם הפקודה clf. הריצו שוב את הקוד הראשון ואח״כ שוב ושוב את הקוד השני. מה קורה?",
+            "id": "FX2jjGlI2a",
+            "correct": [{
+                "text": "נוספים עוד ועוד עיגולים חדשים במקומות חדשים",
+                "id": "C63WHkRl7i"
+            }],
+            "incorrect": [{
+                "text": "העיגול לא זז",
+                "id": "92PximQppA"
+            }, {
+                "text": "יש הודעת שגיאה",
+                "id": "z1bcJlw9GC"
+            }]
         }, {
             "type": "multi-line-text-input",
-            "text": "תכתבו הרבה שורות פה",
+            "text": "תוכלו להסביר למה?",
             "id": "IwHcswgPUb"
+        }, {
+            "type": "label",
+            "text": "החזירו את הפקודה ()clf לשורה הראשונה. הריצו את התא הראשון ואת התא השני כדי לראות שהכל עובד כשורה. רשמו 'x' באחד השדות בצד ימין של המסך (כמו בתמונה המצורפת, המספר יהיה שונה).",
+            "id": "oO156gSxKn"
+        }, {
+            "type": "image",
+            "src": "assets/img/3.png",
+            "id": "HF1Jawy7zv"
+        }, {
+          "type": "multi-choice",
+          "text": "הריצו את התא הראשון (מצד שמאל). מה ערכו של המשתנה x? (כפי שמופיע בצד ימין)",
+          "id": "FX212GlI2a",
+          "correct": [{
+              "text": "0",
+              "id": "C6312mRl7i"
+          }],
+          "incorrect": [{
+              "text": "4.4",
+              "id": "38PximQppA"
+          }, {
+              "text": "0.2",
+              "id": "z1bc65z9GC"
+          }]
+      }, {
+        "type": "multi-choice",
+        "text": "הריצו את התא השני פעמיים. מה ערכו כעת של המשתנה x?",
+        "id": "FX2awzlI2a",
+        "correct": [{
+            "text": "0.4",
+            "id": "C62Wtkxl7i"
+        }],
+        "incorrect": [{
+            "text": "0.2",
+            "id": "71wxemsppA"
+        }, {
+            "text": "0",
+            "id": "41bhJlf9aC"
         }]
-    }]
+        },{
+          "type": "multi-line-text-input",
+          "text": "הסבירו מדוע:",
+          "id": "Iw1cs4gP2b"
+      }]
+      }, {
+        "header": "הלולאה המרכזית",
+        "id": "g1s5yyF4Z1",
+        "elements": [{
+            "type": "label",
+            "text": "כעת נעבור לתא שמתחת ל-Repeat every 0.01 sec \n\n רשמו בתוך התא את השורה:\n\n`x+=0.02`",
+            "id": "oOnvOgSxKn"
+        }, {
+            "type": "image",
+            "src": "assets/img/4.png",
+            "id": "HF1fx157x1"
+        }, {
+            "type": "multi-choice",
+            "text": "הריצו את התא, מה קורה?",
+            "id": "06T123c1Hf",
+            "correct": [{
+                "text": "הערך של המשתנה x משתנה ברציפות",
+                "id": "wduxxUe6tw"
+            }],
+            "incorrect": [{
+                "text": "העיגול זז",
+                "id": "URLWrW0cd3"
+            }, {
+                "text": "הערך של המשתנה x משתנה ברציפות והעיגול זז",
+                "id": "Hfv2EYOs5s"
+            }]
+        },{
+          "type": "label",
+          "text": "כעת שנו את קצב החזרה ל 0.5 שניות:",
+          "id": "aOAvOgSxKn"
+        }, {
+          "type": "image",
+          "src": "assets/img/5.png",
+          "id": "HF1fx152x1"
+        }, {
+          "type": "label",
+          "text": "עצרו את הריצה (לחיצה על כפתור העצירה עם הריבוע) והריצו שוב. כעת החזרה קוראת כל 0.5 שניות. כל מה שנכתוב בתוך התא יחזור שוב ושוב בהפרשי זמן כפי שנקבע בכותרת.\n\nנסו להמנע משימוש בקריאה לקוד ()code2 כפי שהיה בסרטון.",
+          "id": "vBfvsg24Kn"
+        }, {
+            "type": "multi-choice",
+            "text": "אילו מהקודים הבאים גורם לתנועת העיגול כפי שבסרטון?",
+            "id": "FX2duGyIva",
+            "correct": [{
+                "text": "א. ו- ב. אך לא ג",
+                "id": "CrY12rtl7i"
+            }],
+            "incorrect": [{
+                "text": "![תמונה א](assets/img/6.png)",
+                "id": "12oOiEQppA"
+            }, {
+                "text": "![תמונה ב](assets/img/7.png)",
+                "id": "zp5c62h9GC"
+            }, {
+              "text": "![תמונה ג](assets/img/8.png)",
+                "id": "kjac6vh9GC"
+            }]
+        },{
+          "type": "multi-line-text-input",
+          "text": "מדוע לדעתכם?",
+          "id": "Iwsci4gu2b"
+      }]
+      }, {
+        "header": "אתגרים",
+        "id": "g1s8tyF4Z1",
+        "elements": [{
+          "type": "label",
+          "text": "1.	נסו לגרום לעיגול לנוע באותה מהירות  על המסך אך בצורה חלקה\n1.	נסו לגרום לעיגול לנוע שמאלה\n1.	נסו לגרום לעיגול לנוע למעלה או למטה\n1.	צרו תרשים עקבות. תוכלו להשתמש בפקודה Point במקום Circle.",
+          "id": "o47vOgSxKn"
+        }]
+      }
+    ]
   };
 
 ReactDOM.render(
