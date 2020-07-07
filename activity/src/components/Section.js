@@ -62,6 +62,7 @@ export class Section extends React.Component {
                     obj = <ElementMultiChoice text={element.text}
                                               correct={element.correct}
                                               incorrect={element.incorrect}
+                                              shuffle={element.shuffle}
                                               answer={answer}
                                               onAnswer={this.handleAnswer}
                                               id={element.id}

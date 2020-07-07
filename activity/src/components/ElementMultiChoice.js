@@ -17,7 +17,13 @@ export class ElementMultiChoice extends React.Component {
     }
 
     render() {
-        const answers = shuffle([...this.props.correct, ...this.props.incorrect]);
+        let answers = [...this.props.correct, ...this.props.incorrect];
+        // TODO: take care of default shuffling
+        if (typeof this.props.shuffle !== "undefined") {
+            answers = this.props.shuffle ? shuffle(answers) : answers;
+        } else {
+            answers = shuffle(answers);
+        }
         const answerComponents = [];
         answers.forEach(answer => {
             answerComponents.push(<MultiChoiceAnswer text={answer.text}
