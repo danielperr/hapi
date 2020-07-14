@@ -10,7 +10,7 @@ export class RichLabel extends React.Component {
       xhtmlOut: false, // Use '/' to close single tags (<br />)
       breaks: false, // Convert '\n' in paragraphs into <br>
     });
-    console.log(this.md.render(this.props.children));
+
     const imageRule = (tokens, idx, _options, _env) => {
       return ReactDOMServer.renderToString(
         <img src={tokens[idx].src} className="markdown-image" />

@@ -11,7 +11,6 @@ export class ElementMultiChoice extends React.Component {
     }
 
     handleAnswer(answer) {
-        console.log('ElementMultiChoice::handleAnswer()')
         this.props.onAnswer(this.props.id, answer);
     }
 
