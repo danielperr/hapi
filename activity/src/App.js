@@ -85,8 +85,6 @@ export class App extends React.Component {
                             <div className="container">
                                 {sections}
                             </div>
-
-                            <ErrorRadios>
                             </ThemeProvider>
                         </center>
                     </form>
