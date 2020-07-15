@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(3),
   },
+  formHelperText: {
+    margin: theme.spacing(1, 1, 2, 0),
+    textAlign: "right",
+  },
   button: {
     margin: theme.spacing(1, 1, 0, 0),
   },
@@ -68,15 +72,15 @@ export function ElementMultiChoice(props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <FormControl component="fieldset" error={error} className={classes.formControl}>
-        <FormLabel component="legend">{props.text}</FormLabel>
-        <RadioGroup aria-label="quiz" name="quiz" value={value} onChange={handleRadioChange}>
-          {answerDOMs}
+      <FormControl component="fieldset" error={ error } className={ classes.formControl }>
+        <FormLabel component="legend">{ props.text }</FormLabel>
+        <RadioGroup aria-label="quiz" name="quiz" value={ value } onChange={ handleRadioChange }>
+          { answerDOMs }
         </RadioGroup>
-        <FormHelperText>
-          {helperText}
+        <FormHelperText margin="normal" fullWidth className={ classes.formHelperText }>
+          { helperText }
         </FormHelperText>
-        <Button type="submit" variant="outlined" color="primary" className={classes.button}>
+        <Button type="submit" variant="outlined" color="primary" className={ classes.button }>
           Check Answer
         </Button>
       </FormControl>

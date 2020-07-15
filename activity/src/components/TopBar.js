@@ -9,6 +9,7 @@ import IconMenu from '@material-ui/icons/Menu';
 import IconMenuBook from '@material-ui/icons/MenuBook';
 import IconIfigure from '@material-ui/icons/CastForEducation';
 import IconRxitToApp from '@material-ui/icons/ExitToApp';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     linearProgressBar: {
-        color: theme.palette.secondary.main,
+      color: theme.palette.secondary.main,
     },
   }));
   
@@ -46,7 +47,10 @@ const useStyles = makeStyles((theme) => ({
             <Typography variant="h6" className={ classes.title }>
              הדמיית תנועה פעילות ראשונה
             </Typography>
-
+            <Typography edge="end" variant="h6">
+              <InsertEmoticonIcon />
+              Hapi 
+            </Typography>
           </Toolbar>
           <LinearProgress color="secondary" variant="determinate" value={props.progress} />
         </AppBar>
