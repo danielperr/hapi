@@ -26,46 +26,42 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.secondary.main,
     },
   }));
-
+  
+  export function TopBar(props) {
+    const theme = useTheme();
+    const classes = useStyles(theme);
     
-  class TopBar extends React.Component {
+    console.log(theme);
 
-    constructor(props) 
-    {
-        super(props);
-    }
- 
-    render () {
-        const theme = useTheme();
-        const classes = useStyles(theme);
+    return (
+      <div className={classes.root}>
+        <AppBar position="fixed">
+          <Toolbar>
+            <IconButton edge="start" className={ classes.menuButton } color="inherit" aria-label="menu">
+              <IconMenu />
+            </IconButton>
+            <IconButton edge="start" className={ classes.menuBook } color="inherit" aria-label="menu">
+              <IconMenuBook />
+            </IconButton>
+            <Typography variant="h6" className={ classes.title }>
+             הדמיית תנועה פעילות ראשונה
+            </Typography>
 
-        return (
-        <div className={classes.root}>
-            <AppBar position="fixed">
-            <Toolbar>
-                <IconButton edge="start" className={ classes.menuButton } color="inherit" aria-label="menu">
-                <IconMenu />
-                </IconButton>
-                <IconButton edge="start" className={ classes.menuBook } color="inherit" aria-label="menu">
-                <IconMenuBook />
-                </IconButton>
-                <Typography variant="h6" className={ classes.title }>
-                הדמיית תנועה פעילות ראשונה
-                </Typography>
-
-                <Button edge="end" className={ classes.menuBook } color="inherit" aria-label="menu" onclick={ window.open('https://webhome.weizmann.ac.il/home/ifigures/ifigure.ifig.html','_blank') } >
-                    <Typography edge="end" variant="h6">
-                    New Empty IFigure 
-                    </Typography>
-                <IconIfigure />
-                </Button>
-            </Toolbar>
-            <LinearProgress color="secondary" variant="determinate" value={this.props.progress} />
-            </AppBar>
-        </div>
-        );
-    }
+          </Toolbar>
+          <LinearProgress color="secondary" variant="determinate" value={props.progress} />
+        </AppBar>
+      </div>
+    );
   }
 
-  export default withStyles(styles, { withTheme: true })(TopBar);
+
+  /*
+              
+            <Button edge="end" className={ classes.menuBook } color="inherit" aria-label="menu" onclick={ window.open('https://webhome.weizmann.ac.il/home/ifigures/ifigure.ifig.html','_blank') } >
+                <Typography edge="end" variant="h6">
+                New Empty IFigure 
+                </Typography>
+              <IconIfigure />
+            </Button>
+            */
   

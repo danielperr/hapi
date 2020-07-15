@@ -7,6 +7,7 @@ import { indigo, purple, lightGreen, red, blue, green } from '@material-ui/core/
 import { pink } from '@material-ui/core/colors';
 
 import { createMuiTheme } from '@material-ui/core/styles';
+import ErrorRadios from './components/demo';
 
 const theme = createMuiTheme({
     palette: {
@@ -84,6 +85,8 @@ export class App extends React.Component {
                             <div className="container">
                                 {sections}
                             </div>
+
+                            <ErrorRadios>
                             </ThemeProvider>
                         </center>
                     </form>
