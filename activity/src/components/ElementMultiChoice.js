@@ -77,6 +77,7 @@ export function ElementMultiChoice(props) {
     <form onSubmit={handleSubmit}>
       <FormControl component="fieldset" error={ error } className={ classes.formControl }>
         <FormLabel component="legend">{ props.text }</FormLabel>
+        <br />
         <RadioGroup aria-label="quiz" name="quiz" value={ value } onChange={ handleRadioChange }>
           { answerDOMs }
         </RadioGroup>
