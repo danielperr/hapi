@@ -18,14 +18,20 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      marginLeft: theme.spacing(2),
     },
     title: {
       flexGrow: 1,
     },
-    linearProgressBar: {
-      color: theme.palette.secondary.main,
+    colorPrimary: {
+      background: '#E1BEE7',
     },
+    barColorPrimary: {
+      background: '#AB47BC',
+    },
+    logo: {
+      color: theme.palette.secondary.light,
+    }
   }));
   
   export function TopBar(props) {
@@ -41,18 +47,18 @@ const useStyles = makeStyles((theme) => ({
             <IconButton edge="start" className={ classes.menuButton } color="inherit" aria-label="menu">
               <IconMenu />
             </IconButton>
-            <IconButton edge="start" className={ classes.menuBook } color="inherit" aria-label="menu">
+            {/* <IconButton edge="start" className={ classes.menuBook } color="inherit" aria-label="menu">
               <IconMenuBook />
-            </IconButton>
+            </IconButton> */}
             <Typography variant="h6" className={ classes.title }>
              הדמיית תנועה פעילות ראשונה
             </Typography>
-            <Typography edge="end" variant="h6">
+            <Typography edge="end" variant="h6" className={ classes.logo }>
               <InsertEmoticonIcon />
-              Hapi 
+              Hapi
             </Typography>
           </Toolbar>
-          <LinearProgress color="secondary" variant="determinate" value={props.progress} />
+          <LinearProgress color="primary" classes={{colorPrimary: classes.colorPrimary, barColorPrimary: classes.barColorPrimary}} variant="determinate" value={props.progress} />
         </AppBar>
       </div>
     );

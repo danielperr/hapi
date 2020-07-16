@@ -1,34 +1,27 @@
 import React from 'react';
-import { Section } from './components/Section'
-import { MainHeader } from './components/MainHeader'
-import { TopBar} from './components/TopBar'
+import Grid from '@material-ui/core/Grid'
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { indigo, purple, green, yellow, grey} from '@material-ui/core/colors';
+import { CssBaseline, Toolbar, Container } from '@material-ui/core';
+import { Section } from './components/Section'
+import { MainHeader } from './components/MainHeader'
+import { TopBar} from './components/TopBar'
 
 
 const theme = createMuiTheme({
     palette: {
         primary: {
-            // light: will be calculated from palette.primary.main,
             main: "#7b1fa2",
-            // dark: will be calculated from palette.primary.main,
-            // contrastText: will be calculated to contrast with palette.primary.main
         },
         secondary: {
-            // light: will be calculated from palette.primary.main,
             main: "#ffca28",
-            // dark: will be calculated from palette.secondary.main,
             contrastText: '#ffcc00',
         },
-        // Used by `getContrastText()` to maximize the contrast between
-        // the background and the text.
         contrastThreshold: 3,
-        // Used by the functions below to shift a color's luminance by approximately
-        // two indexes within its tonal palette.
-        // E.g., shift from Red 500 to Red 300 or Red 700.
         tonalOffset: 0.2,
     },
+    spacing: 8,
 });
 
 
@@ -43,13 +36,27 @@ export class App extends React.Component {
     constructor(props) {
         super(props);
         this.answers = {};
+        this.state = { progress: 0 };
         //
+        this.handleScroll = this.handleScroll.bind(this);
         this.handleAnswer = this.handleAnswer.bind(this);
         this.importAnswers = this.importAnswers.bind(this);
     }
     
     componentDidMount() {
         this.importAnswers();
+        window.addEventListener('scroll', this.handleScroll);
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll() {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = Math.round(100 * winScroll / height);
+        this.setState({ progress: scrolled, });
     }
 
     handleAnswer(sectionAnswers) {
@@ -74,18 +81,19 @@ export class App extends React.Component {
                                    id={section.id}
                                    key={section.id} />);
         });
-        return (<div>
-                    <form>
-                        <center>
-                            <ThemeProvider theme={ theme }>
-                            <TopBar progress={66}/>
-                            <MainHeader text={this.props.structure.mainHeader} />
-                            <div className="container">
-                                {sections}
-                            </div>
-                            </ThemeProvider>
-                        </center>
-                    </form>
-                </div>);
+        return (<React.Fragment>
+                    <CssBaseline />
+                    <ThemeProvider theme={ theme }>
+                        <TopBar progress={this.state.progress}/>
+                        <Toolbar />
+                        <Container maxWidth="md">
+                            <Grid spacing={4}
+                                  direction="column"
+                                  alignItems="stretch">
+                                      {sections}
+                            </Grid>
+                        </Container>
+                    </ThemeProvider>
+                </React.Fragment>);
     }
 }
