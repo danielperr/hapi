@@ -40,15 +40,8 @@ function download(filename, text) {
 
 function SaveAs(answersString) {
     // Get the code of this file
+    document.getElementById("mybestinput").value = answersString;
     let thisFile = document.documentElement.innerHTML;
-
-    // Find the input value and put the current answers variable into it.
-    const startIndex = thisFile.indexOf("mybestinput");
-    const startAnswerField = thisFile.indexOf("\"{", startIndex);
-    const endAnswerField = thisFile.indexOf("}\"", startIndex);
-
-    thisFile.replace(thisFile.substring(startAnswerField, endAnswerField + 2), answersString);
-
     let filename = prompt('Save as:');
     download(filename + ".hapi.html", thisFile);
 }
@@ -64,9 +57,12 @@ export class App extends React.Component {
     constructor(props) {
         super(props);
         // Get the saved answers on this file
-        this.answers = JSON.parse(document.getElementById("mybestinput").value) || {};
+        this.answers = JSON.parse(document.getElementById("mybestinput").value || "{}");
         console.log(this.answers);
-        this.state = { progress: 0 };
+        this.state = {
+            progress: 0,
+            topBarElevation: 0,
+        };
         //
         this.handleScroll = this.handleScroll.bind(this);
         this.handleAnswer = this.handleAnswer.bind(this);
@@ -89,7 +85,8 @@ export class App extends React.Component {
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = Math.round(100 * winScroll / height);
-        this.setState({ progress: scrolled, });
+        // this.setState({ progress: scrolled, });
+        this.setState({ topBarElevation: scrolled });
     }
 
     handleAnswer(sectionAnswers) {
@@ -117,13 +114,11 @@ export class App extends React.Component {
         return (<React.Fragment>
                     <CssBaseline />
                     <ThemeProvider theme={ theme }>
-                        <TopBar progress={this.state.progress}/>
+                        <TopBar progress={this.state.progress} elevation={this.state.topBarElevation} />
                         <Toolbar />
                         <Container maxWidth="md">
-                            <Grid spacing={4}
-                                  direction="column"
-                                  alignItems="stretch">
-                                      {sections}
+                            <Grid>
+                                {sections}
                             </Grid>
                         </Container>
                     </ThemeProvider>

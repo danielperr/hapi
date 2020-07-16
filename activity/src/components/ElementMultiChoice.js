@@ -29,11 +29,14 @@ const useStyles = makeStyles((theme) => ({
 
 export function ElementMultiChoice(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState('');
   const [error, setError] = React.useState(false);
   const [helperText, setHelperText] = React.useState(' ');
   const [answers, setAnswers] = React.useState([...props.correct, ...props.incorrect]);
+  let [value, setValue] = React.useState('');
   let answerDOMs = [];
+
+  // This is very stupid but it works.
+  value = props.answer;
 
   useEffect(() => {
     setAnswers(shuffle(answers));
@@ -41,9 +44,9 @@ export function ElementMultiChoice(props) {
 
   answers.forEach(answer => {
     answerDOMs.push(
-      <FormControlLabel
+      <FormControlLabel key={answer.id}
         value={answer.id}
-        control={<Radio checked={(props.answer && answer.id == props.answer)} id={answer.id}/>}
+        control={<Radio checked={!!(props.answer && answer.id == props.answer)} id={answer.id}/>}
         label={<RichLabel htmlFor={answer.id} className={classes.richLabel}>{answer.text}</RichLabel>}
       />
     )
@@ -81,7 +84,7 @@ export function ElementMultiChoice(props) {
         <RadioGroup aria-label="quiz" name="quiz" value={ value } onChange={ handleRadioChange }>
           { answerDOMs }
         </RadioGroup>
-        <FormHelperText margin="normal" fullWidth className={ classes.formHelperText }>
+        <FormHelperText fullWidth className={ classes.formHelperText }>
           { helperText }
         </FormHelperText>
         <Button type="submit" variant="outlined" color="primary" className={ classes.button }>

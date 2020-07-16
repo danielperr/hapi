@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     
     return (
       <div className={classes.root}>
-        <AppBar position="fixed">
+        <AppBar position="fixed" elevation={props.elevation ? 4 : 0}>
           <Toolbar>
             <IconButton edge="start" className={ classes.menuButton } color="inherit" aria-label="menu">
               <IconMenu />
