@@ -31,7 +31,7 @@ export function ElementMultiChoice(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState(false);
-  const [helperText, setHelperText] = React.useState('Choose wisely');
+  const [helperText, setHelperText] = React.useState(' ');
   const [answers, setAnswers] = React.useState([...props.correct, ...props.incorrect]);
   let answerDOMs = [];
 
@@ -39,7 +39,6 @@ export function ElementMultiChoice(props) {
     setAnswers(shuffle(answers));
   }, [])
 
-  console.log('building answers')
   answers.forEach(answer => {
     answerDOMs.push(
       <FormControlLabel

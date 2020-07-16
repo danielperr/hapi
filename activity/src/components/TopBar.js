@@ -38,8 +38,6 @@ const useStyles = makeStyles((theme) => ({
     const theme = useTheme();
     const classes = useStyles(theme);
     
-    console.log(theme);
-
     return (
       <div className={classes.root}>
         <AppBar position="fixed">

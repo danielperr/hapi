@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { indigo, purple, green, yellow, grey} from '@material-ui/core/colors';
-import { CssBaseline, Toolbar, Container } from '@material-ui/core';
+import { CssBaseline, Toolbar, Container, Button } from '@material-ui/core';
 import { Section } from './components/Section'
 import { MainHeader } from './components/MainHeader'
 import { TopBar} from './components/TopBar'
@@ -25,6 +25,34 @@ const theme = createMuiTheme({
 });
 
 
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
+}
+
+function SaveAs(answersString) {
+    // Get the code of this file
+    let thisFile = document.documentElement.innerHTML;
+
+    // Find the input value and put the current answers variable into it.
+    const startIndex = thisFile.indexOf("mybestinput");
+    const startAnswerField = thisFile.indexOf("\"{", startIndex);
+    const endAnswerField = thisFile.indexOf("}\"", startIndex);
+
+    thisFile.replace(thisFile.substring(startAnswerField, endAnswerField + 2), answersString);
+
+    let filename = prompt('Save as:');
+    download(filename + ".hapi.html", thisFile);
+}
+
 document.addEventListener('keypress', function (e) {
     if (e.keyCode === 13 || e.which === 13) {
         e.preventDefault();
@@ -35,7 +63,9 @@ document.addEventListener('keypress', function (e) {
 export class App extends React.Component {
     constructor(props) {
         super(props);
-        this.answers = {};
+        // Get the saved answers on this file
+        this.answers = JSON.parse(document.getElementById("mybestinput").value) || {};
+        console.log(this.answers);
         this.state = { progress: 0 };
         //
         this.handleScroll = this.handleScroll.bind(this);
@@ -44,7 +74,10 @@ export class App extends React.Component {
     }
     
     componentDidMount() {
-        this.importAnswers();
+        if (!Object.keys(this.answers).length) {
+            // Get the saved answers from local storage
+            this.importAnswers();
+        }
         window.addEventListener('scroll', this.handleScroll);
     }
     
@@ -94,6 +127,7 @@ export class App extends React.Component {
                             </Grid>
                         </Container>
                     </ThemeProvider>
+                    <Button onClick={ () => { SaveAs(JSON.stringify(this.answers)) } }>Download As</Button>
                 </React.Fragment>);
     }
 }

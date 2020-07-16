@@ -236,7 +236,7 @@ const structure = {
         }]
       }
     ]
-  };
+};
 
 ReactDOM.render(
   <React.StrictMode>
