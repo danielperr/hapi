@@ -8,12 +8,16 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import { shuffle } from '../utils';
 import { RichLabel } from './RichLabel';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(3),
+  },
+  formControlLabel: {
+    margin: -theme.spacing(0.25),
   },
   formHelperText: {
     margin: theme.spacing(1, 1, 2, 0),
@@ -45,10 +49,12 @@ export function ElementMultiChoice(props) {
 
   answers.forEach(answer => {
     answerDOMs.push(
-      <FormControlLabel key={answer.id}
+      <FormControlLabel
         value={answer.id}
+        className={classes.formControlLabel}
         control={<Radio checked={!!(props.answer && answer.id == props.answer)} id={answer.id}/>}
         label={<RichLabel htmlFor={answer.id} className={classes.richLabel}>{answer.text}</RichLabel>}
+        key={answer.id}
       />
     )
   });
