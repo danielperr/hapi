@@ -1,5 +1,5 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid'
+import Grid from '@material-ui/core/Grid';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { indigo, purple, green, yellow, grey} from '@material-ui/core/colors';
