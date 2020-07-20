@@ -93,7 +93,7 @@ export class App extends React.Component {
         Object.assign(this.answers, sectionAnswers);
         this.forceUpdate();
         localStorage.setItem(this.props.structure.serialNumber, JSON.stringify(this.answers));
-        console.log(this.answers)
+        console.log(this.answers);
     }
 
     importAnswers() {

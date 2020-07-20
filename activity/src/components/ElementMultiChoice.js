@@ -32,6 +32,7 @@ export function ElementMultiChoice(props) {
   const [error, setError] = React.useState(false);
   const [helperText, setHelperText] = React.useState(' ');
   const [answers, setAnswers] = React.useState([...props.correct, ...props.incorrect]);
+  
   let [value, setValue] = React.useState('');
   let answerDOMs = [];
 
@@ -84,7 +85,7 @@ export function ElementMultiChoice(props) {
         <RadioGroup aria-label="quiz" name="quiz" value={ value } onChange={ handleRadioChange }>
           { answerDOMs }
         </RadioGroup>
-        <FormHelperText fullWidth className={ classes.formHelperText }>
+        <FormHelperText className={ classes.formHelperText }>
           { helperText }
         </FormHelperText>
         <Button type="submit" variant="outlined" color="primary" className={ classes.button }>
@@ -95,59 +96,3 @@ export function ElementMultiChoice(props) {
   );
 }
 
-
-
-
-
-/* <ElementMultiChoice text={element.text}
-                       correct={element.correct}
-                       incorrect={element.incorrect}
-                       answer={answer}
-                       onAnswer={this.handleAnswer}
-                       id={element.id}
-                       key={element.id} />; */
-// import React from 'react';
-// import { MultiChoiceAnswer } from './MultiChoiceAnswer';
-// import { RichLabel } from './RichLabel';
-// import { shuffle } from '../utils'
-// import IconMenuBook from '@material-ui/icons/MenuBook';
-
-// export class ElementMultiChoice extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         //
-//         this.handleAnswer = this.handleAnswer.bind(this);
-
-//         this.elementAnswers = [...this.props.correct, ...this.props.incorrect]
-//         this.elementAnswers = shuffle(this.elementAnswers);
-//     }
-
-//     handleAnswer(answer) {
-//         this.props.onAnswer(this.props.id, answer);
-//     }
-
-//     render() {
-//         const answers = [];
-//         this.elementAnswers.forEach(answer => {
-//             answers.push(
-//                 <MultiChoiceAnswer text={answer.text}
-//                                         inputName={this.props.id}
-//                                         checked={(this.props.answer && answer.id == this.props.answer)}
-//                                         onAnswer={this.handleAnswer}
-//                                         id={answer.id}
-//                                         key={answer.id} />)
-//         });
-
-//         return (<div className="multi-choice-element"
-//                      id={this.props.id}
-//                      key={this.props.id + "-D"}>
-//                          <RichLabel>
-//                              {this.props.text}
-//                          </RichLabel>
-//                          <div className="answers"
-//                               key={this.props.id + "-AD"}>
-//                                   {answers}
-//                          </div>
-//                 </div>);
-//     }
-// }

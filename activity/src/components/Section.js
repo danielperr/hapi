@@ -28,8 +28,12 @@ export function Section (props) {
     const classes = useStyles();
     const [answers, setAnswers] = React.useState({});
 
+
+    let checkablesAmount = 0;
+    let correctQuestions = new Set();
+        
+
     const handleAnswer = (questionId, answer) => {
-        console.log('Section::handleAnswer()')
         answers[questionId] = answer;
         props.onAnswer(answers);
     };
@@ -69,6 +73,24 @@ export function Section (props) {
                                                         key={element.id} />;
                     break;
             case 'multi-choice':
+                checkablesAmount++;
+                
+                const questionId = element.id;
+                if (answer !== "") {
+                    answers[questionId] = answer;
+                }
+
+                if (questionId in answers) {
+                    const correctIds = element.correct.map(answer => {
+                        return answer.id;
+                    });
+
+                    if (correctIds.includes(answer)) {
+                        correctQuestions.add(questionId);
+                    }
+                }   
+
+
                 obj = <ElementMultiChoice text={element.text}
                                             correct={element.correct}
                                             incorrect={element.incorrect}
@@ -94,6 +116,7 @@ export function Section (props) {
                                 <br />
                         </div>);
     });
+
     return (<Paper elevation={5} className={classes.sectionPaper}>
                 <SectionHeader text={props.header}
                                 name={props.id + "-H"} />
@@ -101,5 +124,13 @@ export function Section (props) {
                         key={props.id + "-D"}>
                             {elements}
                 </div>
+                {checkablesAmount > 0 &&
+                    <button>
+                        בדוק תשובות עבור מקטע זה שאם אתה טועה אכלתה קאשה
+                    </button>
+                }
+                {checkablesAmount === correctQuestions.size &&
+                    <h2> Good Job </h2>
+                }
             </Paper>);
 }
