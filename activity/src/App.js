@@ -2,12 +2,13 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { indigo, purple, green, yellow, grey} from '@material-ui/core/colors';
 import { CssBaseline, Toolbar, Container, Button } from '@material-ui/core';
-import { Section } from './components/Section'
-import { MainHeader } from './components/MainHeader'
-import { TopBar} from './components/TopBar'
+import { Section } from './components/Section';
+import { TopBar} from './components/TopBar';
+import { dropConfetti } from './confetti';
 
+
+dropConfetti();
 
 const theme = createMuiTheme({
     palette: {
@@ -123,6 +124,8 @@ export class App extends React.Component {
                         </Container>
                     </ThemeProvider>
                     <Button onClick={ () => { SaveAs(JSON.stringify(this.answers)) } }>Download As</Button>
+                    <Button onClick={ () => { dropConfetti() } }>Confetti</Button>
+
                 </React.Fragment>);
     }
 }

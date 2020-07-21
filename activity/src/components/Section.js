@@ -178,6 +178,7 @@ export function Section(props) {
           error={error}
         >
           <FormHelperText>{checkText}</FormHelperText>
+          {checkablesAmount > 0 && 
           <Button
             type="submit"
             variant="outlined"
@@ -186,6 +187,7 @@ export function Section(props) {
           >
             בדוק תשובות
           </Button>
+          } 
         </FormControl>
       </form>
     </Paper>
