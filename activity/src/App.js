@@ -12,14 +12,14 @@ import { TopBar } from './components/TopBar'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#7b1fa2",
+      main: "#3f51b5",
     },
     secondary: {
-      main: "#ffca28",
+      main: "#ffd600",
       contrastText: '#ffcc00',
     },
     background: {
-      default: "#E7E7E7",
+      default: "#E8EAF6",
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,
@@ -53,7 +53,9 @@ function SaveAs(answersString) {
   document.getElementById("mybestinput").value = answersString;
   let thisFile = document.documentElement.innerHTML;
   let filename = prompt('Save as:');
-  download(filename + ".hapi.html", thisFile);
+  if (filename !== '' && filename !== null) {
+    download(filename + ".hapi.html", thisFile);
+  }
 }
 
 document.addEventListener('keypress', function (e) {
@@ -84,6 +86,7 @@ export function App(props) {
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = Math.round(100 * winScroll / height);
     setTopBarElevation(scrolled)
+    setProgress(scrolled);
   };
 
   const handleAnswer = (sectionAnswers) => {

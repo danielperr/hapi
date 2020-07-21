@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     colorPrimary: {
-      background: '#E1BEE7',
+      background: '#9FA8DA',
     },
     barColorPrimary: {
-      background: '#AB47BC',
+      background: '#5C6BC0',
     },
     logo: {
       color: theme.palette.secondary.light,

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(6),
     paddingRight: theme.spacing(6),
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(4),
   },
 }));
 
@@ -178,14 +178,16 @@ export function Section(props) {
           error={error}
         >
           <FormHelperText>{checkText}</FormHelperText>
-          <Button
-            type="submit"
-            variant="outlined"
-            color="primary"
-            className={classes.button}
-          >
-            בדוק תשובות
-          </Button>
+          {checkablesAmount > 0 &&
+            <Button
+              type="submit"
+              variant="outlined"
+              color="primary"
+              className={classes.button}
+            >
+              בדוק תשובות
+            </Button>
+          }
         </FormControl>
       </form>
     </Paper>
