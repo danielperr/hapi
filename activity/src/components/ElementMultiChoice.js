@@ -13,8 +13,8 @@ import { shuffle } from '../utils';
 import { RichLabel } from './RichLabel';
 
 const useStyles = makeStyles((theme) => ({
+
   formControl: {
-    width: '100%',
     margin: theme.spacing(3),
   },
   formControlLabel: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formHelperText: {
     margin: theme.spacing(1, 1, 2, 0),
-    textAlign: "right",
+    textAlign: "right"
   },
   button: {
     margin: theme.spacing(1, 1, 0, 0),
@@ -31,8 +31,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
   },
   divider: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(4),
   },
 }));
 
@@ -94,6 +93,7 @@ export function ElementMultiChoice(props) {
 
   return (
     <FormControl
+      fullWidth={true}
       component="fieldset"
       error={props.showError && props.error}
       className={props.formControl}
@@ -112,7 +112,11 @@ export function ElementMultiChoice(props) {
       >
         {answerDOMs}
       </RadioGroup>
-      <FormHelperText>{props.helperText}</FormHelperText>
+      <FormHelperText
+        className={classes.formHelperText}
+      >
+        {props.helperText}
+      </FormHelperText>
       <Divider
         className={classes.divider}
       />

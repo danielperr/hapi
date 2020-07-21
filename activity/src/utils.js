@@ -13,8 +13,22 @@ export function shuffle(a) {
 }
 
 export function getPhrase(boolean) {
-  const good_words = ["good job", "well done", "amazing work"];
-  const bad_words = ["try again", "nice try", "you'll get them next time"];
+  const good_words = [
+    "עבודה מעולה!",
+    "עבודה טובה!",
+    "כל הכבוד!",
+    "סחתיין!",
+    "מעולה!",
+    "מצוין!",
+    "נפלא!",
+    "סחתיקה!",
+  ];
+  const bad_words = [
+    "טעות!",
+    "נסו שוב!",
+    "טעות אבל לא נורא...",
+    "תשובה שגויה!",
+  ]
 
   // Choose a word set according to the given bollean
   const word_set = (boolean)?good_words:bad_words;

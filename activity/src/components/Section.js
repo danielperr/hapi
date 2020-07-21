@@ -14,7 +14,7 @@ import { getPhrase } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   sectionPaper: {
-    margin: theme.spacing(2),
+    marginBottom: theme.spacing(4),
     paddingLeft: theme.spacing(6),
     paddingRight: theme.spacing(6),
     paddingTop: theme.spacing(2),
