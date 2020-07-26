@@ -68,6 +68,7 @@ export function ElementMultiChoice(props) {
         control={
           <Radio
             checked={ !!(props.answer && answer.id == props.answer) }
+            color="secondary"
             id={answer.id}
           />
         }

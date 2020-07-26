@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Button, FormControl, FormHelperText } from '@material-ui/core';
+import { Paper, Button, FormControl, FormHelperText, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ElementLabel } from './ElementLabel';
 import { ElementImage } from "./ElementImage";
@@ -49,41 +49,67 @@ export function Section(props) {
     }
   })
   const [validations, setValidations] = React.useState(initialValidations);
-  let [isValidated, setIsValidated] = React.useState(false);
+  const [isValidated, setIsValidated] = React.useState(false);
+  const [sectionChecked, setSectionChecked] = React.useState(false);
 
-  let checkablesAmount = 0;
+  const checkablesAmount = props.elements.filter(element => element.correct !== undefined).length;
   let correctQuestions = new Set();
+
+
 
   const handleAnswer = (questionId, answer) => {
     answers[questionId] = answer;
     props.onAnswer(answers);
     setError(false);
     setCheckText("");
-    setIsValidated(false);
+    // setIsValidated(false);
     validations[questionId].showError = false;
     validations[questionId].helperText = ' ';
     setValidations(validations);
   };
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    checkThisSection();
+  }
+
+
+  const checkThisSection = () => {
     setIsValidated(true);
+    console.log('check')
     props.elements.forEach((element) => {
-      const questionId = element.id;
-      validations[questionId].showError = true;
-      let error = true;
-      if (questionId in answers) {
-        // Check if the answer is right
-        const answer = props.answers[element.id] || "";
-        const correctIds = element.correct.map(answer => { return answer.id; });
-        if (correctIds.includes(answer)) {
-          correctQuestions.add(questionId);
-          error = false;
+      if (element.correct !== undefined) {
+        const questionId = element.id;
+        validations[questionId].showError = true;
+        let error = true;
+        if (questionId in answers) {
+          // Check if the answer is right
+          const answer = props.answers[element.id] || "";
+          const correctIds = element.correct.map(answer => { return answer.id; });
+          if (correctIds.includes(answer)) {
+            correctQuestions.add(questionId);
+            error = false;
+          }
         }
+        const validationsCopy = Object.assign({}, validations);
+        validationsCopy[questionId].error = error;
+        validationsCopy[questionId].helperText = getPhrase(!error);
+        setValidations(validationsCopy);
       }
-      validations[questionId].error = error;
-      validations[questionId].helperText = getPhrase(!error);
     })
+  }
+
+
+  if (props.check && !isValidated) {
+    checkThisSection();
+    // Return if all inputs are filled and/or correct
+    console.log('props.id = ' + props.id);
+    console.log('checkablesAmount = ' + checkablesAmount)
+    console.log('correctQuestions.size = ' + correctQuestions.size)
+    props.onCheck(props.id, (checkablesAmount === correctQuestions.size));
+  } else if (!props.check && isValidated) {
+    setIsValidated(false);
   }
 
   const elements = [];
@@ -131,7 +157,6 @@ export function Section(props) {
         break;
 
       case 'multi-choice':
-        checkablesAmount++;
         const questionId = element.id;
         const validationState = validations[questionId];
         obj = <ElementMultiChoice
@@ -159,9 +184,10 @@ export function Section(props) {
     </div>);
   });
 
+
   return (
     <Paper
-      elevation={5}
+      // elevation={5}
       className={classes.sectionPaper}
     >
       <SectionHeader
@@ -174,21 +200,21 @@ export function Section(props) {
         key={props.id + "-D"}
       >
         {elements}
-        <FormControl
-          error={error}
-        >
-          <FormHelperText>{checkText}</FormHelperText>
-          {checkablesAmount > 0 &&
-            <Button
-              type="submit"
-              variant="outlined"
-              color="primary"
-              className={classes.button}
-            >
-              בדוק תשובות
-            </Button>
-          }
-        </FormControl>
+        {checkablesAmount > 0 &&
+          <FormControl
+            error={error}
+          >
+            <FormHelperText>{checkText}</FormHelperText>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+              >
+                בדוק תשובות
+              </Button>
+          </FormControl>
+        }
       </form>
     </Paper>
   );
