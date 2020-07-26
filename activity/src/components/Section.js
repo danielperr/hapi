@@ -86,8 +86,7 @@ export function Section(props) {
         if (questionId in answers) {
           // Check if the answer is right
           const answer = props.answers[element.id] || "";
-          const correctIds = element.correct.map(answer => { return answer.id; });
-          if (correctIds.includes(answer)) {
+          if (element.correct.includes(answer)) {
             correctQuestions.add(questionId);
             error = false;
           }
@@ -162,7 +161,8 @@ export function Section(props) {
         obj = <ElementMultiChoice
           text={element.text}
           correct={element.correct}
-          incorrect={element.incorrect}
+          options={element.options}
+          dontShuffle={element.dontShuffle}
           error={validationState.error}
           showError={validationState.showError}
           helperText={validationState.helperText}

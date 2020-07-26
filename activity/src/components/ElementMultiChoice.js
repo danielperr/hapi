@@ -50,46 +50,46 @@ const useStyles = makeStyles((theme) => ({
 */
 export function ElementMultiChoice(props) {
   const classes = useStyles();
-  const [answers, setAnswers] = React.useState([...props.correct, ...props.incorrect]);
-  let [helperText, setHelperText] = React.useState('')
+  const [options, setOptions] = React.useState(props.options);
   let [value, setValue] = React.useState('');
   value = props.answer;
-  let answerDOMs = [];
+  let optionDoms = [];
 
   useEffect(() => {
-    setAnswers(shuffle(answers));
+    if (!props.dontShuffle) {
+      setOptions(shuffle(options));
+    }
   }, [])
 
-  answers.forEach(answer => {
-    answerDOMs.push(
+  options.forEach(option => {
+    optionDoms.push(
       <FormControlLabel
-        value={answer.id}
+        value={option.id}
         className={classes.formControlLabel}
         control={
           <Radio
-            checked={ !!(props.answer && answer.id == props.answer) }
+            checked={ !!(props.answer && option.id == props.answer) }
             color="secondary"
-            id={answer.id}
+            id={option.id}
           />
         }
         label={
           <RichLabel
-            htmlFor={answer.id}
+            htmlFor={option.id}
             className={classes.richLabel}
           >
-            {answer.text}
+            {option.text}
           </RichLabel>
         }
-        key={answer.id}
+        key={option.id}
       />
     )
   });
 
   const handleRadioChange = (event) => {
-    const selectedAnswerId = event.target.value
-    props.onAnswer(props.id, selectedAnswerId);
-    setValue(selectedAnswerId);
-    setHelperText('');
+    const selectedOptionId = event.target.value
+    props.onAnswer(props.id, selectedOptionId);
+    setValue(selectedOptionId);
   };
 
   return (
@@ -111,7 +111,7 @@ export function ElementMultiChoice(props) {
         value={value}
         onChange={handleRadioChange}
       >
-        {answerDOMs}
+        {optionDoms}
       </RadioGroup>
       <FormHelperText
         className={classes.formHelperText}

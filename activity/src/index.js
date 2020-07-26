@@ -4,238 +4,239 @@ import './style.css';
 import { App } from './App';
 
 const structure = {
-    "serialNumber": "bJbiiGDGd29p7xJPI4xk",
-    "mainHeader": "תרגול - הדמיית תנועה",
-    "sections": [
-      {
-        "header": "צפו בסרטון הבא",
-        "id": "cwcXgOAKpC",
-        "elements": [{
-            "type": "youtube",
-            "youtubeId": "HPpvh1-ZeLQ",
-            "id": "Xg77GHD91r"
+  "serialNumber": "bJbiiGDGd29p7xJPI4xk",
+  "mainHeader": "תרגול - הדמיית תנועה",
+  "sections": [
+    {
+      "header": "צפו בסרטון הבא",
+      "id": "cwcXgOAKpC",
+      "elements": [{
+        "type": "youtube",
+        "youtubeId": "HPpvh1-ZeLQ",
+        "id": "Xg77GHD91r"
+      }, {
+        "type": "single-line-text-input",
+        "text": "כתבו במילים שלכם, כיצד גורמים לאשליה שעיגול נע על המסך?",
+        "id": "HHbrsIPQD4"
+      }]
+    }, {
+      "header": "הקוד הראשון",
+      "id": "9Icl3Pg1Jn",
+      "elements": [{
+        "type": "label",
+        "text": "פתחו דף ifigures חדש ע״י לחיצה על הקישור הבא [empty ifigure](https://webhome.weizmann.ac.il/home/ifigures/ifigure.ifig.html)\n\nהשתמשו בחלון שלפניכם, העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו.",
+        "id": "KjaUH3GiYA"
+      }, {
+        "type": "image",
+        "src": "assets/img/1.png",
+        "id": "RdF0Nw2lHr"
+      }, {
+        "type": "multi-choice",
+        "text": "לאחר שהרצתם, מה קרה?",
+        "id": "Ob4YXMJI1S",
+        "correct": ["dfN7KqKAvc"],
+        "options": [{
+          "text": "נוצר עיגול כחול על המסך ולא קרה שום דבר נוסף.",
+          "id": "dfN7KqKAvc",
         }, {
-            "type": "single-line-text-input",
-            "text": "כתבו במילים שלכם, כיצד גורמים לאשליה שעיגול נע על המסך?",
-            "id": "HHbrsIPQD4"
+          "text": "לא קרה כלום שניתן לראות.",
+          "id": "bERliHW5id"
+        }, {
+          "text": "נוצרה הדמיה של כדור זז",
+          "id": "BezdSQlolS"
+        }],
+      }, {
+        "type": "multi-choice",
+        "text": "הריצו את התא שוב ושוב. מה קורה?",
+        "id": "wmNXgWxrYt",
+        "correct": ["Z1uCwirDbE"],
+        "options": [{
+          "text": "לא נראה שקורה משהו.",
+          "id": "Z1uCwirDbE"
+        }, {
+          "text": "כשלוחצים שוב העיגול נעלם.",
+          "id": "RmjQJmbAeX"
+        }, {
+          "text": "בכל פעם העיגול זז.",
+          "id": "Xqf0Qri5VA"
+        }]
+      }]
+    }, {
+      "header": "הקוד השני",
+      "id": "g1sJYxF4Z1",
+      "elements": [{
+        "type": "label",
+        "text": "העתיקו את הקוד השני (בצד שמאל מתחת לחלון code2, ראו תמונה מצורפת).",
+        "id": "oOnvOgSxKn"
+      }, {
+        "type": "image",
+        "src": "assets/img/2.png",
+        "id": "HF1JBwk7x1"
+      }, {
+        "type": "multi-choice",
+        "text": "הריצו אותו שוב ושוב. מה קורה?",
+        "id": "Q06Thlc1Hf",
+        "correct": ["wdu0rUm6tw"],
+        "options": [{
+          "text": "בכל פעם העיגול זז.",
+          "id": "wdu0rUm6tw"
+        }, {
+          "text": "העיגול נעלם.",
+          "id": "URLWrW0cd3"
+        }, {
+          "text": "לא נראה שקורה משהו.",
+          "id": "Hfv2EYOzDs"
         }]
       }, {
-        "header": "הקוד הראשון",
-        "id": "9Icl3Pg1Jn",
-        "elements": [{
-            "type": "label",
-            "text": "פתחו דף ifigures חדש ע״י לחיצה על הקישור הבא [empty ifigure](https://webhome.weizmann.ac.il/home/ifigures/ifigure.ifig.html)\n\nהשתמשו בחלון שלפניכם, העתיקו את הקוד הראשון (בצד שמאל מתחת לחלון code1, ראו תמונה מצורפת) והריצו אותו.",
-            "id": "KjaUH3GiYA"
+        "type": "multi-choice",
+        "text": "מה מטרת הפקודה clf לדעתכם?",
+        "id": "FX2jjGyIva",
+        "correct": ["CrYWHRRl7i"],
+        "options": [{
+          "text": "לנקות את המסך כל פעם לפני שמציירים את העיגול במקום החדש.",
+          "id": "CrYWHRRl7i"
         }, {
-            "type": "image",
-            "src": "assets/img/1.png",
-            "id": "RdF0Nw2lHr"
+          "text": "אין לה מטרה.",
+          "id": "9TPxiEQppA"
         }, {
-            "type": "multi-choice",
-            "text": "לאחר שהרצתם, מה קרה?",
-            "id": "Ob4YXMJI1S",
-            "correct": [{
-                "text": "נוצר עיגול כחול על המסך ולא קרה שום דבר נוסף.",
-                "id": "dfN7KqKAvc"
-            }],
-            "incorrect": [{
-                "text": "לא קרה כלום שניתן לראות.",
-                "id": "bERliHW5id"
-            }, {
-                "text": "נוצרה הדמיה של כדור זז",
-                "id": "BezdSQlolS"
-            }]
+          "text": "להכריז שהולכים להיות מוגדרים משתנים בהמשך.",
+          "id": "zpbcJlh9GC"
+        }]
+
+      }, {
+        "type": "multi-choice",
+        "text": "בתוך הקוד השני, מחקו את השורה עם הפקודה clf. הריצו שוב את הקוד הראשון ואח״כ שוב ושוב את הקוד השני. מה קורה?",
+        "id": "FX2jjGlI2a",
+        "correct": ["C63WHkRl7i"],
+        "options": [{
+          "text": "נוספים עוד ועוד עיגולים חדשים במקומות חדשים",
+          "id": "C63WHkRl7i"
         }, {
-            "type": "multi-choice",
-            "text": "הריצו את התא שוב ושוב. מה קורה?",
-            "id": "wmNXgWxrYt",
-            "correct": [{
-                "text": "לא נראה שקורה משהו.",
-                "id": "Z1uCwirDbE"
-            }],
-            "incorrect": [{
-                "text": "כשלוחצים שוב העיגול נעלם.",
-                "id": "RmjQJmbAeX"
-            }, {
-                "text": "בכל פעם העיגול זז.",
-                "id": "Xqf0Qri5VA"
-            }]
+          "text": "העיגול לא זז",
+          "id": "92PximQppA"
+        }, {
+          "text": "יש הודעת שגיאה",
+          "id": "z1bcJlw9GC"
         }]
       }, {
-        "header": "הקוד השני",
-        "id": "g1sJYxF4Z1",
-        "elements": [{
-            "type": "label",
-            "text": "העתיקו את הקוד השני (בצד שמאל מתחת לחלון code2, ראו תמונה מצורפת).",
-            "id": "oOnvOgSxKn"
+        "type": "multi-line-text-input",
+        "text": "תוכלו להסביר למה?",
+        "id": "IwHcswgPUb"
+      }, {
+        "type": "label",
+        "text": "החזירו את הפקודה ()clf לשורה הראשונה. הריצו את התא הראשון ואת התא השני כדי לראות שהכל עובד כשורה. רשמו 'x' באחד השדות בצד ימין של המסך (כמו בתמונה המצורפת, המספר יהיה שונה).",
+        "id": "oO156gSxKn"
+      }, {
+        "type": "image",
+        "src": "assets/img/3.png",
+        "id": "HF1Jawy7zv"
+      }, {
+        "type": "multi-choice",
+        "text": "הריצו את התא הראשון (מצד שמאל). מה ערכו של המשתנה x? (כפי שמופיע בצד ימין)",
+        "id": "FX212GlI2a",
+        "correct": ["C6312mRl7i"],
+        "options": [{
+          "text": "0",
+          "id": "C6312mRl7i"
         }, {
-            "type": "image",
-            "src": "assets/img/2.png",
-            "id": "HF1JBwk7x1"
+          "text": "4.4",
+          "id": "38PximQppA"
         }, {
-            "type": "multi-choice",
-            "text": "הריצו אותו שוב ושוב. מה קורה?",
-            "id": "Q06Thlc1Hf",
-            "correct": [{
-                "text": "בכל פעם העיגול זז.",
-                "id": "wdu0rUm6tw"
-            }],
-            "incorrect": [{
-                "text": "העיגול נעלם.",
-                "id": "URLWrW0cd3"
-            }, {
-                "text": "לא נראה שקורה משהו.",
-                "id": "Hfv2EYOzDs"
-            }]
-        }, {
-            "type": "multi-choice",
-            "text": "מה מטרת הפקודה clf לדעתכם?",
-            "id": "FX2jjGyIva",
-            "correct": [{
-                "text": "לנקות את המסך כל פעם לפני שמציירים את העיגול במקום החדש.",
-                "id": "CrYWHRRl7i"
-            }],
-            "incorrect": [{
-                "text": "אין לה מטרה.",
-                "id": "9TPxiEQppA"
-            }, {
-                "text": "להכריז שהולכים להיות מוגדרים משתנים בהמשך.",
-                "id": "zpbcJlh9GC"
-            }]
-            
-        }, {
-            "type": "multi-choice",
-            "text": "בתוך הקוד השני, מחקו את השורה עם הפקודה clf. הריצו שוב את הקוד הראשון ואח״כ שוב ושוב את הקוד השני. מה קורה?",
-            "id": "FX2jjGlI2a",
-            "correct": [{
-                "text": "נוספים עוד ועוד עיגולים חדשים במקומות חדשים",
-                "id": "C63WHkRl7i"
-            }],
-            "incorrect": [{
-                "text": "העיגול לא זז",
-                "id": "92PximQppA"
-            }, {
-                "text": "יש הודעת שגיאה",
-                "id": "z1bcJlw9GC"
-            }]
-        }, {
-            "type": "multi-line-text-input",
-            "text": "תוכלו להסביר למה?",
-            "id": "IwHcswgPUb"
-        }, {
-            "type": "label",
-            "text": "החזירו את הפקודה ()clf לשורה הראשונה. הריצו את התא הראשון ואת התא השני כדי לראות שהכל עובד כשורה. רשמו 'x' באחד השדות בצד ימין של המסך (כמו בתמונה המצורפת, המספר יהיה שונה).",
-            "id": "oO156gSxKn"
-        }, {
-            "type": "image",
-            "src": "assets/img/3.png",
-            "id": "HF1Jawy7zv"
-        }, {
-          "type": "multi-choice",
-          "text": "הריצו את התא הראשון (מצד שמאל). מה ערכו של המשתנה x? (כפי שמופיע בצד ימין)",
-          "id": "FX212GlI2a",
-          "correct": [{
-              "text": "0",
-              "id": "C6312mRl7i"
-          }],
-          "incorrect": [{
-              "text": "4.4",
-              "id": "38PximQppA"
-          }, {
-              "text": "0.2",
-              "id": "z1bc65z9GC"
-          }]
+          "text": "0.2",
+          "id": "z1bc65z9GC"
+        }]
       }, {
         "type": "multi-choice",
         "text": "הריצו את התא השני פעמיים. מה ערכו כעת של המשתנה x?",
         "id": "FX2awzlI2a",
-        "correct": [{
-            "text": "0.4",
-            "id": "C62Wtkxl7i"
-        }],
-        "incorrect": [{
-            "text": "0.2",
-            "id": "71wxemsppA"
+        "correct": ["C62Wtkxl7i"],
+        "options": [{
+          "text": "0.4",
+          "id": "C62Wtkxl7i"
         }, {
-            "text": "0",
-            "id": "41bhJlf9aC"
+          "text": "0.2",
+          "id": "71wxemsppA"
+        }, {
+          "text": "0",
+          "id": "41bhJlf9aC"
         }]
-        },{
-          "type": "multi-line-text-input",
-          "text": "הסבירו מדוע:",
-          "id": "Iw1cs4gP2b"
-      }]
       }, {
-        "header": "הלולאה המרכזית",
-        "id": "lj8GRU76gO",
-        "elements": [{
-            "type": "label",
-            "text": "כעת נעבור לתא שמתחת ל-Repeat every 0.01 sec \n\n רשמו בתוך התא את השורה:\n\n`x+=0.02`",
-            "id": "oOnvOgSxKn"
-        }, {
-            "type": "image",
-            "src": "assets/img/4.png",
-            "id": "HF1fx157x1"
-        }, {
-            "type": "multi-choice",
-            "text": "הריצו את התא, מה קורה?",
-            "id": "06T123c1Hf",
-            "correct": [{
-                "text": "הערך של המשתנה x משתנה ברציפות",
-                "id": "wduxxUe6tw"
-            }],
-            "incorrect": [{
-                "text": "העיגול זז",
-                "id": "URLWrW0cd3"
-            }, {
-                "text": "הערך של המשתנה x משתנה ברציפות והעיגול זז",
-                "id": "Hfv2EYOs5s"
-            }]
-        },{
-          "type": "label",
-          "text": "כעת שנו את קצב החזרה ל 0.5 שניות:",
-          "id": "aOAvOgSxKn"
-        }, {
-          "type": "image",
-          "src": "assets/img/5.png",
-          "id": "HF1fx152x1"
-        }, {
-          "type": "label",
-          "text": "עצרו את הריצה (לחיצה על כפתור העצירה עם הריבוע) והריצו שוב. כעת החזרה קוראת כל 0.5 שניות. כל מה שנכתוב בתוך התא יחזור שוב ושוב בהפרשי זמן כפי שנקבע בכותרת.\n\nנסו להמנע משימוש בקריאה לקוד ()code2 כפי שהיה בסרטון.",
-          "id": "vBfvsg24Kn"
-        }, {
-            "type": "multi-choice",
-            "text": "אילו מהקודים הבאים גורם לתנועת העיגול כפי שבסרטון?",
-            "id": "FX2duGyIva",
-            "correct": [{
-                "text": "א. ו- ב. אך לא ג",
-                "id": "CrY12rtl7i"
-            }],
-            "incorrect": [{
-                "text": "![תמונה א](assets/img/6.png)",
-                "id": "12oOiEQppA"
-            }, {
-                "text": "![תמונה ב](assets/img/7.png)",
-                "id": "zp5c62h9GC"
-            }, {
-              "text": "![תמונה ג](assets/img/8.png)",
-                "id": "kjac6vh9GC"
-            }]
-        },{
-          "type": "multi-line-text-input",
-          "text": "מדוע לדעתכם?",
-          "id": "Iwsci4gu2b"
+        "type": "multi-line-text-input",
+        "text": "הסבירו מדוע:",
+        "id": "Iw1cs4gP2b"
       }]
+    }, {
+      "header": "הלולאה המרכזית",
+      "id": "lj8GRU76gO",
+      "elements": [{
+        "type": "label",
+        "text": "כעת נעבור לתא שמתחת ל-Repeat every 0.01 sec \n\n רשמו בתוך התא את השורה:\n\n`x+=0.02`",
+        "id": "oOnvOgSxKn"
       }, {
-        "header": "אתגרים",
-        "id": "xD078JIUj7",
-        "elements": [{
-          "type": "label",
-          "text": "1.	נסו לגרום לעיגול לנוע באותה מהירות  על המסך אך בצורה חלקה\n1.	נסו לגרום לעיגול לנוע שמאלה\n1.	נסו לגרום לעיגול לנוע למעלה או למטה\n1.	צרו תרשים עקבות. תוכלו להשתמש בפקודה Point במקום Circle.",
-          "id": "o47vOgSxKn"
+        "type": "image",
+        "src": "assets/img/4.png",
+        "id": "HF1fx157x1"
+      }, {
+        "type": "multi-choice",
+        "text": "הריצו את התא, מה קורה?",
+        "id": "06T123c1Hf",
+        "correct": ["wduxxUe6tw"],
+        "options": [{
+          "text": "הערך של המשתנה x משתנה ברציפות",
+          "id": "wduxxUe6tw"
+        }, {
+          "text": "העיגול זז",
+          "id": "URLWrW0cd3"
+        }, {
+          "text": "הערך של המשתנה x משתנה ברציפות והעיגול זז",
+          "id": "Hfv2EYOs5s"
         }]
-      }
-    ]
+      }, {
+        "type": "label",
+        "text": "כעת שנו את קצב החזרה ל 0.5 שניות:",
+        "id": "aOAvOgSxKn"
+      }, {
+        "type": "image",
+        "src": "assets/img/5.png",
+        "id": "HF1fx152x1"
+      }, {
+        "type": "label",
+        "text": "עצרו את הריצה (לחיצה על כפתור העצירה עם הריבוע) והריצו שוב. כעת החזרה קוראת כל 0.5 שניות. כל מה שנכתוב בתוך התא יחזור שוב ושוב בהפרשי זמן כפי שנקבע בכותרת.\n\nנסו להמנע משימוש בקריאה לקוד ()code2 כפי שהיה בסרטון.",
+        "id": "vBfvsg24Kn"
+      }, {
+        "type": "multi-choice",
+        "text": "אילו מהקודים הבאים גורם לתנועת העיגול כפי שבסרטון?",
+        "dontShuffle": 1,
+        "id": "FX2duGyIva",
+        "correct": ["CrY12rtl7i"],
+        "options": [{
+          "text": "![תמונה א](assets/img/6.png)",
+          "id": "12oOiEQppA"
+        }, {
+          "text": "![תמונה ב](assets/img/7.png)",
+          "id": "zp5c62h9GC"
+        }, {
+          "text": "![תמונה ג](assets/img/8.png)",
+          "id": "kjac6vh9GC"
+        }, {
+          "text": "א. ו- ב. אך לא ג",
+          "id": "CrY12rtl7i"
+        }]
+      }, {
+        "type": "multi-line-text-input",
+        "text": "מדוע לדעתכם?",
+        "id": "Iwsci4gu2b"
+      }]
+    }, {
+      "header": "אתגרים",
+      "id": "xD078JIUj7",
+      "elements": [{
+        "type": "label",
+        "text": "1.	נסו לגרום לעיגול לנוע באותה מהירות  על המסך אך בצורה חלקה\n1.	נסו לגרום לעיגול לנוע שמאלה\n1.	נסו לגרום לעיגול לנוע למעלה או למטה\n1.	צרו תרשים עקבות. תוכלו להשתמש בפקודה Point במקום Circle.",
+        "id": "o47vOgSxKn"
+      }]
+    }
+  ]
 };
 
 ReactDOM.render(
