@@ -27,7 +27,10 @@ export function RichLabel(props) {
         //   __html: md.render(props.children),
         // }}
       >
-        {React.cloneElement(<ReactMarkdown source={props.children} />)}
+        <ReactMarkdown
+          source={props.children}
+          renderers={{link: props => <a href={props.href} target="_blank">{props.children}</a>}}
+        />
       </label>
     </>
   );
