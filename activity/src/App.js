@@ -10,6 +10,8 @@ import { dropConfetti } from './confetti';
 import CheckIcon from '@material-ui/icons/Check';
 
 
+const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
+
 const theme = createMuiTheme({
   direction: 'rtl',
   palette: {
@@ -68,12 +70,18 @@ function download(filename, text) {
 }
 
 function SaveAs(answersString) {
-  // Get the code of this file
-  document.getElementById("mybestinput").value = answersString;
-  let thisFile = document.documentElement.innerHTML;
-  let filename = prompt('Save as:');
+  let thisFileCode = thisFileCodeSnapshot.cloneNode(true);
+  let x = thisFileCode.querySelectorAll('#save-input')
+	
+  x.forEach(function(element) {
+    if (element.id === "save-input") {
+      element.value = answersString;
+    }
+  });  
+
+  const filename = prompt('Save as:');
   if (filename !== '' && filename !== null) {
-    download(filename + ".hapi.html", thisFile);
+    download(filename + ".hapi.html", thisFileCode.innerHTML);
   }
 }
 
@@ -88,14 +96,13 @@ export function App(props) {
   // Get the saved answers on this file
   const classes = useStyles(theme);
   const [_, forceUpdate] = React.useState();
-  const [answers, setAnswers] = React.useState(JSON.parse(document.getElementById("mybestinput").value || "{}"));
+  const [answers, setAnswers] = React.useState(JSON.parse(document.getElementById("save-input").value || "{}"));
   const [progress, setProgress] = React.useState(0);  // top bar progress bar percentage
   const [topBarElevation, setTopBarElevation] = React.useState(0);  // top bar elevation value (shadow)
   let [checkAll, setCheckAll] = React.useState(false);  // whether to activate the "check answers" button in every section
   const sectionCount = props.structure.sections.length;
   let checkedSections = {};
   const [showSuccess, setShowSuccess] = React.useState(false);
-  
   
 
   useEffect(() => {
