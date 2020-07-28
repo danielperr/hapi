@@ -36,17 +36,12 @@ export function ElementTextInput(props) {
   let [value, setValue] = React.useState(props.answer);
   const [isChanged, setIsChanged] = React.useState(false);
 
-  // if (props.id == 'Iwsci4gu2b') {
-  //   console.log('ElementTextInput');
-  // }
-
   const reset = () => {
     setSeconds(0);
     setIsActive(false);
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setIsChanged(true);
     setValue(e.target.value);
     setSeconds(0);
@@ -58,8 +53,6 @@ export function ElementTextInput(props) {
     if (isActive) {
       if (seconds >= 1) {
         // Pop up a snackbar (Save successfully)
-        console.log("saved");
-        console.log("answer: " + value);
         props.onAnswer(props.id, value);
         reset();
       } else {
@@ -83,11 +76,10 @@ export function ElementTextInput(props) {
         <TextField
             onChange={handleChange}
             defaultValue={props.answer}
-            // multiline={false}
-            // rows={5}
-            // fullWidth={true}
+            multiline={props.multiline}
+            rows={5}
+            fullWidth={true}
             variant="outlined"
-            // InputProps={{ disableUnderline: true }}
         />
       <FormHelperText className={classes.formHelperText}>
         {props.helperText}

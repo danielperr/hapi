@@ -141,7 +141,9 @@ export function Section(props) {
         break;
 
       case 'text-input':
-        obj = <ElementTextInput text={element.text}
+        obj = <ElementTextInput
+          text={element.text}
+          multiline={element.multiline}
           answer={answer}
           onAnswer={handleAnswer}
           id={element.id}

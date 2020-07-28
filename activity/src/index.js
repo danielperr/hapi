@@ -9,14 +9,18 @@ const structure = {
   "mainHeader": "תרגול - הדמיית תנועה",
   "sections": [
     {
-      "header": "צפו בסרטון הבא",
+      "header": "צפייה בסרטון",
       "id": "cwcXgOAKpC",
       "elements": [{
+        "type": "label",
+        "text": "צפו בסרטון הבא ולאחר מכן ענו על השאלות.",
+        "id": "hYF8kvGV49"
+      }, {
         "type": "youtube",
         "youtubeId": "HPpvh1-ZeLQ",
         "id": "Xg77GHD91r"
       }, {
-        "type": "single-line-text-input",
+        "type": "text-input",
         "text": "כתבו במילים שלכם, כיצד גורמים לאשליה שעיגול נע על המסך?",
         "id": "HHbrsIPQD4"
       }]
@@ -122,7 +126,8 @@ const structure = {
       }, {
         "type": "text-input",
         "text": "תוכלו להסביר למה?",
-        "id": "IwHcswgPUb"
+        "multiline": 1,
+        "id": "IwHcswgPUb",
       }, {
         "type": "label",
         "text": "החזירו את הפקודה ()clf לשורה הראשונה. הריצו את התא הראשון ואת התא השני כדי לראות שהכל עובד כשורה. רשמו 'x' באחד השדות בצד ימין של המסך (כמו בתמונה המצורפת, המספר יהיה שונה).",
@@ -162,9 +167,10 @@ const structure = {
           "id": "41bhJlf9aC"
         }]
       }, {
-        "type": "multi-line-text-input",
+        "type": "text-input",
         "text": "הסבירו מדוע:",
-        "id": "Iw1cs4gP2b"
+        "multiline": 1,
+        "id": "Iw1cs4gP2b",
       }]
     }, {
       "header": "הלולאה המרכזית",
@@ -226,7 +232,8 @@ const structure = {
       }, {
         "type": "text-input",
         "text": "מדוע לדעתכם?",
-        "id": "Iwsci4gu2b"
+        "multiline": 1,
+        "id": "Iwsci4gu2b",
       }]
     }, {
       "header": "אתגרים",
