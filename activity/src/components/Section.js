@@ -54,7 +54,9 @@ export function Section(props) {
   const checkablesAmount = props.elements.filter(element => element.correct !== undefined).length;
   let correctQuestions = new Set();
 
-
+  // if (props.id == 'lj8GRU76gO') {
+  //   console.log('Section')
+  // }
 
   const handleAnswer = (questionId, answer) => {
     answers[questionId] = answer;

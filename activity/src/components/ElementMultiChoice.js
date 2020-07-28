@@ -51,14 +51,16 @@ export function ElementMultiChoice(props) {
   const classes = useStyles();
   const [options, setOptions] = React.useState(props.options);
   let [value, setValue] = React.useState('');
+  const [isShuffled, setIsShuffled] = React.useState(false);
   value = props.answer;
   let optionDoms = [];
 
-  useEffect(() => {
+  if (!isShuffled) {
     if (!props.dontShuffle) {
       setOptions(shuffle(options));
     }
-  }, [])
+    setIsShuffled(true);
+  }
 
   options.forEach(option => {
     optionDoms.push(

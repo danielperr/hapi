@@ -15,15 +15,6 @@
   width: 50%;
 }
 
-input[type=text] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  border: none;
-  border-bottom: 2px solid var(--main-color);
-}
-
 html {
   padding-top: 16px;
   padding-bottom: 16px;
@@ -34,48 +25,6 @@ body {
   text-align: right;
   margin: 0px;
   background-color: var(--background-color);
-}
-
-.main-header {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.container {
-  height: 100%;
-}
-
-.section {
-  background-color: white;
-  width: 700px;
-  top: 0;
-  border-radius: 2px;
-  padding: 20px 50px;
-  margin-bottom: 50px;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
-  text-align: right;
-}
-
-.image-element {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
-.math-input-div {
-  width: 100%;
-  text-align: center;
-  direction: ltr;
-}
-
-.mq-editable-field {
-  padding: 4px;
-  width: 100px;
-  text-align: left;
-}
-
-.mq-root-block {
-  height: 100%;
 }
 
 h1 {
@@ -94,53 +43,7 @@ label {
   cursor: pointer;
 }
 
-.question:not(:last-child) {
-  padding-bottom: 25px;
-}
-
-.answers p {
-  display: inline;
-}
-
-.question span {
-  padding: 2px 10px;
-  border-radius: 10px;
-  font-size: 20px;
-  font-weight: 800;
-  transition: background-color 0.1s;
-}
-
-.correct span {
-  background-color: rgb(199, 255, 115);
-}
-
-.incorrect span {
-  background-color: rgb(211, 0, 35);
-  color: white;
-}
-
-.closed-answers {
-  padding: 10px;
-  border-top: 1px solid var(--main-color);
-}
-
-.closed-answer {
-  padding: 2px 10px;
-}
-
-textarea.multiline-input-element {
-  font-family: Arial, Helvetica, sans-serif;
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: vertical;
-  min-height: 60px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
+/* Embeds */
 .embed {
   width: 1100px;
   /* box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15); */
@@ -156,7 +59,7 @@ textarea.multiline-input-element {
   height: 550px;
 }
 
-
+/* Confetti */
 .confetti-wrapper {
   pointer-events:none;
   

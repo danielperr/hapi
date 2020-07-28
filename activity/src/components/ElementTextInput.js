@@ -34,7 +34,11 @@ export function ElementTextInput(props) {
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   let [value, setValue] = React.useState(props.answer);
-  value = props.answer;
+  const [isChanged, setIsChanged] = React.useState(false);
+
+  // if (props.id == 'Iwsci4gu2b') {
+  //   console.log('ElementTextInput');
+  // }
 
   const reset = () => {
     setSeconds(0);
@@ -43,6 +47,7 @@ export function ElementTextInput(props) {
 
   const handleChange = (e) => {
     console.log(e.target.value);
+    setIsChanged(true);
     setValue(e.target.value);
     setSeconds(0);
     setIsActive(true);
@@ -68,6 +73,7 @@ export function ElementTextInput(props) {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
+
   return (
     <FormControl noValidate autoComplete="off" fullWidth={true} className={props.formControl}>
       <FormLabel component="legend">
@@ -76,11 +82,12 @@ export function ElementTextInput(props) {
       <br />
         <TextField
             onChange={handleChange}
-            value={value}
-            multiline={false}
-            rows={5}
-            fullWidth={true}
+            defaultValue={props.answer}
+            // multiline={false}
+            // rows={5}
+            // fullWidth={true}
             variant="outlined"
+            // InputProps={{ disableUnderline: true }}
         />
       <FormHelperText className={classes.formHelperText}>
         {props.helperText}
