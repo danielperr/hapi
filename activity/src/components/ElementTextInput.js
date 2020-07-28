@@ -76,7 +76,7 @@ export function ElementTextInput(props) {
         <TextField
             onChange={handleChange}
             defaultValue={props.answer}
-            multiline={props.multiline}
+            multiline={!!props.multiline}
             rows={5}
             fullWidth={true}
             variant="outlined"
