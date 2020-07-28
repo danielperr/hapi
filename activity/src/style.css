@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css?family=Heebo&display=swap');
+
+:root {
+  --main-color:  #bdbdbd;
+  --secondary-color: black;
+  --third-color: white;
+  --background-color: #E9D8F0;
+  --paper-color: #f5f5f5;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+html {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+body {
+  font-family: "Heebo", sans-serif;
+  text-align: right;
+  margin: 0px;
+  background-color: var(--background-color);
+}
+
+h1 {
+  font-size: 38px;
+}
+
+label {
+  font-size: 16px;
+}
+
+.markdown-image {
+  width: 50%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/* Embeds */
+.embed {
+  width: 1100px;
+  /* box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15); */
+  display: block;
+  overflow: "hidden";
+}
+
+.ifigure-embed {
+  height: 600px;
+}
+
+.youtube-embed {
+  height: 550px;
+}
+
+/* Confetti */
+.confetti-wrapper {
+  pointer-events:none;
+  
+  top:0;
+  left:0;
+
+  padding:0;
+  margin:0;
+
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+[class|="confetti"] {
+  position: fixed;
+}
+
+.red {
+  background-color: #E94A3F;
+}
+
+.yellow {
+  background-color: #FAA040;
+}
+
+.blue {
+  background-color: #5FC9F5;
+}
