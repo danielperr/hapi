@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './style.css';
 import { App } from './App';
 
+
 const structure = {
   "serialNumber": "bJbiiGDGd29p7xJPI4xk",
   "mainHeader": "תרגול - הדמיית תנועה",
@@ -119,7 +120,7 @@ const structure = {
           "id": "z1bcJlw9GC"
         }]
       }, {
-        "type": "multi-line-text-input",
+        "type": "text-input",
         "text": "תוכלו להסביר למה?",
         "id": "IwHcswgPUb"
       }, {
@@ -223,7 +224,7 @@ const structure = {
           "id": "CrY12rtl7i"
         }]
       }, {
-        "type": "multi-line-text-input",
+        "type": "text-input",
         "text": "מדוע לדעתכם?",
         "id": "Iwsci4gu2b"
       }]
@@ -232,7 +233,7 @@ const structure = {
       "id": "xD078JIUj7",
       "elements": [{
         "type": "label",
-        "text": "1.	נסו לגרום לעיגול לנוע באותה מהירות  על המסך אך בצורה חלקה\n1.	נסו לגרום לעיגול לנוע שמאלה\n1.	נסו לגרום לעיגול לנוע למעלה או למטה\n1.	צרו תרשים עקבות. תוכלו להשתמש בפקודה Point במקום Circle.",
+        "text": "1. מה קורה אם משתמשים בפקודה Point במקום Circle? \n1. נסו לגרום לעיגול לנוע באותה מהירות על המסך אך בצורה חלקה.\n1.	נסו לגרום לעיגול לנוע שמאלה.\n1.	נסו לגרום לעיגול לנוע למעלה או למטה.",
         "id": "o47vOgSxKn"
       }]
     }

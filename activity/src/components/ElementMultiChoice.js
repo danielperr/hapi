@@ -1,19 +1,18 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { makeStyles, jssPreset } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import { shuffle } from '../utils';
 import { RichLabel } from './RichLabel';
 
-const useStyles = makeStyles((theme) => ({
 
+const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(3),
   },
@@ -68,7 +67,7 @@ export function ElementMultiChoice(props) {
         className={classes.formControlLabel}
         control={
           <Radio
-            checked={ !!(props.answer && option.id == props.answer) }
+            checked={ !!(props.answer && option.id === props.answer) }
             color="secondary"
             id={option.id}
           />

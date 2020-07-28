@@ -1,11 +1,10 @@
 import React from 'react';
-import { Paper, Button, FormControl, FormHelperText, Box } from '@material-ui/core';
+import { Paper, Button, FormControl, FormHelperText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ElementLabel } from './ElementLabel';
 import { ElementImage } from "./ElementImage";
 import { ElementYoutube } from "./ElementYoutube";
-import { ElementSingleLineTextInput } from "./ElementSingleLineTextInput";
-import { ElementMultiLineTextInput } from "./ElementMultiLineTextInput";
+import { ElementTextInput } from "./ElementTextInput";
 import { ElementMultiChoice } from "./ElementMultiChoice";
 import { SectionHeader } from "./SectionHeader";
 import { ElementMathInput } from './ElementMathInput';
@@ -139,16 +138,8 @@ export function Section(props) {
           key={element.id} />;
         break;
 
-      case 'single-line-text-input':
-        obj = <ElementSingleLineTextInput text={element.text}
-          answer={answer}
-          onAnswer={handleAnswer}
-          id={element.id}
-          key={element.id} />;
-        break;
-
-      case 'multi-line-text-input':
-        obj = <ElementMultiLineTextInput text={element.text}
+      case 'text-input':
+        obj = <ElementTextInput text={element.text}
           answer={answer}
           onAnswer={handleAnswer}
           id={element.id}

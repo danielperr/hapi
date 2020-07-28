@@ -1,26 +1,26 @@
-import React, { useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
-import { CssBaseline, Toolbar, Container, Button, Box, Fab, Snackbar, IconButton } from '@material-ui/core';
- import CloseIcon from '@material-ui/icons/Close';
-import { Section } from './components/Section'
-import { TopBar } from './components/TopBar'
-import { dropConfetti } from './confetti';
-import CheckIcon from '@material-ui/icons/Check';
+import React, { useEffect } from "react";
+import Grid from "@material-ui/core/Grid";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { CssBaseline, Toolbar, Container, Button, Box, Fab, Snackbar, IconButton, } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import { Section } from "./components/Section";
+import { TopBar } from "./components/TopBar";
+import { dropConfetti } from "./confetti";
+import CheckIcon from "@material-ui/icons/Check";
 
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
 const theme = createMuiTheme({
-  direction: 'rtl',
+  direction: "rtl",
   palette: {
     primary: {
       main: "#3f51b5",
     },
     secondary: {
       main: "#ff8f00",
-      contrastText: '#ffffff',
+      contrastText: "#ffffff",
     },
     background: {
       default: "#E8EAF6",
@@ -30,7 +30,6 @@ const theme = createMuiTheme({
   },
   spacing: 8,
 });
-
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -48,20 +47,22 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(-2),
   },
   root: {
-    background: '#4caf50',
+    background: "#4caf50",
   },
   checkIcon: {
     marginLeft: theme.spacing(1),
   },
 }));
 
-
 function download(filename, text) {
-  var element = document.createElement('a');
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  element.setAttribute('download', filename);
+  var element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
 
-  element.style.display = 'none';
+  element.style.display = "none";
   document.body.appendChild(element);
 
   element.click();
@@ -71,21 +72,21 @@ function download(filename, text) {
 
 function SaveAs(answersString) {
   let thisFileCode = thisFileCodeSnapshot.cloneNode(true);
-  let x = thisFileCode.querySelectorAll('#save-input')
-	
-  x.forEach(function(element) {
+  let x = thisFileCode.querySelectorAll("#save-input");
+
+  x.forEach(function (element) {
     if (element.id === "save-input") {
       element.value = answersString;
     }
-  });  
+  });
 
-  const filename = prompt('Save as:');
-  if (filename !== '' && filename !== null) {
+  const filename = prompt("Save as:");
+  if (filename !== "" && filename !== null) {
     download(filename + ".hapi.html", thisFileCode.innerHTML);
   }
 }
 
-document.addEventListener('keypress', function (e) {
+document.addEventListener("keypress", function (e) {
   if (e.keyCode === 13 || e.which === 13) {
     e.preventDefault();
     return false;
@@ -96,50 +97,57 @@ export function App(props) {
   // Get the saved answers on this file
   const classes = useStyles(theme);
   const [_, forceUpdate] = React.useState();
-  const [answers, setAnswers] = React.useState(JSON.parse(document.getElementById("save-input").value || "{}"));
-  const [progress, setProgress] = React.useState(0);  // top bar progress bar percentage
-  const [topBarElevation, setTopBarElevation] = React.useState(0);  // top bar elevation value (shadow)
-  let [checkAll, setCheckAll] = React.useState(false);  // whether to activate the "check answers" button in every section
+  const [answers, setAnswers] = React.useState(
+    JSON.parse(document.getElementById("save-input").value || "{}")
+  );
+
+  const [progress, setProgress] = React.useState(0); // top bar progress bar percentage
+  const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
+
+  let [checkAll, setCheckAll] = React.useState(false); // whether to activate the "check answers" button in every section
   const sectionCount = props.structure.sections.length;
+
   let checkedSections = {};
   const [showSuccess, setShowSuccess] = React.useState(false);
-  
 
   useEffect(() => {
     if (!Object.keys(answers).length) {
       // Get the saved answers from local storage
       importAnswers();
     }
-    window.addEventListener('scroll', handleScroll);
-  }, [])
-
+    window.addEventListener("scroll", handleScroll);
+  }, []);
 
   const handleScroll = () => {
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = Math.round(100 * winScroll / height);
-    setTopBarElevation(scrolled)
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = Math.round((100 * winScroll) / height);
+    setTopBarElevation(scrolled);
     // setProgress(scrolled);
   };
-
 
   const handleAnswer = (sectionAnswers) => {
     const answersCopy = Object.assign({}, answers, sectionAnswers);
     setAnswers(answersCopy);
-    localStorage.setItem(props.structure.serialNumber, JSON.stringify(answersCopy));
+    localStorage.setItem(
+      props.structure.serialNumber,
+      JSON.stringify(answersCopy)
+    );
   };
-
 
   const importAnswers = () => {
-    setAnswers(JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {});
+    setAnswers(
+      JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {}
+    );
   };
-
 
   const handleSubmit = () => {
     checkedSections = {};
     setCheckAll(true);
   };
-
 
   const handleSectionCheck = (sectionId, finished) => {
     checkedSections[sectionId] = finished;
@@ -161,12 +169,12 @@ export function App(props) {
   };
 
   const handleSuccessClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
-    
+
     setShowSuccess(false);
-  }
+  };
 
   const sections = [];
   props.structure.sections.forEach((section) => {
@@ -184,7 +192,6 @@ export function App(props) {
     );
   });
 
-
   return (
     <React.Fragment>
       <ThemeProvider theme={theme}>
@@ -192,15 +199,19 @@ export function App(props) {
         <TopBar
           progress={progress}
           elevation={topBarElevation}
-          onDownload={() => {SaveAs(JSON.stringify(answers))}}
+          onDownload={() => {
+            SaveAs(JSON.stringify(answers));
+          }}
         />
         <Toolbar />
-        <Container
-          maxWidth="md"
-          className={classes.container}
-        >
-            {sections}
-            <Box display="flex" flexDirection="column" alignItems="stretch" padding="10px 385px 10px 385px">
+        <Container maxWidth="md" className={classes.container}>
+          {sections}
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="stretch"
+            padding="10px 385px 10px 385px"
+          >
             <Fab
               variant="extended"
               color="secondary"
@@ -213,13 +224,13 @@ export function App(props) {
           </Box>
           <Snackbar
             anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
+              vertical: "bottom",
+              horizontal: "right",
             }}
             ContentProps={{
               classes: {
-                  root: classes.root
-              }
+                root: classes.root,
+              },
             }}
             open={showSuccess}
             autoHideDuration={6000}
@@ -228,12 +239,17 @@ export function App(props) {
             dir="rtl"
             action={
               <React.Fragment>
-                <IconButton size="small" aria-label="close" color="inherit" onClick={handleSuccessClose} className={classes.successSnackbarCloseIcon}>
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={handleSuccessClose}
+                  className={classes.successSnackbarCloseIcon}
+                >
                   <CloseIcon fontSize="small" />
                 </IconButton>
               </React.Fragment>
             }
-            // className={classes.successSnackBar}
           />
         </Container>
       </ThemeProvider>
