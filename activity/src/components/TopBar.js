@@ -12,6 +12,7 @@ import IconRxitToApp from '@material-ui/icons/ExitToApp';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { MenuItem, Divider } from '@material-ui/core';
 
 
@@ -58,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
             </Typography>
             <IconButton color="inherit" onClick={props.onDownload}>
               <SaveAltIcon />
+            </IconButton>
+            <IconButton color="inherit" onClick={props.onReset}>
+              <DeleteIcon />
             </IconButton>
             <Divider orientation="vertical" flexItem className={classes.divider} />
             <Typography edge="end" variant="h6" className={ classes.logo }>

@@ -168,6 +168,17 @@ export function App(props) {
     }
   };
 
+  const resetActivity = () => {
+    var conf = window.confirm("כל התשובות בפעילות זו יימחקו. להמשיך?");
+    if (conf) {
+      setAnswers({});
+      localStorage.setItem(
+        props.structure.serialNumber,
+        JSON.stringify({})
+      );
+    }
+  }
+
   const handleSuccessClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -202,6 +213,7 @@ export function App(props) {
           onDownload={() => {
             SaveAs(JSON.stringify(answers));
           }}
+          onReset={resetActivity}
         />
         <Toolbar />
         <Container maxWidth="md" className={classes.container}>
