@@ -176,6 +176,10 @@ export function App(props) {
         props.structure.serialNumber,
         JSON.stringify({})
       );
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+      window.location.reload();
     }
   }
 
