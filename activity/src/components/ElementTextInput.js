@@ -6,6 +6,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormLabel from "@material-ui/core/FormLabel";
 import Divider from "@material-ui/core/Divider";
 
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(3),
@@ -28,6 +29,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+/*
+ <ElementTextInput
+    text (string): question / title
+    multiline (string): is multiline or not if not undefined
+    error (boolean): whether the answer is incorrect
+    showError (boolean): whether the question has been validated (f.e using a 'check answers' button)
+    answer (string): filled text
+    onAnswer (function): callback fcn when an answer is filled
+    id (string): question id
+  />
+*/
 export function ElementTextInput(props) {
   const classes = useStyles();
 
@@ -68,7 +81,7 @@ export function ElementTextInput(props) {
 
 
   return (
-    <FormControl noValidate autoComplete="off" fullWidth={true} className={props.formControl}>
+    <FormControl error="true" noValidate autoComplete="off" fullWidth={true} className={props.formControl}>
       <FormLabel component="legend">
           {props.text}
       </FormLabel>
@@ -77,7 +90,7 @@ export function ElementTextInput(props) {
             onChange={handleChange}
             defaultValue={props.answer}
             multiline={!!props.multiline}
-            rows={5}
+            rows={6}
             fullWidth={true}
             variant="outlined"
         />
@@ -88,111 +101,3 @@ export function ElementTextInput(props) {
     </FormControl>
   );
 }
-
-/*
-
-export function ElementMultiChoice(props) {
-  const classes = useStyles();
-  const [options, setOptions] = React.useState(props.options);
-  let [value, setValue] = React.useState('');
-  value = props.answer;
-  let optionDoms = [];
-
-  useEffect(() => {
-    if (!props.dontShuffle) {
-      setOptions(shuffle(options));
-    }
-  }, [])
-
-  options.forEach(option => {
-    optionDoms.push(
-      <FormControlLabel
-        value={option.id}
-        className={classes.formControlLabel}
-        control={
-          <Radio
-            checked={ !!(props.answer && option.id == props.answer) }
-            color="secondary"
-            id={option.id}
-          />
-        }
-        label={
-          <RichLabel
-            htmlFor={option.id}
-            className={classes.richLabel}
-          >
-            {option.text}
-          </RichLabel>
-        }
-        key={option.id}
-      />
-    )
-  });
-
-  const handleRadioChange = (event) => {
-    const selectedOptionId = event.target.value
-    props.onAnswer(props.id, selectedOptionId);
-    setValue(selectedOptionId);
-  };
-
-  return (
-    <FormControl
-      fullWidth={true}
-      component="fieldset"
-      error={props.showError && props.error}
-      className={props.formControl}
-    >
-      <FormLabel
-        component="legend"
-      >
-        {props.text}
-      </FormLabel>
-      <br />
-      <RadioGroup
-        aria-label="quiz"
-        name="quiz"
-        value={value}
-        onChange={handleRadioChange}
-      >
-        {optionDoms}
-      </RadioGroup>
-      <FormHelperText
-        className={classes.formHelperText}
-      >
-        {props.helperText}
-      </FormHelperText>
-      <Divider
-        className={classes.divider}
-      />
-    </FormControl>
-  );
-}
-
-export class ElementMultiLineTextInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.answer = "";
-        //
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(e) {
-        this.props.onAnswer(this.props.id, e.target.value);
-    }
-
-    render() {
-        return (<div id={this.props.id} 
-                     className="text-input-element"
-                     key={this.props.id + "-D"}>
-                        <RichLabel>
-                            {this.props.text}
-                        </RichLabel>
-                        <textarea value={this.props.answer}
-                                  onChange={this.handleChange}
-                                  placeholder="טקסט"
-                                  className="multiline-input-element" 
-                                  key={this.props.id + "-I"} />
-                </div>);
-    }
-}
- */

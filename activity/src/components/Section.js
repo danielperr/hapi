@@ -54,10 +54,6 @@ export function Section(props) {
   const checkablesAmount = props.elements.filter(element => element.correct !== undefined).length;
   let correctQuestions = new Set();
 
-  // if (props.id == 'lj8GRU76gO') {
-  //   console.log('Section')
-  // }
-
   const handleAnswer = (questionId, answer) => {
     answers[questionId] = answer;
     props.onAnswer(answers);
@@ -114,7 +110,8 @@ export function Section(props) {
 
   const elements = [];
   props.elements.forEach((element) => {
-    let obj;
+    let obj, validationState;
+
     const answer = props.answers[element.id] || "";
 
     if (answer !== "") {
@@ -141,9 +138,13 @@ export function Section(props) {
         break;
 
       case 'text-input':
+        validationState = validations[element.id];
         obj = <ElementTextInput
           text={element.text}
           multiline={element.multiline}
+          error={validationState.error}
+          showError={validationState.showError}
+          helperText={validationState.helperText}
           answer={answer}
           onAnswer={handleAnswer}
           id={element.id}
@@ -151,8 +152,7 @@ export function Section(props) {
         break;
 
       case 'multi-choice':
-        const questionId = element.id;
-        const validationState = validations[questionId];
+        validationState = validations[element.id];
         obj = <ElementMultiChoice
           text={element.text}
           correct={element.correct}

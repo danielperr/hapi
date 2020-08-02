@@ -86,12 +86,14 @@ function SaveAs(answersString) {
   }
 }
 
+/*
 document.addEventListener("keypress", function (e) {
   if (e.keyCode === 13 || e.which === 13) {
     e.preventDefault();
     return false;
   }
 });
+*/
 
 export function App(props) {
   // Get the saved answers on this file
@@ -110,8 +112,6 @@ export function App(props) {
 
   let checkedSections = {};
   const [showSuccess, setShowSuccess] = React.useState(false);
-
-  // console.log('App')
 
   const handleScroll = () => {
     const winScroll =
@@ -169,7 +169,7 @@ export function App(props) {
   };
 
   const resetActivity = () => {
-    var conf = window.confirm("כל התשובות בפעילות זו יימחקו. להמשיך?");
+    var conf = window.confirm(" כל התשובות בפעילות זו יימחקו לצמיתות.\n להמשיך?");
     if (conf) {
       setAnswers({});
       localStorage.setItem(
