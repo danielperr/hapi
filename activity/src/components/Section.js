@@ -73,8 +73,6 @@ export function Section(props) {
     validations[questionId].showError = true;
     let error = true;
 
-    checkInputElement()
-
     if (questionId in answers) {
       // Check if the answer is right
       const answer = props.answers[element.id] || "";
@@ -91,7 +89,7 @@ export function Section(props) {
 
 
 
-    if (value === undefined || value === "") {
+    if (value === "") {
       return elementState.EMPTY;
     }
     if (props.correct.includes(value)) {
