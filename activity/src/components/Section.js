@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 /*
   Provides an area for placing visuals and interactives.
   Each section is like a page
@@ -33,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
   />
 */
 export function Section(props) {
-
   const classes = useStyles();
   const [answers, setAnswers] = React.useState({});
   const [checkText, setCheckText] = React.useState('');
@@ -42,7 +42,7 @@ export function Section(props) {
   const initialValidations = {};
   props.elements.forEach((element) => {
     initialValidations[element.id] = {
-      error: true,
+      error: false,
       showError: false,
       helperText: ' ',
     }
@@ -50,9 +50,6 @@ export function Section(props) {
   const [validations, setValidations] = React.useState(initialValidations);
   const [isValidated, setIsValidated] = React.useState(false);
   const [sectionChecked, setSectionChecked] = React.useState(false);
-
-  const checkablesAmount = props.elements.filter(element => element.correct !== undefined).length;
-  let correctQuestions = new Set();
 
   const handleAnswer = (questionId, answer) => {
     answers[questionId] = answer;
@@ -71,27 +68,89 @@ export function Section(props) {
     checkThisSection();
   }
 
+  const checkMultiChoiceElement = (elementId, answer) => {
+    const questionId = element.id;
+    validations[questionId].showError = true;
+    let error = true;
+
+    checkInputElement()
+
+    if (questionId in answers) {
+      // Check if the answer is right
+      const answer = props.answers[element.id] || "";
+      if (element.correct.includes(answer)) {
+        checkInputElement(answer);
+        correctQuestions.add(questionId);
+        error = false;
+      }
+    }
+    const validationsCopy = Object.assign({}, validations);
+    validationsCopy[questionId].error = error;
+    validationsCopy[questionId].helperText = getPhrase(!error);
+    setValidations(validationsCopy);
+
+
+
+    if (value === undefined || value === "") {
+      return elementState.EMPTY;
+    }
+    if (props.correct.includes(value)) {
+      return elementState.CORRECT;
+    }
+    return elementState.FILLED;
+  }
+  
+  const checkInputElement = (value) => {
+    const questionId = element.id;
+    validations[questionId].showError = true;
+    let error = true;
+
+    checkInputElement()
+
+    if (questionId in answers) {
+      // Check if the answer is right
+      const answer = props.answers[element.id] || "";
+      if (element.correct.includes(answer)) {
+        checkInputElement(answer);
+        correctQuestions.add(questionId);
+        error = false;
+      }
+    }
+    const validationsCopy = Object.assign({}, validations);
+    validationsCopy[questionId].error = error;
+    validationsCopy[questionId].helperText = getPhrase(!error);
+    setValidations(validationsCopy);
+
+
+
+
+    /* */
+    if (value.replace(' ', '') !== "") {
+      return elementState.FILLED;
+    }
+    return elementState.EMPTY;
+  }
 
   const checkThisSection = () => {
     setIsValidated(true);
-    console.log('check')
+
     props.elements.forEach((element) => {
-      if (element.correct !== undefined) {
-        const questionId = element.id;
-        validations[questionId].showError = true;
-        let error = true;
-        if (questionId in answers) {
-          // Check if the answer is right
-          const answer = props.answers[element.id] || "";
-          if (element.correct.includes(answer)) {
-            correctQuestions.add(questionId);
-            error = false;
-          }
+      const questionId = element.id;
+      if (questionId in answers) {
+        // Check if the answer is right
+        const answer = props.answers[element.id] || "";
+        switch (element.type) {
+          case 'text-input':
+            checkInputElement(questionId, answer);
+            break;
+    
+          case 'multi-choice':
+            checkMultiChoiceElement(questionId, answer);
+            break;
+          
+          default:
+            break;
         }
-        const validationsCopy = Object.assign({}, validations);
-        validationsCopy[questionId].error = error;
-        validationsCopy[questionId].helperText = getPhrase(!error);
-        setValidations(validationsCopy);
       }
     })
   }
