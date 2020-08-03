@@ -62,7 +62,6 @@ export function Section(props) {
     setValidations(validations);
   };
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
     checkThisSection();
@@ -86,16 +85,6 @@ export function Section(props) {
     validationsCopy[questionId].error = error;
     validationsCopy[questionId].helperText = getPhrase(!error);
     setValidations(validationsCopy);
-
-
-
-    if (value === "") {
-      return elementState.EMPTY;
-    }
-    if (props.correct.includes(value)) {
-      return elementState.CORRECT;
-    }
-    return elementState.FILLED;
   }
   
   const checkInputElement = (value) => {
@@ -118,15 +107,6 @@ export function Section(props) {
     validationsCopy[questionId].error = error;
     validationsCopy[questionId].helperText = getPhrase(!error);
     setValidations(validationsCopy);
-
-
-
-
-    /* */
-    if (value.replace(' ', '') !== "") {
-      return elementState.FILLED;
-    }
-    return elementState.EMPTY;
   }
 
   const checkThisSection = () => {
@@ -157,9 +137,6 @@ export function Section(props) {
   if (props.check && !isValidated) {
     checkThisSection();
     // Return if all inputs are filled and/or correct
-    console.log('props.id = ' + props.id);
-    console.log('checkablesAmount = ' + checkablesAmount)
-    console.log('correctQuestions.size = ' + correctQuestions.size)
     props.onCheck(props.id, (checkablesAmount === correctQuestions.size));
   } else if (!props.check && isValidated) {
     setIsValidated(false);
