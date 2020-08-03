@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     correct (list): correct answers
     incorrect (list): incorrect answers
     error (boolean): whether the answer is incorrect
-    showError (boolean): whether the question has been validated (f.e using a 'check answers' button)
+    showHelperText (boolean): whether the question has been validated (f.e using a 'check answers' button)
     answer (string): predefined answer (from loading a saved file)
     onAnswer (function): callback fcn when an answer is selected
     id (string): question id
@@ -96,7 +96,7 @@ export function ElementMultiChoice(props) {
     <FormControl
       fullWidth={true}
       component="fieldset"
-      error={props.showError && props.error}
+      error={props.showHelperText && props.error}
       className={props.formControl}
     >
       <FormLabel

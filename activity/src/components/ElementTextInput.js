@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     text (string): question / title
     multiline (string): is multiline or not if not undefined
     error (boolean): whether the answer is incorrect
-    showError (boolean): whether the question has been validated (f.e using a 'check answers' button)
+    showHelperText (boolean): whether the question has been validated (f.e using a 'check answers' button)
     answer (string): filled text
     onAnswer (function): callback fcn when an answer is filled
     id (string): question id
@@ -64,14 +64,14 @@ export function ElementTextInput(props) {
   useEffect(() => {
     let interval = null;
     if (isActive) {
-      if (seconds >= 1) {
+      if (seconds >= 2) {
         // Pop up a snackbar (Save successfully)
         props.onAnswer(props.id, value);
         reset();
       } else {
         interval = setInterval(() => {
-          setSeconds((seconds) => seconds + 0.5);
-        }, 500);
+          setSeconds((seconds) => seconds + 1);
+        }, 100);
       }
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
@@ -81,7 +81,13 @@ export function ElementTextInput(props) {
 
 
   return (
-    <FormControl error="true" noValidate autoComplete="off" fullWidth={true} className={props.formControl}>
+    <FormControl 
+      error={props.showHelperText && props.error} 
+      noValidate 
+      autoComplete="off" 
+      fullWidth={true} 
+      className={props.formControl}
+    >
       <FormLabel component="legend">
           {props.text}
       </FormLabel>
