@@ -37,10 +37,12 @@ export function Section(props) {
   const classes = useStyles();
   const checkablesAmount = props.elements.filter(element => element.type === 'multi-choice').length;
 
+  /* When the user answers on a question (changes its 'answer' state) */
   const handleAnswer = (questionId, answer) => {
     props.onAnswer(questionId, answer);
   };
 
+  /* When the user attempts to check this section */
   const handleSubmit = (event) => {
     event.preventDefault();
     props.onCheck(props.id);

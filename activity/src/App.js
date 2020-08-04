@@ -97,15 +97,12 @@ export function App(props) {
     initialAnswers = JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {};
   }
   const [answers, setAnswers] = React.useState(initialAnswers);
-
   const [progress, setProgress] = React.useState(0); // top bar progress bar percentage
   const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
-
-  let [checkAll, setCheckAll] = React.useState(false); // whether to activate the "check answers" button in every section
   const sectionCount = props.structure.sections.length;
-
   const [showSuccess, setShowSuccess] = React.useState(false);
 
+  /* Handle scroll event */
   const handleScroll = () => {
     const winScroll =
       document.body.scrollTop || document.documentElement.scrollTop;
@@ -121,6 +118,7 @@ export function App(props) {
     window.addEventListener('scroll', handleScroll);
   }, []);
 
+  /* When the user answers a question */
   const handleAnswer = (elementId, answer) => {
     const validationsCopy = Object.assign({}, elementsValidations);
     validationsCopy[elementId].helperText = " ";
@@ -136,6 +134,7 @@ export function App(props) {
     );
   };
 
+  /* When the user attempts to check the whole activity */
   const handleSubmit = () => {
     let finishedSections = 0;
 
@@ -149,6 +148,7 @@ export function App(props) {
     }
   };
 
+  /* Prompt for confirmation, erase all the answers and reload the activity */
   const resetActivity = () => {
     var conf = window.confirm(" כל התשובות בפעילות זו יימחקו לצמיתות.\n להמשיך?");
     if (conf) {
@@ -164,11 +164,11 @@ export function App(props) {
     }
   }
 
+  /* When the user closes the success snackbar */
   const handleSuccessClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
     setShowSuccess(false);
   };
 
