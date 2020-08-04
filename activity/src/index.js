@@ -33,7 +33,7 @@ const structure = {
         "id": "KjaUH3GiYA"
       }, {
         "type": "image",
-        "src": "assets/img/1.png",
+        "src": "https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/images/1.png",
         "id": "RdF0Nw2lHr"
       }, {
         "type": "multi-choice",
@@ -75,7 +75,7 @@ const structure = {
         "id": "oOnvOgSxKn"
       }, {
         "type": "image",
-        "src": "assets/img/2.png",
+        "src": "https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/images/2.png",
         "id": "HF1JBwk7x1"
       }, {
         "type": "multi-choice",
@@ -134,7 +134,7 @@ const structure = {
         "id": "oO156gSxKn"
       }, {
         "type": "image",
-        "src": "assets/img/3.png",
+        "src": "https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/images/3.png",
         "id": "HF1Jawy7zv"
       }, {
         "type": "multi-choice",
@@ -181,7 +181,7 @@ const structure = {
         "id": "oOnvOgSxKn"
       }, {
         "type": "image",
-        "src": "assets/img/4.png",
+        "src": "https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/images/4.png",
         "id": "HF1fx157x1"
       }, {
         "type": "multi-choice",
@@ -204,7 +204,7 @@ const structure = {
         "id": "aOAvOgSxKn"
       }, {
         "type": "image",
-        "src": "assets/img/5.png",
+        "src": "https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/images/5.png",
         "id": "HF1fx152x1"
       }, {
         "type": "label",
@@ -217,13 +217,13 @@ const structure = {
         "id": "FX2duGyIva",
         "correct": ["CrY12rtl7i"],
         "options": [{
-          "text": "![תמונה א](assets/img/6.png)",
+          "text": "![תמונה א](https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/images/6.png)",
           "id": "12oOiEQppA"
         }, {
-          "text": "![תמונה ב](assets/img/7.png)",
+          "text": "![תמונה ב](https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/images/7.png)",
           "id": "zp5c62h9GC"
         }, {
-          "text": "![תמונה ג](assets/img/8.png)",
+          "text": "![תמונה ג](https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/images/8.png)",
           "id": "kjac6vh9GC"
         }, {
           "text": "א. ו- ב. אך לא ג",
