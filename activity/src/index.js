@@ -14,7 +14,8 @@ const structure = {
         "type": "number-input",
         "text": "כמה זה 2 + 3?",
         "id": "a8HJvwa243",
-        "correct": 5,
+        "min": "4.5",
+        "max": "5.5",
       }],
     }, {
       "header": "צפייה בסרטון",

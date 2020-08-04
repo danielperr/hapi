@@ -8,6 +8,22 @@ const useStyles = makeStyles(theme => ({
   textField: {
     textAlign: 'left',
   },
+  formControlLabel: {
+    margin: -theme.spacing(0.25),
+  },
+  formHelperText: {
+    margin: theme.spacing(1, 1, 2, 0),
+    textAlign: "right",
+  },
+  button: {
+    margin: theme.spacing(1, 1, 0, 0),
+  },
+  richLabel: {
+    cursor: "pointer",
+  },
+  divider: {
+    marginBottom: theme.spacing(4),
+  },
 }));
 
 
@@ -74,7 +90,7 @@ export function ElementNumberInput({ text, error, helperText, showHelperText, an
         onChange={handleChange}
         defaultValue={answer}
         variant="outlined"
-        inputProps={{min: 0, style: { textAlign: 'center' }}}
+        inputProps={{min: 0, style: { textAlign: 'left' }}}
         InputProps={{
           inputComponent: NumberFormatCustom,
         }}

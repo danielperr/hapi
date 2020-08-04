@@ -34,7 +34,9 @@ const useStyles = makeStyles((theme) => ({
 */
 export function Section(props) {
   const classes = useStyles();
-  const checkablesAmount = props.elements.filter(element => element.type === 'multi-choice').length;
+
+  const checkablesTypes = ['multi-choice', 'number-input'];
+  const checkablesAmount = props.elements.filter(element => checkablesTypes.includes(element.type)).length;
 
   /* When the user answers on a question (changes its 'answer' state) */
   const handleAnswer = (questionId, answer) => {

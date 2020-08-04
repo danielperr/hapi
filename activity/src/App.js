@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
-import Grid from "@material-ui/core/Grid";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Toolbar, Container, Button, Box, Fab, Snackbar, IconButton, } from "@material-ui/core";
+import { CssBaseline, Toolbar, Container, Box, Fab, Snackbar, IconButton, } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { Section } from "./components/Section";
 import { TopBar } from "./components/TopBar";
 import { dropConfetti } from "./confetti";
-import CheckIcon from "@material-ui/icons/Check";
 import { getPhrase } from './utils';
+import CheckIcon from "@material-ui/icons/Check";
+
+import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
 
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
@@ -90,33 +91,34 @@ function SaveAs(answersString) {
 
 export function App(props) {
   const classes = useStyles(theme);
-
+  
   let initialAnswers = JSON.parse(document.getElementById("save-input").value || "{}");
   if (!Object.keys(initialAnswers).length) {
     // Get answers from local storage
     initialAnswers = JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {};
   }
   const [answers, setAnswers] = React.useState(initialAnswers);
-  const [progress, setProgress] = React.useState(0); // top bar progress bar percentage
-  const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
   const sectionCount = props.structure.sections.length;
   const [showSuccess, setShowSuccess] = React.useState(false);
 
-  /* Handle scroll event */
-  const handleScroll = () => {
-    const winScroll =
-      document.body.scrollTop || document.documentElement.scrollTop;
-    const height =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight;
-    const scrolled = Math.round((100 * winScroll) / height);
-    setTopBarElevation(scrolled);
-    // setProgress(scrolled);
-  };
+  // /* Handle scroll event */
+  // const [progress, setProgress] = React.useState(0); // top bar progress bar percentage
+  // const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
+  // const handleScroll = () => {
+  //   const winScroll =
+  //     document.body.scrollTop || document.documentElement.scrollTop;
+  //   const height =
+  //     document.documentElement.scrollHeight -
+  //     document.documentElement.clientHeight;
+  //   const scrolled = Math.round((100 * winScroll) / height);
+  //   setTopBarElevation(scrolled);
+  //   // setProgress(scrolled);
+  // };
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+  // }, []);
+  
 
   /* When the user answers a question */
   const handleAnswer = (elementId, answer) => {
@@ -134,12 +136,38 @@ export function App(props) {
     );
   };
 
+  const scrollTo = (eId, offset) => {
+    scroller.scrollTo(eId, {
+      duration: 1000,
+      delay: 100,
+      smooth: "easeInOutQuint",
+      offset: offset
+    });
+  }
+
   /* When the user attempts to check the whole activity */
   const handleSubmit = () => {
     let finishedSections = 0;
+
     props.structure.sections.forEach((se) => {
       finishedSections += checkSection(se) ? 1 : 0; 
     });
+
+    /* Find the first element that has an error and scroll to it */
+    let elementId = "";
+    allFillableElements.some((el) => {
+      if (elementsValidations[el.id].error === true) {
+        elementId = el.id;
+        // acts as a break.
+        return true;
+      }
+      return false;
+    });
+
+    if (elementId !== "") {
+      scrollTo(elementId, -100);
+    }
+
     if (finishedSections === sectionCount) {
       dropConfetti();
       setShowSuccess(true);
@@ -217,7 +245,7 @@ export function App(props) {
     setElementsValidations(validationsCopy);
   }
   
-  const checkInputElement = (element, elementId, answer, correctElements) => {
+  const checkTextInputElement = (element, elementId, answer, correctElements) => {
     const validationsCopy = Object.assign({}, elementsValidations);
     let error = true;
 
@@ -237,6 +265,28 @@ export function App(props) {
     setElementsValidations(validationsCopy);
   }
 
+  const checkNumberInputElement = (element, elementId, answer, correctElements) => {
+    const validationsCopy = Object.assign({}, elementsValidations);
+    let error = true;
+
+    if (answer !== "") {
+      // Check if the answer is right, which means the number is witin th given range.
+      if (element.min <= answer && answer <= element.max) {
+        correctElements.add(elementId);
+        error = false;
+      }
+      
+      validationsCopy[elementId].helperText = getPhrase(!error);
+    } else {
+      // This element has no answer in App's answers therefore its emepty and has to be filled.
+      validationsCopy[elementId].helperText = "חסרה תשובה";      
+    }
+    
+    validationsCopy[elementId].showHelperText = true;
+    validationsCopy[elementId].error = error;
+    setElementsValidations(validationsCopy);
+  }
+
   /* Check section and return whether it's completely finished;
      section is an object */
   const checkSection = (section) => {
@@ -245,15 +295,16 @@ export function App(props) {
     section.elements.forEach((element) => {
       const questionId = element.id;
       const answer = answers[questionId] || "";
+
       switch (element.type) {
         case 'text-input':
-          checkInputElement(element, questionId, answer, correctElements);
+          checkTextInputElement(element, questionId, answer, correctElements);
           break;
         case 'multi-choice':
           checkMultiChoiceElement(element, questionId, answer, correctElements);
           break;
         case 'number-input':
-
+          checkNumberInputElement(element, questionId, answer, correctElements);
           break;
         default:
           break;
@@ -291,8 +342,8 @@ export function App(props) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <TopBar
-          progress={progress}
-          elevation={topBarElevation}
+          // progress={progress}
+          // elevation={topBarElevation}
           onDownload={() => {
             SaveAs(JSON.stringify(answers));
           }}
