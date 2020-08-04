@@ -1,4 +1,3 @@
-/[Ee]xports/
-
-.vscode/
-.vs/
+.vscode
+.vs
+export
