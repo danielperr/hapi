@@ -87,22 +87,16 @@ function SaveAs(answersString) {
   }
 }
 
-/*
-document.addEventListener("keypress", function (e) {
-  if (e.keyCode === 13 || e.which === 13) {
-    e.preventDefault();
-    return false;
-  }
-});
-*/
 
 export function App(props) {
-  // Get the saved answers on this file
   const classes = useStyles(theme);
-  const [answers, setAnswers] = React.useState(
-    JSON.parse(document.getElementById("save-input").value || "{}")
-  );
-  const [isAnswersLoaded, setIsAnswerLoaded] = React.useState(false);
+
+  let initialAnswers = JSON.parse(document.getElementById("save-input").value || "{}");
+  if (!Object.keys(initialAnswers).length) {
+    // Get answers from local storage
+    initialAnswers = JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {};
+  }
+  const [answers, setAnswers] = React.useState(initialAnswers);
 
   const [progress, setProgress] = React.useState(0); // top bar progress bar percentage
   const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
@@ -123,16 +117,9 @@ export function App(props) {
     // setProgress(scrolled);
   };
 
-  if (!isAnswersLoaded) {
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    if (!Object.keys(answers).length) {
-      // Get the saved answers from local storage
-      setAnswers(
-        JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {}
-      );
-      setIsAnswerLoaded(true);
-    }
-  }
+  }, []);
 
   const handleAnswer = (elementId, answer) => {
     const validationsCopy = Object.assign({}, elementsValidations);
