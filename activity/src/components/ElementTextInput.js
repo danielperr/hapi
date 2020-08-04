@@ -65,7 +65,6 @@ export function ElementTextInput(props) {
     let interval = null;
     if (isActive) {
       if (seconds >= 2) {
-        // Pop up a snackbar (Save successfully)
         props.onAnswer(props.id, value);
         reset();
       } else {

@@ -7,8 +7,16 @@ import { App } from './App';
 const structure = {
   "serialNumber": "bJbiiGDGd29p7xJPI4xk",
   "mainHeader": "תרגול - הדמיית תנועה",
-  "sections": [
-    {
+  "sections": [{
+      "header": "בדיקה",
+      "id": "km8hGF9kA8",
+      "elements": [{
+        "type": "number-input",
+        "text": "כמה זה 2 + 3?",
+        "id": "a8HJvwa243",
+        "correct": 5,
+      }],
+    }, {
       "header": "צפייה בסרטון",
       "id": "cwcXgOAKpC",
       "elements": [{

@@ -6,9 +6,8 @@ import { ElementImage } from "./ElementImage";
 import { ElementYoutube } from "./ElementYoutube";
 import { ElementTextInput } from "./ElementTextInput";
 import { ElementMultiChoice } from "./ElementMultiChoice";
+import { ElementNumberInput } from "./ElementNumberInput";
 import { SectionHeader } from "./SectionHeader";
-import { ElementMathInput } from './ElementMathInput';
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -96,6 +95,19 @@ export function Section(props) {
           error={validationState.error}
           showHelperText={validationState.showHelperText}
           helperText={validationState.helperText}
+          answer={answer}
+          onAnswer={handleAnswer}
+          id={element.id}
+          key={element.id}
+        />;
+        break;
+      
+      case 'number-input':
+        obj = <ElementNumberInput
+          text={element.text}
+          error={validationState.error}
+          helperText={validationState.helperText}
+          showHelperText={validationState.showHelperText}
           answer={answer}
           onAnswer={handleAnswer}
           id={element.id}

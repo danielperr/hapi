@@ -181,7 +181,7 @@ export function App(props) {
     return section;
   }
 
-  const fillableTypes = ['multi-choice', 'text-input'];
+  const fillableTypes = ['multi-choice', 'text-input', 'number-input'];
   const allFillableElements = props.structure.sections.map(s => s.elements.filter(e => fillableTypes.includes(e.type))).flat(1);
   const initialValidations = {};
   // {questionId: {error: (boolean), showHelperText: (boolean), helperText: (string)}}
@@ -251,6 +251,9 @@ export function App(props) {
           break;
         case 'multi-choice':
           checkMultiChoiceElement(element, questionId, answer, correctElements);
+          break;
+        case 'number-input':
+
           break;
         default:
           break;
