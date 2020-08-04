@@ -137,11 +137,9 @@ export function App(props) {
   /* When the user attempts to check the whole activity */
   const handleSubmit = () => {
     let finishedSections = 0;
-
     props.structure.sections.forEach((se) => {
       finishedSections += checkSection(se) ? 1 : 0; 
     });
-
     if (finishedSections === sectionCount) {
       dropConfetti();
       setShowSuccess(true);
@@ -239,39 +237,31 @@ export function App(props) {
     setElementsValidations(validationsCopy);
   }
 
+  /* Check section and return whether it's completely finished;
+     section is an object */
   const checkSection = (section) => {
     let correctElements = new Set();
 
-    console.log(section);
     section.elements.forEach((element) => {
       const questionId = element.id;
-      // Check if the answer is right
       const answer = answers[questionId] || "";
       switch (element.type) {
         case 'text-input':
           checkInputElement(element, questionId, answer, correctElements);
           break;
-  
         case 'multi-choice':
           checkMultiChoiceElement(element, questionId, answer, correctElements);
           break;
-        
         default:
           break;
       }
     });
 
-    
     const fillableAmount = section.elements.filter(e => fillableTypes.includes(e.type)).length;
-
-    console.log(correctElements);
-    console.log(fillableAmount);
-    console.log("Hello from " + section.id + " , " + (correctElements.size === fillableAmount));
-
-    console.log(elementsValidations);
     return(correctElements.size === fillableAmount);
   }
 
+  /* Same as 'checkSection' but the argument is id (string) and not section (object) */
   const checkSectionById = (sectionId) => {
     const section = getSectionById(sectionId);
     return checkSection(section);
