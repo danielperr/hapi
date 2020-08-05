@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
               <IconMenuBook />
             </IconButton> */}
             <Typography variant="h6" className={ classes.title }>
-             הדמיית תנועה פעילות ראשונה
+              {props.mainHeader}
             </Typography>
             <IconButton color="inherit" onClick={props.onDownload}>
               <SaveAltIcon />

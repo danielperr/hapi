@@ -344,6 +344,7 @@ export function App(props) {
         <TopBar
           // progress={progress}
           // elevation={topBarElevation}
+          mainHeader={props.structure.mainHeader}
           onDownload={() => {
             SaveAs(JSON.stringify(answers));
           }}

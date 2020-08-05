@@ -6,7 +6,7 @@ import { App } from './App';
 
 const structure = {
   "serialNumber": "bJbiiGDGd29p7xJPI4xk",
-  "mainHeader": "תרגול - הדמיית תנועה",
+  "mainHeader": "הדמיית תנועה - פעילות ראשונה",
   "sections": [{
       "header": "בדיקה",
       "id": "km8hGF9kA8",
