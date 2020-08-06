@@ -1,15 +1,53 @@
 import React, { useEffect } from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Toolbar, Container, Box, Fab, Snackbar, IconButton, } from "@material-ui/core";
+import {
+  CssBaseline,
+  Toolbar,
+  Container,
+  Box,
+  Fab,
+  Snackbar,
+  IconButton,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { Section } from "./components/Section";
 import { TopBar } from "./components/TopBar";
 import { dropConfetti } from "./confetti";
-import { getPhrase } from './utils';
+import { getPhrase } from "./utils";
 import CheckIcon from "@material-ui/icons/Check";
 
-import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
+import {
+  Link,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+  scroller,
+} from "react-scroll";
+
+
+import PropTypes from "prop-types";
+import AppBar from "@material-ui/core/AppBar";
+import Typography from "@material-ui/core/Typography";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Zoom from "@material-ui/core/Zoom";
+import { ScrollTop } from "./components/ScrollTop";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
@@ -88,14 +126,16 @@ function SaveAs(answersString) {
   }
 }
 
-
 export function App(props) {
   const classes = useStyles(theme);
-  
-  let initialAnswers = JSON.parse(document.getElementById("save-input").value || "{}");
+
+  let initialAnswers = JSON.parse(
+    document.getElementById("save-input").value || "{}"
+  );
   if (!Object.keys(initialAnswers).length) {
     // Get answers from local storage
-    initialAnswers = JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {};
+    initialAnswers =
+      JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {};
   }
   const [answers, setAnswers] = React.useState(initialAnswers);
   const sectionCount = props.structure.sections.length;
@@ -118,7 +158,6 @@ export function App(props) {
   // useEffect(() => {
   //   window.addEventListener('scroll', handleScroll);
   // }, []);
-  
 
   /* When the user answers a question */
   const handleAnswer = (elementId, answer) => {
@@ -128,7 +167,7 @@ export function App(props) {
     validationsCopy[elementId].error = false;
     setElementsValidations(validationsCopy);
 
-    const answersCopy = Object.assign({}, answers, {[elementId]: answer,});
+    const answersCopy = Object.assign({}, answers, { [elementId]: answer });
     setAnswers(answersCopy);
     localStorage.setItem(
       props.structure.serialNumber,
@@ -141,16 +180,16 @@ export function App(props) {
       duration: 1000,
       delay: 100,
       smooth: "easeInOutQuint",
-      offset: offset
+      offset: offset,
     });
-  }
+  };
 
   /* When the user attempts to check the whole activity */
   const handleSubmit = () => {
     let finishedSections = 0;
 
     props.structure.sections.forEach((se) => {
-      finishedSections += checkSection(se) ? 1 : 0; 
+      finishedSections += checkSection(se) ? 1 : 0;
     });
 
     /* Find the first element that has an error and scroll to it */
@@ -176,19 +215,18 @@ export function App(props) {
 
   /* Prompt for confirmation, erase all the answers and reload the activity */
   const resetActivity = () => {
-    var conf = window.confirm(" כל התשובות בפעילות זו יימחקו לצמיתות.\n להמשיך?");
+    var conf = window.confirm(
+      " כל התשובות בפעילות זו יימחקו לצמיתות.\n להמשיך?"
+    );
     if (conf) {
       setAnswers({});
-      localStorage.setItem(
-        props.structure.serialNumber,
-        JSON.stringify({})
-      );
-      if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'manual';
+      localStorage.setItem(props.structure.serialNumber, JSON.stringify({}));
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
       }
       window.location.reload();
     }
-  }
+  };
 
   /* When the user closes the success snackbar */
   const handleSuccessClose = (event, reason) => {
@@ -207,23 +245,32 @@ export function App(props) {
     });
 
     return section;
-  }
+  };
 
-  const fillableTypes = ['multi-choice', 'text-input', 'number-input'];
-  const allFillableElements = props.structure.sections.map(s => s.elements.filter(e => fillableTypes.includes(e.type))).flat(1);
+  const fillableTypes = ["multi-choice", "text-input", "number-input"];
+  const allFillableElements = props.structure.sections
+    .map((s) => s.elements.filter((e) => fillableTypes.includes(e.type)))
+    .flat(1);
   const initialValidations = {};
   // {questionId: {error: (boolean), showHelperText: (boolean), helperText: (string)}}
   allFillableElements.forEach((element) => {
     initialValidations[element.id] = {
       error: false,
       showHelperText: false,
-      helperText: ' ',
-    }
+      helperText: " ",
+    };
   });
 
-  const [elementsValidations, setElementsValidations] = React.useState(initialValidations);
+  const [elementsValidations, setElementsValidations] = React.useState(
+    initialValidations
+  );
 
-  const checkMultiChoiceElement = (element, elementId, answer, correctElements) => {
+  const checkMultiChoiceElement = (
+    element,
+    elementId,
+    answer,
+    correctElements
+  ) => {
     const validationsCopy = Object.assign({}, elementsValidations);
     let error = true;
 
@@ -237,35 +284,48 @@ export function App(props) {
       validationsCopy[elementId].helperText = getPhrase(!error);
     } else {
       // This element has no answer in App's answers therefore its emepty and has to be filled.
-      validationsCopy[elementId].helperText = "חסרה תשובה";      
+      validationsCopy[elementId].helperText = "חסרה תשובה";
     }
-    
+
     validationsCopy[elementId].showHelperText = true;
     validationsCopy[elementId].error = error;
     setElementsValidations(validationsCopy);
-  }
-  
-  const checkTextInputElement = (element, elementId, answer, correctElements) => {
+  };
+
+  const checkTextInputElement = (
+    element,
+    elementId,
+    answer,
+    correctElements
+  ) => {
     const validationsCopy = Object.assign({}, elementsValidations);
     let error = true;
 
-    if (elementId in answers && answer.replace(/[ (\r\n|\r|\n)]/gi, '') !== "") {
+    if (
+      elementId in answers &&
+      answer.replace(/[ (\r\n|\r|\n)]/gi, "") !== ""
+    ) {
       // Check if there is an answer, if there is then the element is correct.
       correctElements.add(elementId);
       error = false;
-      
+
       validationsCopy[elementId].helperText = " ";
     } else {
       // This element has no answer in App's answers therefore its emepty and has to be filled.
-      validationsCopy[elementId].helperText = "חסרה תשובה";      
+      validationsCopy[elementId].helperText = "חסרה תשובה";
     }
-    
+
     validationsCopy[elementId].showHelperText = true;
     validationsCopy[elementId].error = error;
     setElementsValidations(validationsCopy);
-  }
+  };
 
-  const checkNumberInputElement = (element, elementId, answer, correctElements) => {
+  const checkNumberInputElement = (
+    element,
+    elementId,
+    answer,
+    correctElements
+  ) => {
     const validationsCopy = Object.assign({}, elementsValidations);
     let error = true;
 
@@ -275,17 +335,17 @@ export function App(props) {
         correctElements.add(elementId);
         error = false;
       }
-      
+
       validationsCopy[elementId].helperText = getPhrase(!error);
     } else {
       // This element has no answer in App's answers therefore its emepty and has to be filled.
-      validationsCopy[elementId].helperText = "חסרה תשובה";      
+      validationsCopy[elementId].helperText = "חסרה תשובה";
     }
-    
+
     validationsCopy[elementId].showHelperText = true;
     validationsCopy[elementId].error = error;
     setElementsValidations(validationsCopy);
-  }
+  };
 
   /* Check section and return whether it's completely finished;
      section is an object */
@@ -297,13 +357,13 @@ export function App(props) {
       const answer = answers[questionId] || "";
 
       switch (element.type) {
-        case 'text-input':
+        case "text-input":
           checkTextInputElement(element, questionId, answer, correctElements);
           break;
-        case 'multi-choice':
+        case "multi-choice":
           checkMultiChoiceElement(element, questionId, answer, correctElements);
           break;
-        case 'number-input':
+        case "number-input":
           checkNumberInputElement(element, questionId, answer, correctElements);
           break;
         default:
@@ -311,16 +371,18 @@ export function App(props) {
       }
     });
 
-    const fillableAmount = section.elements.filter(e => fillableTypes.includes(e.type)).length;
-    return(correctElements.size === fillableAmount);
-  }
+    const fillableAmount = section.elements.filter((e) =>
+      fillableTypes.includes(e.type)
+    ).length;
+    return correctElements.size === fillableAmount;
+  };
 
   /* Same as 'checkSection' but the argument is id (string) and not section (object) */
   const checkSectionById = (sectionId) => {
     const section = getSectionById(sectionId);
     return checkSection(section);
-  }
-  
+  };
+
   const sections = [];
   props.structure.sections.forEach((section) => {
     sections.push(
@@ -341,6 +403,7 @@ export function App(props) {
     <React.Fragment>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Toolbar id="back-to-top-anchor" />
         <TopBar
           // progress={progress}
           // elevation={topBarElevation}
@@ -351,6 +414,77 @@ export function App(props) {
           onReset={resetActivity}
         />
         <Toolbar />
+        <nav class="jss52" aria-label="Page table of contents">
+          <p class="MuiTypography-root jss53 MuiTypography-body1 MuiTypography-gutterBottom">
+            Contents
+          </p>
+          <ul class="MuiTypography-root jss54 MuiTypography-body1">
+            <li>
+              <a
+                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                href="/components/timeline/#basic-timeline"
+              >
+                <span>Basic timeline</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                href="/components/timeline/#right-aligned-timeline"
+              >
+                <span>Right aligned timeline</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                href="/components/timeline/#alternating-timeline"
+              >
+                <span>Alternating timeline</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                href="/components/timeline/#color"
+              >
+                <span>Color</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                href="/components/timeline/#outlined"
+              >
+                <span>Outlined</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                href="/components/timeline/#opposite-content"
+              >
+                <span>Opposite content</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                href="/components/timeline/#customized-timeline"
+              >
+                <span>Customized timeline</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                href="/components/timeline/#api"
+              >
+                <span>API</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
         <Container maxWidth="md" className={classes.container}>
           {sections}
           <Box
@@ -399,6 +533,11 @@ export function App(props) {
             }
           />
         </Container>
+        <ScrollTop {...props}>
+          <Fab color="secondary" size="small" aria-label="scroll back to top">
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </ScrollTop>
       </ThemeProvider>
     </React.Fragment>
   );

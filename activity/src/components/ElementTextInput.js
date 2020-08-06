@@ -95,6 +95,7 @@ export function ElementTextInput(props) {
             onChange={handleChange}
             defaultValue={props.answer}
             multiline={!!props.multiline}
+            inputProps={{maxLength: 85}}
             rows={6}
             fullWidth={true}
             variant="outlined"
