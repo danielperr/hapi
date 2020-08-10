@@ -131,6 +131,7 @@ export function Section(props) {
 
   return (
     <Paper
+      id={props.id}
       // elevation={5}
       className={classes.sectionPaper}
     >

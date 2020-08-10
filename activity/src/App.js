@@ -16,7 +16,9 @@ import { TopBar } from "./components/TopBar";
 import { dropConfetti } from "./confetti";
 import { getPhrase } from "./utils";
 import CheckIcon from "@material-ui/icons/Check";
-
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import AppTableOfContents from "./components/AppTableOfContents";
+import { ScrollTop } from "./components/ScrollTop";
 import {
   Link,
   Element,
@@ -25,30 +27,6 @@ import {
   scrollSpy,
   scroller,
 } from "react-scroll";
-
-
-import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Zoom from "@material-ui/core/Zoom";
-import { ScrollTop } from "./components/ScrollTop";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
@@ -403,7 +381,7 @@ export function App(props) {
     <React.Fragment>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Toolbar id="back-to-top-anchor" />
+        <div id="back-to-top-anchor" />
         <TopBar
           // progress={progress}
           // elevation={topBarElevation}
@@ -414,77 +392,7 @@ export function App(props) {
           onReset={resetActivity}
         />
         <Toolbar />
-        <nav class="jss52" aria-label="Page table of contents">
-          <p class="MuiTypography-root jss53 MuiTypography-body1 MuiTypography-gutterBottom">
-            Contents
-          </p>
-          <ul class="MuiTypography-root jss54 MuiTypography-body1">
-            <li>
-              <a
-                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
-                href="/components/timeline/#basic-timeline"
-              >
-                <span>Basic timeline</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
-                href="/components/timeline/#right-aligned-timeline"
-              >
-                <span>Right aligned timeline</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
-                href="/components/timeline/#alternating-timeline"
-              >
-                <span>Alternating timeline</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
-                href="/components/timeline/#color"
-              >
-                <span>Color</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
-                href="/components/timeline/#outlined"
-              >
-                <span>Outlined</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
-                href="/components/timeline/#opposite-content"
-              >
-                <span>Opposite content</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
-                href="/components/timeline/#customized-timeline"
-              >
-                <span>Customized timeline</span>
-              </a>
-            </li>
-            <li>
-              <a
-                class="MuiTypography-root MuiLink-root MuiLink-underlineNone jss55 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
-                href="/components/timeline/#api"
-              >
-                <span>API</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <AppTableOfContents {...props}></AppTableOfContents>
         <Container maxWidth="md" className={classes.container}>
           {sections}
           <Box
