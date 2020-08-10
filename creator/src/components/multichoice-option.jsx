@@ -1,8 +1,7 @@
 import React from 'react';
-import Editable from './Editable';
+import Editable from './editable/editable';
 
-
-export default function MultiChoiceOption({ structure, name, select }) {
+function MultiChoiceOption({ structure, name, select }) {
   const {id, text} = structure;
   return (
     <div className="radio">
@@ -11,3 +10,5 @@ export default function MultiChoiceOption({ structure, name, select }) {
     </div>
   )
 }
+
+export default MultiChoiceOption;

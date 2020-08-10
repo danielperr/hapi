@@ -1,8 +1,7 @@
 import React from 'react';
-import Editable from './Editable';
+import Editable from './editable/editable';
 
-
-export default function ElementYoutube({ structure }) {
+function ElementYoutube({ structure }) {
   return (
     <>
       <Editable>{`https://youtube.com/watch?v=${structure.youtubeId}`}</Editable>
@@ -18,3 +17,5 @@ export default function ElementYoutube({ structure }) {
     </>
   );
 }
+
+export default ElementYoutube;

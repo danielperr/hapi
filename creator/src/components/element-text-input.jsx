@@ -1,9 +1,8 @@
 import React from 'react';
-import Checkbox from './Checkbox';
-import Editable from './Editable';
+import Checkbox from './checkbox/checkbox';
+import Editable from './editable/editable';
 
-
-export default function ElementTextInput({ structure }) {
+function ElementTextInput({ structure }) {
   
   return (
     <>
@@ -13,3 +12,5 @@ export default function ElementTextInput({ structure }) {
     </>
   );
 }
+
+export default ElementTextInput;

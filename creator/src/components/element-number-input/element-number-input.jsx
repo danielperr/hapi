@@ -1,8 +1,8 @@
 import React from 'react';
-import Editable from './Editable';
+import Editable from '../editable';
+import './element-number-input.css';
 
-
-export default function ElementNumberInput({ structure }) {
+function ElementNumberInput({ structure }) {
   
   return (
     <>
@@ -17,7 +17,7 @@ export default function ElementNumberInput({ structure }) {
             </td>
             <td></td>
             <td>
-              <input type="number" />
+              <input type="number" className="element-number-input" />
             </td>
           </tr>
           <tr>
@@ -26,7 +26,7 @@ export default function ElementNumberInput({ structure }) {
             </td>
             <td></td>
             <td>
-              <input type="number" />
+              <input type="number" className="element-number-input" />
             </td>
           </tr>
         </tbody>
@@ -34,3 +34,5 @@ export default function ElementNumberInput({ structure }) {
     </>
   );
 }
+
+export default ElementNumberInput;

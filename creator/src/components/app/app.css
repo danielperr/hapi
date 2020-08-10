@@ -1,0 +1,19 @@
+
+.app {
+  max-width: 800px;
+  padding: 32px;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 8px;
+}
+
+@media (max-width: 900px) {
+  .app {
+    padding: 0;
+    max-width: none;
+  }
+}

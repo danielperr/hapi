@@ -1,7 +1,7 @@
 import React from 'react';
+import './editable.css';
 
-
-export default function Editable({ children, size, onChange }) {
+function Editable({ children, size, onChange }) {
 
   const handleChange = (e) => {
     onChange(e.target.value);
@@ -16,3 +16,5 @@ export default function Editable({ children, size, onChange }) {
     <textarea className={`editable ${sizeCName}`} value={children} onChange={handleChange}></textarea>
   );
 }
+
+export default Editable;

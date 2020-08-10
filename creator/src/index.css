@@ -8,93 +8,44 @@ body {
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   justify-content: center;
-  background: lightgray;
+  background-image: linear-gradient(to top left, #aaa, rgb(178, 206, 231));
+  background-attachment: fixed;
   line-height: 1.5;
 }
 
-span {
-  outline: none;
-  border-bottom: 1px dashed gray;
+button {
+  outline: 0;
+  border: 1px solid #888;
+  box-sizing: border-box;
+  box-shadow: 0 1px 1px #eee;
+  padding: 2px 8px;
 }
 
-img {
-  max-width: 50%;
+button:hover {
+  background-color: #f7f7f7;
 }
 
-input[type="number"] {
-  width: 50px;
+button:active {
+  border: 1px solid #999;
+  background-color: #bbb;
 }
 
-.app {
-  width: 800px;
-  background: white;
-  padding: 32px;
+select {
+  padding: 1px;
+  /* border-radius: 4px; */
 }
 
-.editable {
-  border: 1px dashed gray;
-  border-radius: 2px;
-  padding: 8px;
-  outline: none;
-  width: 100%;
-  font-family: 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-}
-
-.h1 {
-  font-size: 2rem;
+button.dangerous {
+  background-color: rgb(255, 199, 199);
+  border: 1px solid rgb(128, 93, 93);
+  color: #744;
   font-weight: bold;
 }
 
-.h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
+button.dangerous:hover {
+  background-color: rgb(255, 213, 213);
 }
 
-.menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 8px;
-}
-
-.section {
-  margin-top: 32px;
-  margin-bottom: 64px;
-  padding-right: 16px;
-  border-right: 1px solid black;
-}
-
-.element {
-  margin-top: 32px;
-  padding-right: 16px;
-  border-right: 1px solid gray;
-}
-
-.arrow {
-  border: solid black;
-  border-width: 0 1px 1px 0;
-  display: inline-block;
-  padding: 2px;
-}
-
-.right {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-}
-
-.left {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-}
-
-.up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-}
-
-.down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
+button.dangerous:active {
+  background-color: rgb(243, 194, 194);
 }

@@ -1,11 +1,14 @@
 import React from 'react';
-import Element from './Element';
-import Editable from './Editable';
-import { DEFAULT_ELEMENT } from '../App';
-import { makeid, deepcopy } from '../utils';
+import Element from '../element/element';
+import Editable from '../editable/editable';
+import ArrowButtons from '../arrow-buttons';
+import DeleteButton from '../delete-button';
+import { DEFAULT_ELEMENT } from '../../constants';
+import { makeid, deepcopy } from '../../utils';
+import './section.css';
+import Toolbar from '../toolbar';
 
-
-export default function Section({ structure, onChange }) {
+function Section({ structure, onChange }) {
   
   const handleChangeHeader = (text) => {
     const structureCopy = deepcopy(structure);
@@ -38,10 +41,10 @@ export default function Section({ structure, onChange }) {
 
   return (
     <div className="section">
-      <button><i className="arrow up"></i></button>
-      <button><i className="arrow down"></i></button>
-      <button style={{color: 'darkred'}}><b>מחק יחידה</b></button>
-      <br /><br />
+      <Toolbar>
+        <ArrowButtons />
+        <DeleteButton />
+      </Toolbar>
       <Editable size={2} onChange={handleChangeHeader}>{structure.header}</Editable>
       {elements}
       <br />
@@ -49,3 +52,5 @@ export default function Section({ structure, onChange }) {
     </div>
   );
 }
+
+export default Section;

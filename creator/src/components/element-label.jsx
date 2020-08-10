@@ -1,9 +1,8 @@
 import React from 'react';
-import Editable from './Editable';
+import Editable from './editable/editable';
 import { deepcopy } from '../utils';
 
-
-export default function ElementLabel({ structure, onChange }) {
+function ElementLabel({ structure, onChange }) {
 
   const handleChange = (text) => {
     const structureCopy = deepcopy(structure);
@@ -15,3 +14,5 @@ export default function ElementLabel({ structure, onChange }) {
     <Editable onChange={handleChange}>{structure.text}</Editable>
   );
 }
+
+export default ElementLabel;

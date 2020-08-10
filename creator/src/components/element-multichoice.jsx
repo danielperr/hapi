@@ -1,10 +1,9 @@
 import React from 'react';
-import Checkbox from './Checkbox';
-import MultiChoiceOption from './MultiChoiceOption';
-import Editable from './Editable';
+import Checkbox from './checkbox/checkbox';
+import MultiChoiceOption from './multichoice-option';
+import Editable from './editable/editable';
 
-
-export default function ElementMultiChoice({ structure }) {
+function ElementMultiChoice({ structure }) {
 
   const options = [];
   structure.options.forEach((option) => {
@@ -22,3 +21,5 @@ export default function ElementMultiChoice({ structure }) {
     </>
   );
 }
+
+export default ElementMultiChoice;

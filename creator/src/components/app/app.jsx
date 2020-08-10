@@ -1,25 +1,9 @@
 import React, { useState } from 'react';
-import Editable from './components/Editable';
-import Section from './components/Section';
-import { makeid, deepcopy } from './utils';
-import logo from './logo.svg';
-import './App.css';
-
-
-const DEFAULT_STRUCTURE = {
-  mainHeader: "פעילות ריקה",
-  sections: [],
-};
-
-const DEFAULT_SECTION = {
-  header: "יחידה ריקה",
-  elements: [],
-};
-
-export const DEFAULT_ELEMENT = {
-  type: "label",
-};
-
+import Editable from '../editable/editable';
+import Section from '../section/section';
+import { makeid, deepcopy } from '../../utils';
+import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../../constants';
+import './app.css';
 
 function App(props) {
   const initialStructure = DEFAULT_STRUCTURE;
@@ -62,7 +46,9 @@ function App(props) {
       <div className="menu">
         <textarea dir="ltr" value={JSON.stringify(structure)}></textarea>
       </div>
-      <Editable size={1} onChange={handleChangeMainHeader}>{structure.mainHeader}</Editable>
+      <div>
+        <Editable size={1} onChange={handleChangeMainHeader}>{structure.mainHeader}</Editable>
+      </div>
       {sections}
       <br />
       <button onClick={handleClickAddSection}><b>הוסף יחידה</b></button>
