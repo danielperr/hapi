@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import produce from 'immer';
 import Editable from '../editable/editable';
 import Section from '../section/section';
 import { makeid, deepcopy } from '../../utils';
@@ -11,34 +12,34 @@ function App(props) {
   const [structure, setStructure] = React.useState(initialStructure);
 
   const handleChangeMainHeader = (text) => {
-    const structureCopy = deepcopy(structure)
-    Object.assign(structureCopy, {mainHeader: text})
-    setStructure(structureCopy);
+    setStructure(produce(structure, newStructure => {
+      newStructure.mainHeader = text;
+    }));
   }
 
-  const handleChangeSection = (updatedSection) => {
-    let structureCopy = deepcopy(structure);
-    structureCopy.sections.forEach(section => {
-      if (section.id === updatedSection.id) {
-        Object.assign(section, updatedSection);
-        console.log({section, updatedSection});
-      }
-    })
-    setStructure(structureCopy);
+  const handleUpdateSection = (updatedSection) => {
+    setStructure(produce(structure, newStructure => {
+      newStructure.sections.forEach(section => {
+        if (section.id === updatedSection.id) {
+          Object.assign(section, updatedSection);
+        }
+      })
+    }));
   }
 
   const handleClickAddSection = () => {
-    const structureCopy = deepcopy(structure);
-    const newSection = deepcopy(DEFAULT_SECTION);
-    console.log(DEFAULT_SECTION)
-    newSection.id = makeid(10);  // FIXME: check if id exists
-    structureCopy.sections.push(newSection);
-    setStructure(structureCopy);
+    setStructure(produce(structure, newStructure => {
+      newStructure.sections.push(produce(DEFAULT_SECTION, newSection => { newSection.id = makeid(10); }));
+    }));
+  }
+
+  const handleDeleteSection = () => {
+
   }
 
   const sections = [];
   structure.sections.forEach(section => {
-    sections.push(<Section structure={section} onChange={handleChangeSection} />);
+    sections.push(<Section structure={section} onUpdate={handleUpdateSection} />);
   });
 
   return (

@@ -1,13 +1,14 @@
 import React from 'react';
+import produce from 'immer';
 import Editable from './editable/editable';
 import { deepcopy } from '../utils';
 
-function ElementLabel({ structure, onChange }) {
+function ElementLabel({ structure, onUpdate }) {
 
   const handleChange = (text) => {
-    const structureCopy = deepcopy(structure);
-    structureCopy.text = text;
-    onChange(structureCopy);
+    onUpdate(produce(structure, newStructure => {
+      newStructure.text = text;
+    }));
   }
 
   return (
