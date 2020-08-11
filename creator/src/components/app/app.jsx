@@ -8,7 +8,7 @@ import './app.css';
 function App(props) {
   const initialStructure = DEFAULT_STRUCTURE;
   initialStructure.id = makeid(20);
-  const [structure, setStructure] = React.useState(props.structure);
+  const [structure, setStructure] = React.useState(initialStructure);
 
   const handleChangeMainHeader = (text) => {
     const structureCopy = deepcopy(structure)
