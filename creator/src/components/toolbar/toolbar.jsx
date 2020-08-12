@@ -6,7 +6,7 @@ function Toolbar({ children }) {
   children.forEach((child, index) => {
     if (React.isValidElement(child)) {
       childrenWithClases.push(React.cloneElement(child, {
-        className: 'toolbar-child',
+        className: `${child.props.className} toolbar-child`,
         key: `toolbarChild${index}`,
       }));
     }

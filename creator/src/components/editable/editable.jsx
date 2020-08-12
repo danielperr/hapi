@@ -4,7 +4,9 @@ import './editable.css';
 function Editable({ children, size, onChange }) {
 
   const handleChange = (e) => {
-    onChange(e.target.value);
+    if (onChange !== undefined) {
+      onChange(e.target.value);
+    }
   }
 
   let sizeCName = ''

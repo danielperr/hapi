@@ -40,7 +40,7 @@ function Section({ structure, onUpdate, onDelete }) {
           object.splice(index, 1);
         }
       });
-    }))
+    }));
   };
 
   const handleDeleteSelf = () => {
