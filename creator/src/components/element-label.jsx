@@ -1,7 +1,6 @@
 import React from 'react';
 import produce from 'immer';
 import Editable from './editable/editable';
-import { deepcopy } from '../utils';
 
 function ElementLabel({ structure, onUpdate }) {
 

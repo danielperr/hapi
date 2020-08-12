@@ -9,27 +9,31 @@ import ElementNumberInput from '../element-number-input';
 import ArrowButtons from '../arrow-buttons';
 import Toolbar from '../toolbar';
 import DeleteButton from '../delete-button';
-import { deepcopy } from '../../utils';
 import './element.css';
 
 
-export default function Element({ structure, onUpdate }) {
+export default function Element({ structure, onUpdate, onDelete }) {
   const { type } = structure;
 
   const handleChangeType = (e) => {
     onUpdate(produce(structure, newStructure => {
       newStructure.type = e.target.value;
     }));
-  }
+  };
 
   const handleUpdateElement = (updatedElement) => {
     onUpdate(updatedElement);
-  }
+  };
+
+  const handleDeleteSelf = () => {
+    onDelete(structure.id);
+  };
 
   const elementProps = {
     structure: structure,
     onUpdate: handleUpdateElement,
   };
+
   let obj;
   switch (structure.type) {
     case 'label':
@@ -50,6 +54,8 @@ export default function Element({ structure, onUpdate }) {
     case 'number-input':
       obj = <ElementNumberInput {...elementProps} />;
       break;
+    default:
+      obj = <span style={{visibility: 'hidden'}}>אלמנט לא תקין</span>;
   }
 
   return (
@@ -68,7 +74,7 @@ export default function Element({ structure, onUpdate }) {
             <option value="number-input">שאלת מספר</option>
           </optgroup>
         </select>
-        <DeleteButton />
+        <DeleteButton onClick={handleDeleteSelf} />
       </Toolbar>
       {obj}
     </div>
