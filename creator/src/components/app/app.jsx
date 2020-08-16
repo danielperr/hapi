@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Editable from "../editable/editable";
 import Section from "../section/section";
-import { makeid, deepcopy } from "../../utils";
+import { makeid } from "../../utils";
+import produce from 'immer';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from "../../constants";
 import "./app.css";
 import "react-dropzone-uploader/dist/styles.css";

@@ -9,7 +9,7 @@ export default function Checkbox({ children, id, checked, onCheck }) {
 
   return (
     <div className="checkbox">
-      <input type="checkbox" id={id} checked={checked.toString()} onChange={handleChange} />
+      <input type="checkbox" id={id} checked={ (checked !== undefined) && checked.toString()} onChange={handleChange} />
       <label htmlFor={id}>{children}</label>
     </div>
   );

@@ -202,6 +202,7 @@ const InlineStyleControls = (props) => {
 function Editable({ children, size, onChange, isRich }) {
   const handleChange = (e) => {
     if (isRich) {
+      console.log(e.getCurrentContent().getPlainText());
       onChange(e.getCurrentContent().getPlainText());
     } else {
       onChange(e.target.value);
