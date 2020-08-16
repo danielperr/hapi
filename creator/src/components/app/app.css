@@ -1,5 +1,6 @@
 
 .app {
+  min-width: 800px;
   max-width: 800px;
   padding: 32px;
 }

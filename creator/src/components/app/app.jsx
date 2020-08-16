@@ -105,42 +105,52 @@ const SingleFileAutoSubmit = (props) => {
 
 
 function App(props) {
-  const initialStructure = DEFAULT_STRUCTURE;
+  // const initialStructure = DEFAULT_STRUCTURE;
+  const initialStructure = {"mainHeader":"פעילות ריקה","sections":[{"header":"יחידה ריקה","elements":[{"type":"multi-choice","options":[{"text":"","id":"sVm9SEsV5I"}],"id":"A6bdmngQYF"}],"id":"x7SuppVHff"}],"id":"UgtW1l8IipovGAOOK6XI"};
   initialStructure.id = makeid(20);
-  //const [structure, setStructure] = React.useState(props.structure);
-  const [structure, setStructure] = React.useState(initialStructure);
+  const [structure, setStructure] = useState(initialStructure);
 
   const handleChangeMainHeader = (text) => {
-    const structureCopy = deepcopy(structure);
-    Object.assign(structureCopy, { mainHeader: text });
-    setStructure(structureCopy);
+    setStructure(produce(structure, newStructure => {
+      newStructure.mainHeader = text;
+    }));
   };
 
-  const handleChangeSection = (updatedSection) => {
-    let structureCopy = deepcopy(structure);
-    structureCopy.sections.forEach((section) => {
-      if (section.id === updatedSection.id) {
-        Object.assign(section, updatedSection);
-        console.log({ section, updatedSection });
-      }
-    });
-    setStructure(structureCopy);
+  const handleUpdateSection = (updatedSection) => {
+    setStructure(produce(structure, newStructure => {
+      newStructure.sections.forEach(section => {
+        if (section.id === updatedSection.id) {
+          Object.assign(section, updatedSection);
+        }
+      })
+    }));
   };
 
   const handleClickAddSection = () => {
-    const structureCopy = deepcopy(structure);
-    const newSection = deepcopy(DEFAULT_SECTION);
-    console.log(DEFAULT_SECTION);
-    newSection.id = makeid(10); // FIXME: check if id exists
-    structureCopy.sections.push(newSection);
-    setStructure(structureCopy);
+    setStructure(produce(structure, newStructure => {
+      newStructure.sections.push(produce(DEFAULT_SECTION, newSection => { newSection.id = makeid(10); }));
+    }));
+  };
+
+  const handleDeleteSection = (sectionId) => {
+    setStructure(produce(structure, newStructure => {
+      newStructure.sections.forEach((section, index, object) => {
+        if (section.id === sectionId) {
+          object.splice(index, 1);
+        }
+      });
+    }))
   };
 
   const sections = [];
-  structure.sections.forEach((section) => {
+  structure.sections.forEach(section => {
     sections.push(
-      <Section structure={section} onChange={handleChangeSection} />
-    );
+      <Section
+        structure={section}
+        onUpdate={handleUpdateSection}
+        onDelete={handleDeleteSection}
+        key={section.id}
+      />);
   });
 
   const changeStructure = (newStructure) => {
@@ -166,7 +176,7 @@ function App(props) {
         <textarea
           dir="ltr"
           value={JSON.stringify(structure, null, 2)}
-        ></textarea>
+        />
       </div>
       <div>
         <Editable size={1} onChange={handleChangeMainHeader} isRich={true}>

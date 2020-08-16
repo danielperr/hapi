@@ -2,6 +2,7 @@
 .delete-button {
   padding: 2px 8px 2px 12px;
   border-radius: 16px;
+  float: left;
 }
 
 .delete-button b {

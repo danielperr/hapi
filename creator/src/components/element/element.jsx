@@ -1,4 +1,5 @@
 import React from 'react';
+import produce from 'immer';
 import ElementLabel from '../element-label';
 import ElementYoutube from '../element-youtube';
 import ElementMultiChoice from '../element-multichoice';
@@ -8,45 +9,53 @@ import ElementNumberInput from '../element-number-input';
 import ArrowButtons from '../arrow-buttons';
 import Toolbar from '../toolbar';
 import DeleteButton from '../delete-button';
-import { deepcopy } from '../../utils';
 import './element.css';
 
 
-export default function Element({ structure, onChange }) {
+export default function Element({ structure, onUpdate, onDelete }) {
+  const { type } = structure;
 
   const handleChangeType = (e) => {
-    const structureCopy = deepcopy(structure);
-    structureCopy.type = e.target.value;
-    onChange(structureCopy);
-  }
+    onUpdate(produce(structure, newStructure => {
+      newStructure.type = e.target.value;
+    }));
+  };
 
-  // const handleChangeElement = (updatedElement) => {
-  //   const structureCopy = deepcopy(structure);
-  //   structureCopy.type = e.target.value;
-  //   onChange(structureCopy);
-  // }
+  const handleUpdateElement = (updatedElement) => {
+    onUpdate(updatedElement);
+  };
 
-  const { type } = structure;
+  const handleDeleteSelf = () => {
+    onDelete(structure.id);
+  };
+
+  const elementProps = {
+    structure: structure,
+    onUpdate: handleUpdateElement,
+  };
+
   let obj;
-  switch (type) {
+  switch (structure.type) {
     case 'label':
-      obj = <ElementLabel structure={structure} />;
+      obj = <ElementLabel {...elementProps} />;
       break;
     case 'image':
-      obj = <ElementImage structure={structure} />;
+      obj = <ElementImage {...elementProps} />;
       break;
     case 'youtube':
-      obj = <ElementYoutube structure={structure} />;
+      obj = <ElementYoutube {...elementProps} />;
       break;
     case 'multi-choice':
-      obj = <ElementMultiChoice structure={structure} />;
+      obj = <ElementMultiChoice {...elementProps} />;
       break;
     case 'text-input':
-      obj = <ElementTextInput structure={structure} />;
+      obj = <ElementTextInput {...elementProps} />;
       break;
     case 'number-input':
-      obj = <ElementNumberInput structure={structure} />;
+      obj = <ElementNumberInput {...elementProps} />;
       break;
+    default:
+      obj = <span style={{visibility: 'hidden'}}>אלמנט לא תקין</span>;
   }
 
   return (
@@ -65,7 +74,7 @@ export default function Element({ structure, onChange }) {
             <option value="number-input">שאלת מספר</option>
           </optgroup>
         </select>
-        <DeleteButton />
+        <DeleteButton onClick={handleDeleteSelf} />
       </Toolbar>
       {obj}
     </div>

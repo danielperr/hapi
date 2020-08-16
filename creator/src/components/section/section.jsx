@@ -1,49 +1,69 @@
 import React from 'react';
+import produce from 'immer';
 import Element from '../element/element';
 import Editable from '../editable/editable';
 import ArrowButtons from '../arrow-buttons';
 import DeleteButton from '../delete-button';
 import { DEFAULT_ELEMENT } from '../../constants';
-import { makeid, deepcopy } from '../../utils';
+import { makeid } from '../../utils';
 import './section.css';
 import Toolbar from '../toolbar';
 
-function Section({ structure, onChange }) {
+function Section({ structure, onUpdate, onDelete }) {
   
   const handleChangeHeader = (text) => {
-    const structureCopy = deepcopy(structure);
-    Object.assign(structureCopy, {header: text})
-    onChange(structureCopy);
-  }
+    onUpdate(produce(structure, newStructure => {
+      newStructure.header = text;
+    }));
+  };
 
-  const handleChangeElement = (updatedElement) => {
-    let structureCopy = deepcopy(structure);
-    structureCopy.elements.forEach(element => {
-      if (element.id === updatedElement.id) {
-        Object.assign(element, updatedElement);
-      }
-    })
-    onChange(structureCopy);
-  }
+  const handleUpdateElement = (updatedElement) => {
+    onUpdate(produce(structure, newStructure => {
+      newStructure.elements.forEach(element => {
+        if (element.id === updatedElement.id) {
+          Object.assign(element, updatedElement);
+        }
+      })
+    }));
+  };
 
   const handleClickAddElement = () => {
-    const newElement = deepcopy(DEFAULT_ELEMENT);
-    newElement.id = makeid(10);
-    const structureCopy = deepcopy(structure);
-    structureCopy.elements.push(newElement);
-    onChange(structureCopy);
-  }
+    onUpdate(produce(structure, newStructure => {
+      newStructure.elements.push(produce(DEFAULT_ELEMENT, newElement => { newElement.id = makeid(10); }))
+    }));
+  };
+
+  const handleDeleteElement = (elementId) => {
+    onUpdate(produce(structure, newStructure => {
+      newStructure.elements.forEach((element, index, object) => {
+        if (element.id === elementId) {
+          object.splice(index, 1);
+        }
+      });
+    }));
+  };
+
+  const handleDeleteSelf = () => {
+    onDelete(structure.id);
+  };
 
   const elements = [];
   structure.elements.forEach(element => {
-    elements.push(<Element structure={element} onChange={handleChangeElement} />);
+    elements.push(
+      <Element
+        structure={element}
+        onUpdate={handleUpdateElement}
+        onDelete={handleDeleteElement}
+        key={element.id}
+      />
+    );
   });
 
   return (
     <div className="section">
       <Toolbar>
         <ArrowButtons />
-        <DeleteButton />
+        <DeleteButton onClick={handleDeleteSelf} />
       </Toolbar>
       <Editable size={2} onChange={handleChangeHeader}>{structure.header}</Editable>
       {elements}

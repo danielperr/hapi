@@ -11,10 +11,16 @@ const DEFAULT_SECTION = {
 
 const DEFAULT_ELEMENT = {
   type: "label",
+  options: [],
+};
+
+const DEFAULT_MULTICHOICE_OPTION = {
+  text: "",
 };
 
 export {
   DEFAULT_STRUCTURE,
   DEFAULT_SECTION,
   DEFAULT_ELEMENT,
+  DEFAULT_MULTICHOICE_OPTION,
 };

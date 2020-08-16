@@ -3,9 +3,12 @@ import './toolbar.css';
 
 function Toolbar({ children }) {
   const childrenWithClases = [];
-  children.forEach(child => {
+  children.forEach((child, index) => {
     if (React.isValidElement(child)) {
-      childrenWithClases.push(React.cloneElement(child, {className: "toolbar-child"}));
+      childrenWithClases.push(React.cloneElement(child, {
+        className: `${child.props.className} toolbar-child`,
+        key: `toolbarChild${index}`,
+      }));
     }
   });
 
