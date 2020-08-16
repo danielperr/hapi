@@ -9,6 +9,18 @@
   top: 0;
   left: 0;
   padding: 8px;
+  height: 100vh;
+}
+
+.button-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100px;
 }
 
 @media (max-width: 900px) {
@@ -16,4 +28,20 @@
     padding: 0;
     max-width: none;
   }
+}
+
+
+
+
+.dropzone {
+  box-sizing: border-box;
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 99999;
+  background: rgba(96, 167, 220, 0.8);
+  border: 11px dashed #60a7dc;
 }
