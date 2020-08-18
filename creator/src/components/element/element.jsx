@@ -28,7 +28,9 @@ export default function Element({ structure, onUpdate, onDelete }) {
   const handleChangeType = (e) => {
     onUpdate(produce(structure, newStructure => { 
       newStructure.type = e.target.value;
-      //terms[e.target.value].forEach(t => {newStructure[t] = ""})
+      if (newStructure.type == 'multi-choice' && newStructure.options === undefined) {
+        newStructure.options = [];
+      }
     }));
   };
 
