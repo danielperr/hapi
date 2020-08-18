@@ -1,10 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Editable from './editable/editable';
+import produce from "immer";
 
-function ElementYoutube({ structure }) {
+
+
+
+
+
+function ElementYoutube({ structure, onUpdate }) {
+  const [editableValue, setEditableValue] = useState((structure.youtubeId!==undefined)?`https://www.youtube.com/watch?v=${structure.youtubeId}`:"");
+
+  const handleChange = (text) => {
+    onUpdate(
+      produce(structure, (newStructure) => {
+        var newval = '', output = '';
+        if (newval = text.match(/(\?|&)v=([^&#]+)/)) {
+          output = newval.pop();
+        } else if (newval = text.match(/(\.be\/)+([^\/]+)/)) {
+          output = newval.pop();
+        } else if (newval = text.match(/(\embed\/)+([^\/]+)/)) {
+          output = newval.pop().replace('?rel=0','');
+        }
+        newStructure.youtubeId = output;
+      })
+    );
+
+    setEditableValue(text);
+  };
+
   return (
     <>
-      <Editable>{`https://youtube.com/watch?v=${structure.youtubeId}`}</Editable>
+      <Editable onChange={handleChange}>{ editableValue }</Editable>
       <br />
       <br />
       <iframe

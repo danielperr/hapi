@@ -180,7 +180,7 @@ function App(props) {
         />
       </div>
       <div>
-        <Editable size={1} onChange={handleChangeMainHeader} isRich={true}>
+        <Editable size={1} onChange={handleChangeMainHeader} isRich={false}>
           {structure.mainHeader}
         </Editable>
       </div>

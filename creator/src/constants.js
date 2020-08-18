@@ -11,7 +11,6 @@ const DEFAULT_SECTION = {
 
 const DEFAULT_ELEMENT = {
   type: "label",
-  options: [],
 };
 
 const DEFAULT_MULTICHOICE_OPTION = {
