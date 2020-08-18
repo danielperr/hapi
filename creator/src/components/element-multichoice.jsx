@@ -52,9 +52,13 @@ function ElementMultiChoice({ structure, onUpdate }) {
   };
 
   const handleCheckShuffle = shuffle => {
-    onUpdate(produce(structure, newStructure => {
-      newStructure.dontShuffle = !shuffle;
-    }));
+    onUpdate((produce(structure, newStructure => {
+      if (shuffle) {
+        delete newStructure['dontShuffle'];
+      } else {
+        newStructure.dontShuffle = true;
+      }
+    })));
   };
 
   const optionsDom = [];
@@ -70,8 +74,6 @@ function ElementMultiChoice({ structure, onUpdate }) {
         key={option.id}
       />);
   });
-
-  const shuffle = !(structure.dontShuffle || false);
   
   return (
     <>
@@ -82,7 +84,7 @@ function ElementMultiChoice({ structure, onUpdate }) {
       <br />
       <button onClick={handleClickAddOption}><b>הוסף תשובה</b></button>
       <br /><br />
-      <Checkbox id={id + '-shuffle'} checked={shuffle} onCheck={handleCheckShuffle}>לסדר תשובות באופן אקראי?</Checkbox>
+      <Checkbox id={id + '-shuffle'} checked={!(structure.dontShuffle || false)} onCheck={handleCheckShuffle}>לסדר תשובות באופן אקראי?</Checkbox>
     </>
   );
 }

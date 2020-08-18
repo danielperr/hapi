@@ -19,9 +19,9 @@ function Section({ structure, onUpdate, onDelete }) {
 
   const handleUpdateElement = (updatedElement) => {
     onUpdate(produce(structure, newStructure => {
-      newStructure.elements.forEach(element => {
+      newStructure.elements.forEach((element, i) => {
         if (element.id === updatedElement.id) {
-          Object.assign(element, updatedElement);
+          newStructure.elements[i] = updatedElement;
         }
       })
     }));

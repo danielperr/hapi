@@ -68,7 +68,6 @@ const SingleFileAutoSubmit = (props) => {
       console.log(error);
     }
 
-    console.log();
     allFiles.forEach((f) => f.remove());
   };
 
@@ -119,11 +118,11 @@ function App(props) {
 
   const handleUpdateSection = (updatedSection) => {
     setStructure(produce(structure, newStructure => {
-      newStructure.sections.forEach(section => {
+      newStructure.sections.forEach((section, i) => {
         if (section.id === updatedSection.id) {
-          Object.assign(section, updatedSection);
+          newStructure.sections[i] = updatedSection;
         }
-      })
+      });
     }));
   };
 
@@ -177,10 +176,11 @@ function App(props) {
         <textarea
           dir="ltr"
           value={JSON.stringify(structure, null, 2)}
+          style={{ height: '100%', width: '20vw' }}
         />
       </div>
       <div>
-        <Editable size={1} onChange={handleChangeMainHeader} isRich={true}>
+        <Editable size={1} onChange={handleChangeMainHeader}>
           {structure.mainHeader}
         </Editable>
       </div>
