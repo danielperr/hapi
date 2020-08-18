@@ -9,7 +9,7 @@ import { makeid } from '../../utils';
 import './section.css';
 import Toolbar from '../toolbar';
 
-function Section({ structure, onUpdate, onDelete }) {
+function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
   
   const handleChangeHeader = (text) => {
     onUpdate(produce(structure, newStructure => {
@@ -43,8 +43,36 @@ function Section({ structure, onUpdate, onDelete }) {
     }));
   };
 
+  const handleMoveUpElement = (elementId) => {
+    onUpdate(produce(structure, newStructure => {
+      let o = newStructure.elements;
+      let i = o.map((e) => { return e.id }).indexOf(elementId);
+      if (i > 0) {
+        [o[i], o[i-1]] = [o[i-1], o[i]];
+      }
+    }));
+  };
+
+  const handleMoveDownElement = (elementId) => {
+    onUpdate(produce(structure, newStructure => {
+      let o = newStructure.elements;
+      let i = o.map((e) => { return e.id }).indexOf(elementId);
+      if (i >= 0 && i < o.length - 1) {
+        [o[i], o[i+1]] = [o[i+1], o[i]];
+      }
+    }));
+  };
+
   const handleDeleteSelf = () => {
     onDelete(structure.id);
+  };
+
+  const handleClickUp = () => {
+    onMoveUp(structure.id);
+  };
+
+  const handleClickDown = () => {
+    onMoveDown(structure.id);
   };
 
   const elements = [];
@@ -54,6 +82,8 @@ function Section({ structure, onUpdate, onDelete }) {
         structure={element}
         onUpdate={handleUpdateElement}
         onDelete={handleDeleteElement}
+        onMoveUp={handleMoveUpElement}
+        onMoveDown={handleMoveDownElement}
         key={element.id}
       />
     );
@@ -62,7 +92,7 @@ function Section({ structure, onUpdate, onDelete }) {
   return (
     <div className="section">
       <Toolbar>
-        <ArrowButtons />
+        <ArrowButtons onClickUp={handleClickUp} onClickDown={handleClickDown} />
         <DeleteButton onClick={handleDeleteSelf} />
       </Toolbar>
       <Editable size={2} onChange={handleChangeHeader}>{structure.header}</Editable>

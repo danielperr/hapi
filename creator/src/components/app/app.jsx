@@ -142,6 +142,26 @@ function App(props) {
     }))
   };
 
+  const handleMoveUpSection = (sectionId) => {
+    setStructure(produce(structure, newStructure => {
+      let o = newStructure.sections;
+      let i = o.map((s) => { return s.id }).indexOf(sectionId);
+      if (i > 0) {
+        [o[i], o[i-1]] = [o[i-1], o[i]];
+      }
+    }));
+  };
+
+  const handleMoveDownSection = (sectionId) => {
+    setStructure(produce(structure, newStructure => {
+      let o = newStructure.sections;
+      let i = o.map((s) => { return s.id }).indexOf(sectionId);
+      if (i >= 0 && i < o.length - 1) {
+        [o[i], o[i+1]] = [o[i+1], o[i]];
+      }
+    }));
+  };
+
   const sections = [];
   structure.sections.forEach(section => {
     sections.push(
@@ -149,6 +169,8 @@ function App(props) {
         structure={section}
         onUpdate={handleUpdateSection}
         onDelete={handleDeleteSection}
+        onMoveUp={handleMoveUpSection}
+        onMoveDown={handleMoveDownSection}
         key={section.id}
       />);
   });
