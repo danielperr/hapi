@@ -15,9 +15,20 @@ import './element.css';
 export default function Element({ structure, onUpdate, onDelete }) {
   const { type } = structure;
 
+  /*
+  const terms = {
+    'label': ['text'], 
+    'image': ['src'], 
+    'youtube': ['youtubeId'],
+    'multi-choice': ['text', 'options'],
+    'text-input': ['text', 'multiline'],
+    'number-input': ['text', 'min', 'max'],
+  }
+  */
   const handleChangeType = (e) => {
-    onUpdate(produce(structure, newStructure => {
+    onUpdate(produce(structure, newStructure => { 
       newStructure.type = e.target.value;
+      //terms[e.target.value].forEach(t => {newStructure[t] = ""})
     }));
   };
 
