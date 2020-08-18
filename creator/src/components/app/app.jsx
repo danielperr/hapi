@@ -106,7 +106,7 @@ const SingleFileAutoSubmit = (props) => {
 
 function App(props) {
   // const initialStructure = DEFAULT_STRUCTURE;
-  const initialStructure = {"mainHeader":"פעילות ריקה","sections":[{"header":"יחידה ריקה","elements":[{"type":"multi-choice","options":[{"text":"","id":"sVm9SEsV5I"}],"id":"A6bdmngQYF"}],"id":"x7SuppVHff"}],"id":"UgtW1l8IipovGAOOK6XI"};
+  const initialStructure = {"mainHeader":"פעילות ריקה","sections":[{"header":"יחידה ריקה","elements":[{"type":"number-input","id":"A6bdmngQYF"}],"id":"x7SuppVHff"}],"id":"UgtW1l8IipovGAOOK6XI"};
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initialStructure);
 
