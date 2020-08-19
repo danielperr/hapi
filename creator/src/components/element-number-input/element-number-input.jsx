@@ -1,12 +1,34 @@
 import React from 'react';
+import produce from 'immer';
+
 import Editable from '../editable';
 import './element-number-input.css';
 
-function ElementNumberInput({ structure }) {
+function ElementNumberInput({ structure, onUpdate }) {
   
+  const handleChangeText = (text) => {
+    onUpdate(produce(structure, newStructure => {
+      newStructure.text = text;
+    }));
+  };
+
+  const handleChangeMin = (e) => {
+    const min = e.target.value;
+    onUpdate(produce(structure, newStructure => {
+      newStructure.min = min;
+    }));
+  }
+
+  const handleChangeMax = (e) => {
+    const max = e.target.value;
+    onUpdate(produce(structure, newStructure => {
+      newStructure.max = max;
+    }));
+  }
+
   return (
     <>
-      <Editable>{structure.text}</Editable>
+      <Editable onChange={handleChangeText}>{structure.text}</Editable>
       <br /><br />
       <label>טווח תשובה נכונה:</label>
       <table>
@@ -17,7 +39,12 @@ function ElementNumberInput({ structure }) {
             </td>
             <td></td>
             <td>
-              <input type="number" className="element-number-input" />
+              <input
+                type="number"
+                className="element-number-input"
+                value={structure.min}
+                onChange={handleChangeMin}
+              />
             </td>
           </tr>
           <tr>
@@ -26,7 +53,12 @@ function ElementNumberInput({ structure }) {
             </td>
             <td></td>
             <td>
-              <input type="number" className="element-number-input" />
+              <input
+                type="number"
+                className="element-number-input"
+                onChange={handleChangeMax}
+                value={structure.max}
+              />
             </td>
           </tr>
         </tbody>

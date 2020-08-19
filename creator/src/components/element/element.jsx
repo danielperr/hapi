@@ -12,7 +12,7 @@ import DeleteButton from '../delete-button';
 import './element.css';
 
 
-export default function Element({ structure, onUpdate, onDelete }) {
+export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
   const { type } = structure;
 
   /*
@@ -28,7 +28,9 @@ export default function Element({ structure, onUpdate, onDelete }) {
   const handleChangeType = (e) => {
     onUpdate(produce(structure, newStructure => { 
       newStructure.type = e.target.value;
-      //terms[e.target.value].forEach(t => {newStructure[t] = ""})
+      if (newStructure.type == 'multi-choice' && newStructure.options === undefined) {
+        newStructure.options = [];
+      }
     }));
   };
 
@@ -38,6 +40,14 @@ export default function Element({ structure, onUpdate, onDelete }) {
 
   const handleDeleteSelf = () => {
     onDelete(structure.id);
+  };
+
+  const handleClickUp = () => {
+    onMoveUp(structure.id);
+  };
+
+  const handleClickDown = () => {
+    onMoveDown(structure.id);
   };
 
   const elementProps = {
@@ -72,7 +82,7 @@ export default function Element({ structure, onUpdate, onDelete }) {
   return (
     <div className="element">
       <Toolbar>
-        <ArrowButtons />
+        <ArrowButtons onClickUp={handleClickUp} onClickDown={handleClickDown} />
         <select value={type} onChange={handleChangeType}>
           <optgroup label="תצוגה">
             <option value="label">טקסט</option>

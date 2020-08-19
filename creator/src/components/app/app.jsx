@@ -67,7 +67,6 @@ const SingleFileAutoSubmit = (props) => {
       console.log(error);
     }
 
-    console.log();
     allFiles.forEach((f) => f.remove());
   };
 
@@ -109,18 +108,13 @@ function App(props) {
     sections: [
       {
         header: "יחידה ריקה",
-        elements: [
-          {
-            type: "multi-choice",
-            options: [{ text: "", id: "sVm9SEsV5I" }],
-            id: "A6bdmngQYF",
-          },
-        ],
+        elements: [{ type: "number-input", id: "A6bdmngQYF" }],
         id: "x7SuppVHff",
       },
     ],
     id: "UgtW1l8IipovGAOOK6XI",
   };
+  
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initialStructure);
 
@@ -168,9 +162,9 @@ function App(props) {
   const handleUpdateSection = (updatedSection) => {
     setStructure(
       produce(structure, (newStructure) => {
-        newStructure.sections.forEach((section) => {
+        newStructure.sections.forEach((section, i) => {
           if (section.id === updatedSection.id) {
-            Object.assign(section, updatedSection);
+            newStructure.sections[i] = updatedSection;
           }
         });
       })
@@ -201,6 +195,38 @@ function App(props) {
     );
   };
 
+  const handleMoveUpSection = (sectionId) => {
+    setStructure(
+      produce(structure, (newStructure) => {
+        let o = newStructure.sections;
+        let i = o
+          .map((s) => {
+            return s.id;
+          })
+          .indexOf(sectionId);
+        if (i > 0) {
+          [o[i], o[i - 1]] = [o[i - 1], o[i]];
+        }
+      })
+    );
+  };
+
+  const handleMoveDownSection = (sectionId) => {
+    setStructure(
+      produce(structure, (newStructure) => {
+        let o = newStructure.sections;
+        let i = o
+          .map((s) => {
+            return s.id;
+          })
+          .indexOf(sectionId);
+        if (i >= 0 && i < o.length - 1) {
+          [o[i], o[i + 1]] = [o[i + 1], o[i]];
+        }
+      })
+    );
+  };
+
   const sections = [];
   structure.sections.forEach((section) => {
     sections.push(
@@ -208,6 +234,8 @@ function App(props) {
         structure={section}
         onUpdate={handleUpdateSection}
         onDelete={handleDeleteSection}
+        onMoveUp={handleMoveUpSection}
+        onMoveDown={handleMoveDownSection}
         key={section.id}
       />
     );
@@ -223,12 +251,12 @@ function App(props) {
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
         console.log(xmlhttp.responseText);
       }
-    }
+    };
 
     xmlhttp.open("GET", theUrl, true);
     xmlhttp.send();
   }
-  
+
   // TODO
   //httpGet("https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/Ex1.hapi.html");
   return (
@@ -262,10 +290,14 @@ function App(props) {
         <button style={{ fontSize: 20 }}>Export Activity</button>
       </div>
       <div className="menu">
-        <textarea dir="ltr" value={JSON.stringify(structure, null, 2)} />
+        <textarea
+          dir="ltr"
+          value={JSON.stringify(structure, null, 2)}
+          style={{ height: "100%", width: "20vw" }}
+        />
       </div>
       <div>
-        <Editable size={1} onChange={handleChangeMainHeader} isRich={false}>
+        <Editable size={1} onChange={handleChangeMainHeader}>
           {structure.mainHeader}
         </Editable>
       </div>
