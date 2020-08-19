@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 function DragAndDrop(props) {
   var dropZone = document.getElementById("dropzone");
@@ -83,7 +83,6 @@ function DragAndDrop(props) {
     } else {
       alert("Failed to load file");
     }
-
   }
 
   return "";

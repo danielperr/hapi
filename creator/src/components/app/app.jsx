@@ -9,6 +9,9 @@ import "react-dropzone-uploader/dist/styles.css";
 import Dropzone from "react-dropzone-uploader";
 import DragAndDrop from "../drag-and-drop";
 
+// Cache the empty activity file.
+let emptyActivityFile = "";
+
 function download(filename, text) {
   var element = document.createElement("a");
   element.setAttribute(
@@ -32,10 +35,28 @@ function SaveWorkFile(structure) {
   }
 }
 
-function LoadWorkFile(structure) {}
+function InjectStructureToActivity(emtpyActivity, structure) {
+  // Copy the file to f
+  let f = emtpyActivity.slice();
 
-function Export(structure) {}
+  const index = f.indexOf("structure:");
+  const firstSign = f.indexOf("{", index);
+  const secondSign = f.indexOf("}", index + 1);
+  f = f.substring(0, firstSign) + structure + f.substring(secondSign + 1);
+  return f;
+}
 
+function Export(emptyActivity, structure) {
+  const filename = prompt("Save as:");
+  if (filename !== "" && filename !== null) {
+    download(
+      filename + ".hapi.html",
+      InjectStructureToActivity(emptyActivity, structure)
+    );
+  }
+}
+
+/*
 const SingleFileAutoSubmit = (props) => {
   const toast = (innerHTML) => {
     const el = document.getElementById("toast");
@@ -100,6 +121,7 @@ const SingleFileAutoSubmit = (props) => {
     </React.Fragment>
   );
 };
+*/
 
 function App(props) {
   // const initialStructure = DEFAULT_STRUCTURE;
@@ -114,11 +136,26 @@ function App(props) {
     ],
     id: "UgtW1l8IipovGAOOK6XI",
   };
-  
+
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initialStructure);
 
+  function httpGet(theUrl) {
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", theUrl, true);
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState == 4 /*&& xmlhttp.status == 200*/) {
+        emptyActivityFile = xmlhttp.responseText;
+        console.log("File fetched successfully");
+      }
+    };
+    xmlhttp.send();
+  }
+
   useEffect(() => {
+    // Fetch and store the empty activity in a variable, emptyActivityFile.
+    httpGet("https://hapi-app.netlify.app/");
+
     document
       .getElementById("fileinput")
       .addEventListener("change", readSingleFile, false);
@@ -245,37 +282,16 @@ function App(props) {
     setStructure(newStructure);
   };
 
-  function httpGet(theUrl) {
-    const xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        console.log(xmlhttp.responseText);
-      }
-    };
-
-    xmlhttp.open("GET", theUrl, true);
-    xmlhttp.send();
-  }
-
-  // TODO
-  //httpGet("https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/Ex1.hapi.html");
   return (
     <div className="app">
       {/*<SingleFileAutoSubmit changeStructure={changeStructure} />*/}
       <DragAndDrop changeStructure={changeStructure} />
+      <p style={{position: "fixed", bottom: "0px", right: "14px"}}>😃 Prototype Hapi</p>
       <div className="button-menu">
-        <button
-          style={{ fontSize: 20 }}
-          onClick={() => {
-            SaveWorkFile(JSON.stringify(structure, null, 2));
-          }}
-        >
-          Save Work file
-        </button>
-
         <div
           style={{
             lineHeight: "1px",
+            border: "1px solid black",
             fontSize: 20,
             textAlign: "center",
             display: "block",
@@ -286,14 +302,28 @@ function App(props) {
           <p>Load Work file</p>
           <input type="file" id="fileinput" />
         </div>
-
-        <button style={{ fontSize: 20 }}>Export Activity</button>
+        <button
+          style={{ fontSize: 20, border: "1px solid black" }}
+          onClick={() => {
+            SaveWorkFile(JSON.stringify(structure, null, 2));
+          }}
+        >
+          Save Work file
+        </button>
+        <button
+          style={{ fontSize: 20, border: "1px solid black" }}
+          onClick={() => {
+            Export(emptyActivityFile, JSON.stringify(structure));
+          }}
+        >
+          Export Activity
+        </button>
       </div>
       <div className="menu">
         <textarea
           dir="ltr"
           value={JSON.stringify(structure, null, 2)}
-          style={{ height: "100%", width: "20vw" }}
+          style={{ height: "100%", width: "1vw" }}
         />
       </div>
       <div>
