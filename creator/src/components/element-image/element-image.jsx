@@ -18,8 +18,9 @@ function ElementImage({ structure, onUpdate }) {
       <br />
       <br />
       <img
+        className="element-image"
         src={structure.src}
-        onerror="this.onerror=null; this.src='https://www.0404.co.il/wp-content/uploads/2019/10/valley-3916972__480.jpg';" 
+        onError="this.onerror=null; this.src='https://www.0404.co.il/wp-content/uploads/2019/10/valley-3916972__480.jpg';" 
       />
     </>
   );

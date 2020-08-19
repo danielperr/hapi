@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Editable from "../editable/editable";
 import Section from "../section/section";
 import { makeid } from "../../utils";
-import produce from 'immer';
+import produce from "immer";
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from "../../constants";
 import "./app.css";
 import "react-dropzone-uploader/dist/styles.css";
 import Dropzone from "react-dropzone-uploader";
 import DragAndDrop from "../drag-and-drop";
-
 
 function download(filename, text) {
   var element = document.createElement("a");
@@ -103,81 +102,167 @@ const SingleFileAutoSubmit = (props) => {
   );
 };
 
-
-
 function App(props) {
   // const initialStructure = DEFAULT_STRUCTURE;
-  const initialStructure = {"mainHeader":"פעילות ריקה","sections":[{"header":"יחידה ריקה","elements":[{"type":"multi-choice","options":[{"text":"","id":"sVm9SEsV5I"}],"id":"A6bdmngQYF"}],"id":"x7SuppVHff"}],"id":"UgtW1l8IipovGAOOK6XI"};
+  const initialStructure = {
+    mainHeader: "פעילות ריקה",
+    sections: [
+      {
+        header: "יחידה ריקה",
+        elements: [
+          {
+            type: "multi-choice",
+            options: [{ text: "", id: "sVm9SEsV5I" }],
+            id: "A6bdmngQYF",
+          },
+        ],
+        id: "x7SuppVHff",
+      },
+    ],
+    id: "UgtW1l8IipovGAOOK6XI",
+  };
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initialStructure);
 
+  useEffect(() => {
+    document
+      .getElementById("fileinput")
+      .addEventListener("change", readSingleFile, false);
+
+    return () => {
+      document
+        .getElementById("fileinput")
+        .removeEventListener("change", readSingleFile, false);
+    };
+  });
+
+  function readSingleFile(evt) {
+    //Retrieve the first (and only!) File from the FileList object
+    var f = evt.target.files[0];
+
+    if (f) {
+      var r = new FileReader();
+      r.onload = function (e) {
+        var contents = e.target.result;
+        try {
+          console.log(JSON.parse(contents));
+          changeStructure(JSON.parse(contents));
+        } catch {
+          alert("Corrupted format");
+        }
+      };
+      r.readAsText(f);
+    } else {
+      alert("Failed to load file");
+    }
+  }
+
   const handleChangeMainHeader = (text) => {
-    setStructure(produce(structure, newStructure => {
-      newStructure.mainHeader = text;
-    }));
+    setStructure(
+      produce(structure, (newStructure) => {
+        newStructure.mainHeader = text;
+      })
+    );
   };
 
   const handleUpdateSection = (updatedSection) => {
-    setStructure(produce(structure, newStructure => {
-      newStructure.sections.forEach(section => {
-        if (section.id === updatedSection.id) {
-          Object.assign(section, updatedSection);
-        }
+    setStructure(
+      produce(structure, (newStructure) => {
+        newStructure.sections.forEach((section) => {
+          if (section.id === updatedSection.id) {
+            Object.assign(section, updatedSection);
+          }
+        });
       })
-    }));
+    );
   };
 
   const handleClickAddSection = () => {
-    setStructure(produce(structure, newStructure => {
-      newStructure.sections.push(produce(DEFAULT_SECTION, newSection => { newSection.id = makeid(10); }));
-    }));
+    setStructure(
+      produce(structure, (newStructure) => {
+        newStructure.sections.push(
+          produce(DEFAULT_SECTION, (newSection) => {
+            newSection.id = makeid(10);
+          })
+        );
+      })
+    );
   };
 
   const handleDeleteSection = (sectionId) => {
-    setStructure(produce(structure, newStructure => {
-      newStructure.sections.forEach((section, index, object) => {
-        if (section.id === sectionId) {
-          object.splice(index, 1);
-        }
-      });
-    }))
+    setStructure(
+      produce(structure, (newStructure) => {
+        newStructure.sections.forEach((section, index, object) => {
+          if (section.id === sectionId) {
+            object.splice(index, 1);
+          }
+        });
+      })
+    );
   };
 
   const sections = [];
-  structure.sections.forEach(section => {
+  structure.sections.forEach((section) => {
     sections.push(
       <Section
         structure={section}
         onUpdate={handleUpdateSection}
         onDelete={handleDeleteSection}
         key={section.id}
-      />);
+      />
+    );
   });
 
   const changeStructure = (newStructure) => {
     setStructure(newStructure);
   };
 
+  function httpGet(theUrl) {
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        console.log(xmlhttp.responseText);
+      }
+    }
+
+    xmlhttp.open("GET", theUrl, true);
+    xmlhttp.send();
+  }
+  
+  // TODO
+  //httpGet("https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/Ex1.hapi.html");
   return (
     <div className="app">
       {/*<SingleFileAutoSubmit changeStructure={changeStructure} />*/}
-      <DragAndDrop changeStructure={changeStructure}/>
+      <DragAndDrop changeStructure={changeStructure} />
       <div className="button-menu">
         <button
+          style={{ fontSize: 20 }}
           onClick={() => {
             SaveWorkFile(JSON.stringify(structure, null, 2));
           }}
         >
           Save Work file
         </button>
-        <button>Load Work file</button>
-        <button>Export Activity</button>
+
+        <div
+          style={{
+            lineHeight: "1px",
+            fontSize: 20,
+            textAlign: "center",
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <p>Load Work file</p>
+          <input type="file" id="fileinput" />
+        </div>
+
+        <button style={{ fontSize: 20 }}>Export Activity</button>
       </div>
       <div className="menu">
-        <textarea
-          dir="ltr"
-          value={JSON.stringify(structure, null, 2)}
-        />
+        <textarea dir="ltr" value={JSON.stringify(structure, null, 2)} />
       </div>
       <div>
         <Editable size={1} onChange={handleChangeMainHeader} isRich={false}>

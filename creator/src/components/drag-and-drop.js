@@ -65,29 +65,28 @@ function DragAndDrop(props) {
     e.preventDefault();
     hideDropZone();
 
-    let files = e.dataTransfer.files;
+    //Retrieve the first (and only!) File from the FileList object
+    let file = e.dataTransfer.files[0];
 
-    files = [...files];
-    files.forEach(viewFile);
-  }
-
-  function b64_to_utf8( str ) {
-    return decodeURIComponent(escape(window.atob( str )));
- }
-
-  function viewFile(file) {
-    let reader = new FileReader()
-    reader.readAsDataURL(file);
-    reader.onloadend = function() {
-      const text = reader.result;
-      const data = text.substring(text.indexOf("base64,") + 7,);
-      let jsonObj = JSON.parse(b64_to_utf8(data));
-      console.log(jsonObj);
-      props.changeStructure(jsonObj);
+    if (file) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var contents = e.target.result;
+        try {
+          console.log(JSON.parse(contents));
+          props.changeStructure(JSON.parse(contents));
+        } catch {
+          alert("Corrupted format")
+        }
+      };
+      reader.readAsText(file);
+    } else {
+      alert("Failed to load file");
     }
+
   }
 
-  return ("");
+  return "";
 }
 
 export default DragAndDrop;
