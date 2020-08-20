@@ -124,18 +124,7 @@ const SingleFileAutoSubmit = (props) => {
 */
 
 function App(props) {
-  // const initialStructure = DEFAULT_STRUCTURE;
-  const initialStructure = {
-    mainHeader: "פעילות ריקה",
-    sections: [
-      {
-        header: "יחידה ריקה",
-        elements: [{ type: "number-input", id: "A6bdmngQYF" }],
-        id: "x7SuppVHff",
-      },
-    ],
-    id: "UgtW1l8IipovGAOOK6XI",
-  };
+  const initialStructure = DEFAULT_STRUCTURE;
 
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initialStructure);
@@ -154,7 +143,7 @@ function App(props) {
 
   useEffect(() => {
     // Fetch and store the empty activity in a variable, emptyActivityFile.
-    httpGet("https://hapi-app.netlify.app/");
+    httpGet("https://hapi-app.netlify.app/empty/index.html");
 
     document
       .getElementById("fileinput")
@@ -319,13 +308,13 @@ function App(props) {
           Export Activity
         </button>
       </div>
-      <div className="menu">
+      {/* <div className="menu">
         <textarea
           dir="ltr"
           value={JSON.stringify(structure, null, 2)}
           style={{ height: "100%", width: "1vw" }}
         />
-      </div>
+      </div> */}
       <div>
         <Editable size={1} onChange={handleChangeMainHeader}>
           {structure.mainHeader}

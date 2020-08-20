@@ -6,6 +6,12 @@ import Editable from './editable/editable';
 
 function ElementTextInput({ structure, onUpdate }) {
 
+  const handleChangeText = (text) => {
+    onUpdate(produce(structure, newStructure => {
+      newStructure.text = text;
+    }))
+  }
+
   const handleCheckMultiline = (multiline) => {
     onUpdate(produce(structure, newStructure => {
       if (multiline) {
@@ -18,7 +24,7 @@ function ElementTextInput({ structure, onUpdate }) {
   
   return (
     <>
-      <Editable>{structure.text}</Editable>
+      <Editable onChange={handleChangeText}>{structure.text}</Editable>
       <br /><br />
       <Checkbox id={structure.id + '-shuffle'} checked={structure.multiline} onCheck={handleCheckMultiline}>תשובה ארוכה? (יותר משורה אחת)</Checkbox>
     </>
