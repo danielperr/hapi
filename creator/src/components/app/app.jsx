@@ -149,6 +149,10 @@ function App(props) {
       .getElementById("fileinput")
       .addEventListener("change", readSingleFile, false);
 
+    window.onbeforeunload = function(){
+      return true;
+    };
+
     return () => {
       document
         .getElementById("fileinput")
