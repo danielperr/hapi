@@ -1,14 +1,9 @@
 import React, { useEffect } from "react";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import {
-  Link,
-  Events,
-  animateScroll as scroll,
-  scroller,
-} from "react-scroll";
+import Box from "@material-ui/core/Box";
+import clsx from "clsx";
+import { Link, Events} from "react-scroll";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,7 +79,7 @@ const AppTableOfContents = (props) => {
     };
   }, []);
 
-  console.log("Active State: " + activeState);
+  /*
   const scrollTo = (eId, offset) => {
     scroller.scrollTo(eId, {
       duration: 1000,
@@ -94,7 +89,7 @@ const AppTableOfContents = (props) => {
     });
   };
 
-  /*
+  
   const handleClick = (hash) => (event) => {
     // Ignore click for new tab/new window behavior
     if (

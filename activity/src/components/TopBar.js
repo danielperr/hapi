@@ -13,7 +13,7 @@ import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { MenuItem, Divider } from "@material-ui/core";
+import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {

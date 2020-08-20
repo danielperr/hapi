@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import {
   CssBaseline,
-  Toolbar,
   Container,
   Box,
   Fab,
@@ -19,14 +18,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import AppTableOfContents from "./components/AppTableOfContents";
 import { ScrollTop } from "./components/ScrollTop";
-import {
-  Link,
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-  scroller,
-} from "react-scroll";
+import { scroller } from "react-scroll";
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
@@ -391,7 +383,6 @@ export function App(props) {
           }}
           onReset={resetActivity}
         />
-        <Toolbar />
         <AppTableOfContents {...props}></AppTableOfContents>
         <Container maxWidth="md" className={classes.container}>
           {sections}

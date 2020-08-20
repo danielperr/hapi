@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Button, FormControl, FormHelperText } from '@material-ui/core';
+import { Paper, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ElementLabel } from './ElementLabel';
 import { ElementImage } from "./ElementImage";

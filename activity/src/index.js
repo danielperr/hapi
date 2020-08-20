@@ -256,6 +256,8 @@ const structure = {
   ]
 };
 
+document.title = structure.mainHeader;
+
 ReactDOM.render(
   <React.StrictMode>
     <App structure={structure} />
