@@ -14,21 +14,35 @@ EXPORT_DIR = CWD / 'export'
 EXPORT_FNAME = 'activity.html'
 
 
+def get_file_contents(src, ftype):
+    assert src
+    assert src.endswith(f'.{ftype}')
+    assert '://' not in src
+    src_abs = BUILD_DIR / src
+    assert src_abs.exists()
+    print(f'Trying to open {src_abs}')
+    with io.open(src_abs, mode='r', encoding='utf-8') as f:
+        return f.read()
+
+
 def embed_docs(soup):
+    # Embed scripts
     scripts = soup.find_all('script')
     for script in scripts:
         src = script.get('src')
-        if not src:
-            continue
-        if '://' in src:
-            continue
-        src_abs = BUILD_DIR / src
-        if not src_abs.exists():
-            continue
-        with io.open(src_abs, mode='r', encoding='utf-8') as f:
-            contents = f.read()
+        try: contents = get_file_contents(src, 'js')
+        except AssertionError: continue
         del script['src']
         script.string = contents
+    # Embed styles
+    links = soup.find_all('link')
+    for link in links:
+        href = link.get('href')
+        try: contents = get_file_contents(href, 'css')
+        except AssertionError: continue
+        link.attrs = {}
+        link.name = 'style'
+        link.string = contents
 
 
 def main():
