@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-size: 16px;
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(to top left, #aaa, rgb(178, 206, 231));
+  background-attachment: fixed;
+  line-height: 1.5;
+}
+
+button {
+  outline: 0;
+  border: 1px solid #888;
+  box-sizing: border-box;
+  box-shadow: 0 1px 1px #eee;
+  padding: 2px 8px;
+}
+
+button:hover {
+  background-color: #f7f7f7;
+}
+
+button:active {
+  border: 1px solid #999;
+  background-color: #bbb;
+}
+
+select {
+  padding: 1px;
+  /* border-radius: 4px; */
+}
+
+button.dangerous {
+  background-color: rgb(255, 199, 199);
+  border: 1px solid rgb(128, 93, 93);
+  color: #744;
+  font-weight: bold;
+}
+
+button.dangerous:hover {
+  background-color: rgb(255, 213, 213);
+}
+
+button.dangerous:active {
+  background-color: rgb(243, 194, 194);
+}
