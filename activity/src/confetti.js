@@ -2,7 +2,7 @@ import $ from "jquery";
 
 
 function create(i) {
-  var width = Math.random() * 9;
+  var width = Math.random() * 12;
   var height = width * 0.4;
 
   var colourIdx = Math.ceil(Math.random() * 3);
@@ -46,7 +46,7 @@ function drop(x) {
 }
 
 export function dropConfetti() {
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < 150; i++) {
     create(i);
   }
 }

@@ -1,14 +1,24 @@
-import React, { useEffect } from "react";
-import Grid from "@material-ui/core/Grid";
+import React from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Toolbar, Container, Button, Box, Fab, Snackbar, IconButton, } from "@material-ui/core";
+import {
+  CssBaseline,
+  Container,
+  Box,
+  Fab,
+  Snackbar,
+  IconButton,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { Section } from "./components/Section";
 import { TopBar } from "./components/TopBar";
 import { dropConfetti } from "./confetti";
+import { getPhrase } from "./utils";
 import CheckIcon from "@material-ui/icons/Check";
-
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import AppTableOfContents from "./components/AppTableOfContents";
+import { ScrollTop } from "./components/ScrollTop";
+import { scroller } from "react-scroll";
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
@@ -86,57 +96,48 @@ function SaveAs(answersString) {
   }
 }
 
-document.addEventListener("keypress", function (e) {
-  if (e.keyCode === 13 || e.which === 13) {
-    e.preventDefault();
-    return false;
-  }
-});
-
 export function App(props) {
-  // Get the saved answers on this file
   const classes = useStyles(theme);
-  const [_, forceUpdate] = React.useState();
-  const [answers, setAnswers] = React.useState(
-    JSON.parse(document.getElementById("save-input").value || "{}")
+
+  let initialAnswers = JSON.parse(
+    document.getElementById("save-input").value || "{}"
   );
-  const [isAnswersLoaded, setIsAnswerLoaded] = React.useState(false);
-
-  const [progress, setProgress] = React.useState(0); // top bar progress bar percentage
-  const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
-
-  let [checkAll, setCheckAll] = React.useState(false); // whether to activate the "check answers" button in every section
+  if (!Object.keys(initialAnswers).length) {
+    // Get answers from local storage
+    initialAnswers =
+      JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {};
+  }
+  const [answers, setAnswers] = React.useState(initialAnswers);
   const sectionCount = props.structure.sections.length;
-
-  let checkedSections = {};
   const [showSuccess, setShowSuccess] = React.useState(false);
 
-  // console.log('App')
+  // /* Handle scroll event */
+  // const [progress, setProgress] = React.useState(0); // top bar progress bar percentage
+  // const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
+  // const handleScroll = () => {
+  //   const winScroll =
+  //     document.body.scrollTop || document.documentElement.scrollTop;
+  //   const height =
+  //     document.documentElement.scrollHeight -
+  //     document.documentElement.clientHeight;
+  //   const scrolled = Math.round((100 * winScroll) / height);
+  //   setTopBarElevation(scrolled);
+  //   // setProgress(scrolled);
+  // };
 
-  const handleScroll = () => {
-    const winScroll =
-      document.body.scrollTop || document.documentElement.scrollTop;
-    const height =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight;
-    const scrolled = Math.round((100 * winScroll) / height);
-    setTopBarElevation(scrolled);
-    // setProgress(scrolled);
-  };
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+  // }, []);
 
-  if (!isAnswersLoaded) {
-    window.addEventListener('scroll', handleScroll);
-    if (!Object.keys(answers).length) {
-      // Get the saved answers from local storage
-      setAnswers(
-        JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {}
-      );
-      setIsAnswerLoaded(true);
-    }
-  }
+  /* When the user answers a question */
+  const handleAnswer = (elementId, answer) => {
+    const validationsCopy = Object.assign({}, elementsValidations);
+    validationsCopy[elementId].helperText = " ";
+    validationsCopy[elementId].showHelperText = false;
+    validationsCopy[elementId].error = false;
+    setElementsValidations(validationsCopy);
 
-  const handleAnswer = (sectionAnswers) => {
-    const answersCopy = Object.assign({}, answers, sectionAnswers);
+    const answersCopy = Object.assign({}, answers, { [elementId]: answer });
     setAnswers(answersCopy);
     localStorage.setItem(
       props.structure.serialNumber,
@@ -144,36 +145,212 @@ export function App(props) {
     );
   };
 
-  const handleSubmit = () => {
-    checkedSections = {};
-    setCheckAll(true);
+  const scrollTo = (eId, offset) => {
+    scroller.scrollTo(eId, {
+      duration: 1000,
+      delay: 100,
+      smooth: "easeInOutQuint",
+      offset: offset,
+    });
   };
 
-  const handleSectionCheck = (sectionId, finished) => {
-    checkedSections[sectionId] = finished;
-    console.log(checkedSections);
-    if (Object.keys(checkedSections).length === sectionCount) {
-      let allFinished = true;
-      for (const [key, value] of Object.entries(checkedSections)) {
-        if (!value) {
-          allFinished = false;
-          break;
-        }
+  /* When the user attempts to check the whole activity */
+  const handleSubmit = () => {
+    let finishedSections = 0;
+
+    props.structure.sections.forEach((se) => {
+      finishedSections += checkSection(se) ? 1 : 0;
+    });
+
+    /* Find the first element that has an error and scroll to it */
+    let elementId = "";
+    allFillableElements.some((el) => {
+      if (elementsValidations[el.id].error === true) {
+        elementId = el.id;
+        // acts as a break.
+        return true;
       }
-      if (allFinished) {
-        dropConfetti();
-        setShowSuccess(true);
-      }
-      setCheckAll(false);
+      return false;
+    });
+
+    if (elementId !== "") {
+      scrollTo(elementId, -100);
+    }
+
+    if (finishedSections === sectionCount) {
+      dropConfetti();
+      setShowSuccess(true);
     }
   };
 
+  /* Prompt for confirmation, erase all the answers and reload the activity */
+  const resetActivity = () => {
+    var conf = window.confirm(
+      " כל התשובות בפעילות זו יימחקו לצמיתות.\n להמשיך?"
+    );
+    if (conf) {
+      setAnswers({});
+      localStorage.setItem(props.structure.serialNumber, JSON.stringify({}));
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.location.reload();
+    }
+  };
+
+  /* When the user closes the success snackbar */
   const handleSuccessClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
     setShowSuccess(false);
+  };
+
+  const getSectionById = (sectionId) => {
+    let section;
+    props.structure.sections.forEach((se) => {
+      if (se.id === sectionId) {
+        section = se;
+      }
+    });
+
+    return section;
+  };
+
+  const fillableTypes = ["multi-choice", "text-input", "number-input"];
+  const allFillableElements = props.structure.sections
+    .map((s) => s.elements.filter((e) => fillableTypes.includes(e.type)))
+    .flat(1);
+  const initialValidations = {};
+  // {questionId: {error: (boolean), showHelperText: (boolean), helperText: (string)}}
+  allFillableElements.forEach((element) => {
+    initialValidations[element.id] = {
+      error: false,
+      showHelperText: false,
+      helperText: " ",
+    };
+  });
+
+  const [elementsValidations, setElementsValidations] = React.useState(
+    initialValidations
+  );
+
+  const checkMultiChoiceElement = (
+    element,
+    elementId,
+    answer,
+    correctElements
+  ) => {
+    const validationsCopy = Object.assign({}, elementsValidations);
+    let error = true;
+
+    if (answer !== "") {
+      // Check if the answer is right
+      if (element.correct.includes(answer)) {
+        correctElements.add(elementId);
+        error = false;
+      }
+
+      validationsCopy[elementId].helperText = getPhrase(!error);
+    } else {
+      // This element has no answer in App's answers therefore its emepty and has to be filled.
+      validationsCopy[elementId].helperText = "חסרה תשובה";
+    }
+
+    validationsCopy[elementId].showHelperText = true;
+    validationsCopy[elementId].error = error;
+    setElementsValidations(validationsCopy);
+  };
+
+  const checkTextInputElement = (
+    element,
+    elementId,
+    answer,
+    correctElements
+  ) => {
+    const validationsCopy = Object.assign({}, elementsValidations);
+    let error = true;
+
+    if (
+      elementId in answers &&
+      answer.replace(/[ (\r\n|\r|\n)]/gi, "") !== ""
+    ) {
+      // Check if there is an answer, if there is then the element is correct.
+      correctElements.add(elementId);
+      error = false;
+
+      validationsCopy[elementId].helperText = " ";
+    } else {
+      // This element has no answer in App's answers therefore its emepty and has to be filled.
+      validationsCopy[elementId].helperText = "חסרה תשובה";
+    }
+
+    validationsCopy[elementId].showHelperText = true;
+    validationsCopy[elementId].error = error;
+    setElementsValidations(validationsCopy);
+  };
+
+  const checkNumberInputElement = (
+    element,
+    elementId,
+    answer,
+    correctElements
+  ) => {
+    const validationsCopy = Object.assign({}, elementsValidations);
+    let error = true;
+
+    if (answer !== "") {
+      // Check if the answer is right, which means the number is witin th given range.
+      if (element.min <= answer && answer <= element.max) {
+        correctElements.add(elementId);
+        error = false;
+      }
+
+      validationsCopy[elementId].helperText = getPhrase(!error);
+    } else {
+      // This element has no answer in App's answers therefore its emepty and has to be filled.
+      validationsCopy[elementId].helperText = "חסרה תשובה";
+    }
+
+    validationsCopy[elementId].showHelperText = true;
+    validationsCopy[elementId].error = error;
+    setElementsValidations(validationsCopy);
+  };
+
+  /* Check section and return whether it's completely finished;
+     section is an object */
+  const checkSection = (section) => {
+    let correctElements = new Set();
+
+    section.elements.forEach((element) => {
+      const questionId = element.id;
+      const answer = answers[questionId] || "";
+
+      switch (element.type) {
+        case "text-input":
+          checkTextInputElement(element, questionId, answer, correctElements);
+          break;
+        case "multi-choice":
+          checkMultiChoiceElement(element, questionId, answer, correctElements);
+          break;
+        case "number-input":
+          checkNumberInputElement(element, questionId, answer, correctElements);
+          break;
+        default:
+          break;
+      }
+    });
+
+    const fillableAmount = section.elements.filter((e) =>
+      fillableTypes.includes(e.type)
+    ).length;
+    return correctElements.size === fillableAmount;
+  };
+
+  /* Same as 'checkSection' but the argument is id (string) and not section (object) */
+  const checkSectionById = (sectionId) => {
+    const section = getSectionById(sectionId);
+    return checkSection(section);
   };
 
   const sections = [];
@@ -183,9 +360,9 @@ export function App(props) {
         header={section.header}
         elements={section.elements}
         answers={answers}
+        validations={elementsValidations}
         onAnswer={handleAnswer}
-        check={checkAll}
-        onCheck={handleSectionCheck}
+        onCheck={checkSectionById}
         id={section.id}
         key={section.id}
       />
@@ -196,14 +373,17 @@ export function App(props) {
     <React.Fragment>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <div id="back-to-top-anchor" />
         <TopBar
-          progress={progress}
-          elevation={topBarElevation}
+          // progress={progress}
+          // elevation={topBarElevation}
+          mainHeader={props.structure.mainHeader}
           onDownload={() => {
             SaveAs(JSON.stringify(answers));
           }}
+          onReset={resetActivity}
         />
-        <Toolbar />
+        <AppTableOfContents {...props}></AppTableOfContents>
         <Container maxWidth="md" className={classes.container}>
           {sections}
           <Box
@@ -252,6 +432,11 @@ export function App(props) {
             }
           />
         </Container>
+        <ScrollTop {...props}>
+          <Fab color="secondary" size="small" aria-label="scroll back to top">
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </ScrollTop>
       </ThemeProvider>
     </React.Fragment>
   );
