@@ -44,19 +44,8 @@ label {
 }
 
 /* Embeds */
-.embed {
-  width: 1100px;
-  /* box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15); */
-  display: block;
-  overflow: "hidden";
-}
-
-.ifigure-embed {
-  height: 600px;
-}
-
-.youtube-embed {
-  height: 550px;
+.override {
+  border: 0px solid #000 !important;
 }
 
 /* Confetti */

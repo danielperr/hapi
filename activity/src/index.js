@@ -16,6 +16,10 @@ const structure = {
         "id": "a8HJvwa243",
         "min": "4.5",
         "max": "5.5",
+      }, {
+        "type": "docs",
+        "id": "a1HJakj905",
+        "src": "https://docs.google.com/document/d/e/2PACX-1vTqNrDwf2U0yiOvF1sFhTcOOL8cislZqJYVT_KlOkIwead6wGNzi45fSvUhuOpJt7XEGLtwFodswvEP/pub?embedded=true"
       }],
     }, {
       "header": "צפייה בסרטון",

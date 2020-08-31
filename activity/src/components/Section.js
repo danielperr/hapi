@@ -4,11 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ElementLabel } from './ElementLabel';
 import { ElementImage } from "./ElementImage";
 import { ElementYoutube } from "./ElementYoutube";
+import { ElementDocs } from "./ElementDocs";
 import { ElementTextInput } from "./ElementTextInput";
 import { ElementMultiChoice } from "./ElementMultiChoice";
 import { ElementNumberInput } from "./ElementNumberInput";
 import { SectionHeader } from "./SectionHeader";
-
 
 const useStyles = makeStyles((theme) => ({
   sectionPaper: {
@@ -58,23 +58,37 @@ export function Section(props) {
 
     switch (element.type) {
       case 'label':
-        obj = <ElementLabel text={element.text}
+        obj = <ElementLabel 
+          text={element.text}
           id={element.id}
-          key={element.id} />;
+          key={element.id} 
+        />;
         break;
 
       case 'image':
-        obj = <ElementImage src={element.src}
+        obj = <ElementImage 
+          src={element.src}
           id={element.id}
-          key={element.id} />;
+          key={element.id} 
+        />;
         break;
 
       case 'youtube':
-        obj = <ElementYoutube youtubeId={element.youtubeId}
+        obj = <ElementYoutube 
+          youtubeId={element.youtubeId}
           id={element.id}
-          key={element.id} />;
+          key={element.id} 
+        />;
         break;
       
+      case 'docs':
+        obj = <ElementDocs 
+          src={element.src}
+          id={element.id}
+          key={element.id}
+        />
+        break;
+
       case 'text-input':
         obj = <ElementTextInput
           text={element.text}
@@ -85,7 +99,8 @@ export function Section(props) {
           answer={answer}
           onAnswer={handleAnswer}
           id={element.id}
-          key={element.id} />;
+          key={element.id}
+        />;
         break;
 
       case 'multi-choice':

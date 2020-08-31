@@ -19,6 +19,7 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import AppTableOfContents from "./components/AppTableOfContents";
 import { ScrollTop } from "./components/ScrollTop";
 import { scroller } from "react-scroll";
+import { ElementDocs } from "./components/ElementDocs";
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
@@ -385,6 +386,7 @@ export function App(props) {
         />
         <AppTableOfContents {...props}></AppTableOfContents>
         <Container maxWidth="md" className={classes.container}>
+          <br /><br /><br />
           {sections}
           <Box
             display="flex"
