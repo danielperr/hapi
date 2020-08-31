@@ -73,14 +73,6 @@ export function Section(props) {
         />;
         break;
 
-      case 'youtube':
-        obj = <ElementYoutube 
-          youtubeId={element.youtubeId}
-          id={element.id}
-          key={element.id} 
-        />;
-        break;
-      
       case 'docs':
         obj = <ElementDocs 
           src={element.src}
@@ -89,6 +81,14 @@ export function Section(props) {
         />
         break;
 
+      case 'youtube':
+        obj = <ElementYoutube 
+          youtubeId={element.youtubeId}
+          id={element.id}
+          key={element.id} 
+        />;
+        break;
+        
       case 'text-input':
         obj = <ElementTextInput
           text={element.text}

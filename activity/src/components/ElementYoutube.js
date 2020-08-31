@@ -1,6 +1,6 @@
 import React from "react";
 
-// <ElementYoutube name="" youtubeId="" />
+// <ElementYoutube id="" youtubeId="" />
 export class ElementYoutube extends React.Component {
   render() {
     // When creating this element pass the yotube Id only
@@ -13,7 +13,7 @@ export class ElementYoutube extends React.Component {
           paddingTop: 25,
           height: 0,
         }}
-        key={this.props.name + "-div"}
+        key={this.props.id + "-div"}
       >
         <iframe
           style={{
@@ -34,19 +34,3 @@ export class ElementYoutube extends React.Component {
     );
   }
 }
-
-/*
-class YoutubeElement extends React.Component {
-    render() {
-        return React.createElement("iframe", {
-            className: "youtube-embed embed",
-            src: this.props.src,
-            frameBorder: "0",
-            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-            allowFullScreen: true,
-            title: "video",
-            key: this.props.name
-        });
-    }
-}
-*/
