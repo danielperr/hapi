@@ -39,7 +39,7 @@ function InjectStructureToActivity(emtpyActivity, structure) {
   // Copy the file to f
   let f = emtpyActivity.slice();
 
-  const index = f.indexOf("structure:");
+  const index = f.indexOf("structure=");
   const firstSign = f.indexOf("{", index);
   const secondSign = f.indexOf("}", index + 1);
   f = f.substring(0, firstSign) + structure + f.substring(secondSign + 1);
@@ -143,7 +143,7 @@ function App(props) {
 
   useEffect(() => {
     // Fetch and store the empty activity in a variable, emptyActivityFile.
-    httpGet("https://hapi-app.netlify.app/empty/index.html");
+    httpGet("https://hapi-app.netlify.app/empty.html");
 
     document
       .getElementById("fileinput")

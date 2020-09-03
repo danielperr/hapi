@@ -10,6 +10,7 @@ import ArrowButtons from '../arrow-buttons';
 import Toolbar from '../toolbar';
 import DeleteButton from '../delete-button';
 import './element.css';
+import ElementDocs from '../element-docs';
 
 
 export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
@@ -66,6 +67,9 @@ export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMov
     case 'youtube':
       obj = <ElementYoutube {...elementProps} />;
       break;
+    case 'docs':
+      obj = <ElementDocs {...elementProps} />;
+      break;
     case 'multi-choice':
       obj = <ElementMultiChoice {...elementProps} />;
       break;
@@ -88,6 +92,7 @@ export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMov
             <option value="label">טקסט</option>
             <option value="image">תמונה</option>
             <option value="youtube">סרטון</option>
+            <option value="docs">Google Docs</option>
           </optgroup>
           <optgroup label="מילוי">
             <option value="multi-choice">שאלת בחירה</option>
