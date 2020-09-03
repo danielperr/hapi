@@ -1,15 +1,12 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
-import Divider from '@material-ui/core/Divider';
-import { shuffle } from '../utils';
-import { RichLabel } from './RichLabel';
+
 import clsx from "clsx";
+
+import { makeStyles } from '@material-ui/core/styles';
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormHelperText, FormLabel, Divider } from '@material-ui/core';
+
+import RichLabel from '../shared/RichLabel';
+import { shuffle } from '../shared/utils';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -47,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
   successState: {},
 }));
 
-
 /*
  <ElementMultiChoice
     text (string): question text / title
@@ -60,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     id (string): question id
   />
 */
-export function ElementMultiChoice(props) {
+function ElementMultiChoice(props) {
   const classes = useStyles();
   const [options, setOptions] = React.useState(props.options);
   let [value, setValue] = React.useState('');
@@ -145,3 +141,4 @@ export function ElementMultiChoice(props) {
   );
 }
 
+export default ElementMultiChoice;

@@ -1,6 +1,6 @@
 import React from "react";
 
-export class ElementIfigure extends React.Component {
+class ElementIfigure extends React.Component {
   render() {
     return (
       <iframe
@@ -12,3 +12,5 @@ export class ElementIfigure extends React.Component {
     );
   }
 }
+
+export default ElementIfigure;

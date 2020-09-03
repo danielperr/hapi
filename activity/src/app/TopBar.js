@@ -1,19 +1,17 @@
 import React from "react";
+
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import IconMenu from "@material-ui/icons/Menu";
-import IconMenuBook from "@material-ui/icons/MenuBook";
-import IconIfigure from "@material-ui/icons/CastForEducation";
-import IconRxitToApp from "@material-ui/icons/ExitToApp";
+import {
+  AppBar,
+  Divider,
+  Toolbar,
+  Typography,
+  IconButton,
+} from '@material-ui/core';
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function TopBar(props) {
+function TopBar(props) {
   const theme = useTheme();
   const classes = useStyles(theme);
 
@@ -85,6 +83,8 @@ export function TopBar(props) {
     </div>
   );
 }
+
+export default TopBar;
 
 /*
   <Button edge="end" className={ classes.menuBook } color="inherit" aria-label="menu" onclick={ window.open('https://webhome.weizmann.ac.il/home/ifigures/ifigure.ifig.html','_blank') } >

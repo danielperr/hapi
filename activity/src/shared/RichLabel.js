@@ -1,8 +1,7 @@
 import React from "react";
-import ReactDOMServer from "react-dom/server";
-import ReactMarkdown from 'react-markdown';
-import { makeStyles, withStyles } from "@material-ui/core";
 
+import ReactMarkdown from 'react-markdown';
+import { withStyles } from "@material-ui/core";
 
 const CustomCss = withStyles({
   '@global': {
@@ -16,7 +15,7 @@ const CustomCss = withStyles({
   },
 })(() => null);
 
-export function RichLabel(props) {
+function RichLabel(props) {
   return (
     <>
       <CustomCss />
@@ -29,9 +28,18 @@ export function RichLabel(props) {
       >
         <ReactMarkdown
           source={props.children}
-          renderers={{link: props => <a href={props.href} target="_blank">{props.children}</a>}}
+          renderers={{link: props =>
+            <a
+              href={props.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {props.children}
+            </a>}}
         />
       </label>
     </>
   );
 }
+
+export default RichLabel;

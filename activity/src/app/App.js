@@ -1,25 +1,19 @@
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import {
-  CssBaseline,
-  Container,
-  Box,
-  Fab,
-  Snackbar,
-  IconButton,
-} from "@material-ui/core";
+
+import { scroller } from "react-scroll";
+
+import { ThemeProvider, createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { CssBaseline, Container, Box, Fab, Snackbar, IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import { Section } from "./components/Section";
-import { TopBar } from "./components/TopBar";
-import { dropConfetti } from "./confetti";
-import { getPhrase } from "./utils";
 import CheckIcon from "@material-ui/icons/Check";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import AppTableOfContents from "./components/AppTableOfContents";
-import { ScrollTop } from "./components/ScrollTop";
-import { scroller } from "react-scroll";
-import { ElementDocs } from "./components/ElementDocs";
+
+import TopBar from './TopBar';
+import AppTableOfContents from "./AppTableOfContents";
+import { dropConfetti } from "./confetti";
+import ScrollTop from "./ScrollTop";
+import Section from '../section/Section';
+import { getPhrase } from "../shared/utils";
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
@@ -97,7 +91,7 @@ function SaveAs(answersString) {
   }
 }
 
-export function App(props) {
+function App(props) {
   const classes = useStyles(theme);
 
   let initialAnswers = JSON.parse(
@@ -443,3 +437,5 @@ export function App(props) {
     </React.Fragment>
   );
 }
+
+export default App;

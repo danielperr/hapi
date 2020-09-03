@@ -1,14 +1,18 @@
 import React from 'react';
-import { Paper, Button } from '@material-ui/core';
+
 import { makeStyles } from '@material-ui/core/styles';
-import { ElementLabel } from './ElementLabel';
-import { ElementImage } from "./ElementImage";
-import { ElementYoutube } from "./ElementYoutube";
-import { ElementDocs } from "./ElementDocs";
-import { ElementTextInput } from "./ElementTextInput";
-import { ElementMultiChoice } from "./ElementMultiChoice";
-import { ElementNumberInput } from "./ElementNumberInput";
-import { SectionHeader } from "./SectionHeader";
+import { Paper, Button } from '@material-ui/core';
+
+import SectionHeader from './SectionHeader';
+import {
+  ElementLabel,
+  ElementImage,
+  ElementYoutube,
+  ElementDocs,
+  ElementTextInput,
+  ElementMultiChoice,
+  ElementNumberInput
+} from "../elements";
 
 const useStyles = makeStyles((theme) => ({
   sectionPaper: {
@@ -32,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     id (string): id of the section
   />
 */
-export function Section(props) {
+function Section(props) {
   const classes = useStyles();
 
   const checkablesTypes = ['multi-choice', 'number-input'];
@@ -174,3 +178,5 @@ export function Section(props) {
     </Paper>
   );
 }
+
+export default Section;

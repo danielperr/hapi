@@ -1,7 +1,7 @@
 import React from "react";
 
 // <ElementDocs id="" src="" />
-export class ElementDocs extends React.Component {
+class ElementDocs extends React.Component {
   render() {
     return (
       <div
@@ -23,8 +23,11 @@ export class ElementDocs extends React.Component {
           }}
           className="override"
           src={this.props.src}
+          title={this.props.id + "-iframe"}
         />
       </div>
     );
   }
 }
+
+export default ElementDocs;

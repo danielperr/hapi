@@ -1,7 +1,6 @@
 import React from "react";
 
-
-export class ElementImage extends React.Component {
+class ElementImage extends React.Component {
   render() {
     return (
       <img
@@ -13,3 +12,5 @@ export class ElementImage extends React.Component {
     );
   }
 }
+
+export default ElementImage;

@@ -1,7 +1,7 @@
 import React from "react";
 
 // <ElementYoutube id="" youtubeId="" />
-export class ElementYoutube extends React.Component {
+class ElementYoutube extends React.Component {
   render() {
     // When creating this element pass the yotube Id only
     const youtubeId = this.props.youtubeId;
@@ -34,3 +34,5 @@ export class ElementYoutube extends React.Component {
     );
   }
 }
+
+export default ElementYoutube;

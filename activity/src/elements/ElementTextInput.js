@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Divider from "@material-ui/core/Divider";
-import { RichLabel } from './RichLabel';
+
 import clsx from "clsx";
+
+import { makeStyles } from "@material-ui/core/styles";
+import { TextField, FormControl, FormHelperText, Divider } from "@material-ui/core";
+
+import RichLabel from '../shared/RichLabel';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     id (string): question id
   />
 */
-export function ElementTextInput(props) {
+function ElementTextInput(props) {
   const classes = useStyles();
 
   const [seconds, setSeconds] = useState(0);
@@ -120,3 +120,5 @@ export function ElementTextInput(props) {
     </FormControl>
   );
 }
+
+export default ElementTextInput;

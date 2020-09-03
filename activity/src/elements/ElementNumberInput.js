@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  FormControl,
-  FormLabel,
-  TextField,
-  FormHelperText,
-  Divider,
-} from "@material-ui/core";
-import NumberFormat from "react-number-format";
-import { RichLabel } from "./RichLabel";
+
 import clsx from "clsx";
+import NumberFormat from "react-number-format";
+
+import { makeStyles } from "@material-ui/core/styles";
+import { FormControl, FormLabel, TextField, FormHelperText, Divider } from "@material-ui/core";
+
+import RichLabel from "../shared/RichLabel";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -56,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
  * onAnswer (Function): callback fcn for when the user changes the answer
  * suffix (String)
  */
-export function ElementNumberInput({
+function ElementNumberInput({
   text,
   error,
   helperText,
@@ -138,6 +135,8 @@ export function ElementNumberInput({
     </FormControl>
   );
 }
+
+export default ElementNumberInput;
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;

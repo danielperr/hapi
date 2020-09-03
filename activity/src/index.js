@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import App from './app/App';
+
 import './style.css';
-import { App } from './App';
 
 const structure = {
   "serialNumber": "bJbiiGDGd29p7xJPI4xk",

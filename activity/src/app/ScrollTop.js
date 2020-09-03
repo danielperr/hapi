@@ -1,7 +1,7 @@
 import React from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Zoom from "@material-ui/core/Zoom";
+import { Zoom, useScrollTrigger } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function ScrollTop(props) {
+function ScrollTop(props) {
   const { children, window } = props;
   const classes = useStyles();
 
@@ -39,3 +39,5 @@ export function ScrollTop(props) {
     </Zoom>
   );
 }
+
+export default ScrollTop;
