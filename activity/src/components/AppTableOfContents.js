@@ -5,6 +5,7 @@ import Box from "@material-ui/core/Box";
 import clsx from "clsx";
 import { Link, Events} from "react-scroll";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     top: 60,
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "auto",
     padding: theme.spacing(2, 0, 2, 2),
     display: "none",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("lg")]: {
       display: "block",
     },
   },
@@ -139,7 +140,8 @@ const AppTableOfContents = (props) => {
   props.structure.sections.forEach((section) => {
     items.push({ text: section.header, hash: section.id });
   });
-
+  
+  
   return (
     <nav className={classes.root} aria-label={"Page Table Of Contents"}>
       {items.length > 0 ? (

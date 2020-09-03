@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { FormControl, FormLabel, TextField, FormHelperText, Divider } from '@material-ui/core';
-import NumberFormat from 'react-number-format';
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  FormControl,
+  FormLabel,
+  TextField,
+  FormHelperText,
+  Divider,
+} from "@material-ui/core";
+import NumberFormat from "react-number-format";
+import { RichLabel } from "./RichLabel";
+import clsx from "clsx";
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   textField: {
-    textAlign: 'left',
+    textAlign: "left",
   },
   formControlLabel: {
     margin: -theme.spacing(0.25),
@@ -14,23 +21,33 @@ const useStyles = makeStyles(theme => ({
   formHelperText: {
     margin: theme.spacing(1, 1, 2, 0),
     textAlign: "right",
+    "&$successState,&:active": {
+      color: theme.palette.success.main,
+    },
   },
   button: {
     margin: theme.spacing(1, 1, 0, 0),
   },
-  richLabel: {
-    cursor: "pointer",
-  },
   divider: {
     marginBottom: theme.spacing(4),
   },
+  questionLabel: {
+    color: theme.palette.text.secondary,
+    "&$errorState,&:active": {
+      color: theme.palette.error.main,
+    },
+    "&$successState,&:active": {
+      color: theme.palette.success.main,
+    },
+  },
+  errorState: {},
+  successState: {},
 }));
 
-
-/* 
+/*
  * ElementNumberInput
  * Input that accepts numbers, can be checked with variable precision
- * 
+ *
  * text (String): question title
  * error (Boolean): whether the answer is incorrect
  * helperText (String): form helper text (status text)
@@ -39,7 +56,15 @@ const useStyles = makeStyles(theme => ({
  * onAnswer (Function): callback fcn for when the user changes the answer
  * suffix (String)
  */
-export function ElementNumberInput({ text, error, helperText, showHelperText, answer, onAnswer, id }) {
+export function ElementNumberInput({
+  text,
+  error,
+  helperText,
+  showHelperText,
+  answer,
+  onAnswer,
+  id,
+}) {
   const classes = useStyles();
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
@@ -81,29 +106,38 @@ export function ElementNumberInput({ text, error, helperText, showHelperText, an
       fullWidth={true}
       className={classes.formControl}
     >
-      <FormLabel component="legend">
+      <RichLabel
+        className={clsx(
+          classes.questionLabel,
+          showHelperText && error ? classes.errorState : undefined
+        )}
+      >
         {text}
-      </FormLabel>
+      </RichLabel>
       <br />
       <TextField
         dir="ltr"
         onChange={handleChange}
         defaultValue={answer}
         variant="outlined"
-        inputProps={{min: 0, style: { textAlign: 'left' }}}
+        inputProps={{ min: 0, style: { textAlign: "left" } }}
         InputProps={{
           inputComponent: NumberFormatCustom,
         }}
         className={classes.textField}
       />
-      <FormHelperText className={classes.formHelperText}>
+      <FormHelperText
+        className={clsx(
+          classes.formHelperText,
+          showHelperText && !error ? classes.successState : undefined
+        )}
+      >
         {helperText}
       </FormHelperText>
       <Divider className={classes.divider} />
     </FormControl>
   );
 }
-
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;

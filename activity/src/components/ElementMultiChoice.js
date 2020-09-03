@@ -9,7 +9,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Divider from '@material-ui/core/Divider';
 import { shuffle } from '../utils';
 import { RichLabel } from './RichLabel';
-
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -20,17 +20,31 @@ const useStyles = makeStyles((theme) => ({
   },
   formHelperText: {
     margin: theme.spacing(1, 1, 2, 0),
-    textAlign: "right"
+    textAlign: "right",
+    "&$successState,&:active": {
+      color: theme.palette.success.main,
+    },
   },
   button: {
     margin: theme.spacing(1, 1, 0, 0),
   },
-  richLabel: {
-    cursor: 'pointer',
-  },
   divider: {
     marginBottom: theme.spacing(4),
   },
+  answerLabel: {
+    cursor: 'pointer',
+  },
+  questionLabel: {
+    color: theme.palette.text.secondary,
+    "&$errorState,&:active": {
+      color: theme.palette.error.main,
+    },
+    "&$successState,&:active": {
+      color: theme.palette.success.main,
+    },
+  },
+  errorState: {},
+  successState: {},
 }));
 
 
@@ -76,7 +90,7 @@ export function ElementMultiChoice(props) {
         label={
           <RichLabel
             htmlFor={option.id}
-            className={classes.richLabel}
+            className={classes.answerLabel}
           >
             {option.text}
           </RichLabel>
@@ -99,11 +113,14 @@ export function ElementMultiChoice(props) {
       error={props.showHelperText && props.error}
       className={props.formControl}
     >
-      <FormLabel
-        component="legend"
+      <RichLabel
+        className={clsx(
+          classes.questionLabel,
+          (props.showHelperText && props.error) ? classes.errorState : undefined,
+        )}
       >
         {props.text}
-      </FormLabel>
+      </RichLabel>
       <br />
       <RadioGroup
         aria-label="quiz"
@@ -114,7 +131,10 @@ export function ElementMultiChoice(props) {
         {optionDoms}
       </RadioGroup>
       <FormHelperText
-        className={classes.formHelperText}
+        className={clsx(
+          classes.formHelperText,
+          (props.showHelperText && !props.error) ? classes.successState : undefined,
+        )}
       >
         {props.helperText}
       </FormHelperText>

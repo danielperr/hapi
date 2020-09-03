@@ -3,9 +3,9 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import FormLabel from "@material-ui/core/FormLabel";
 import Divider from "@material-ui/core/Divider";
-
+import { RichLabel } from './RichLabel';
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -21,12 +21,20 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1, 1, 0, 0),
   },
-  richLabel: {
-    cursor: "pointer",
-  },
   divider: {
     marginBottom: theme.spacing(4),
   },
+  questionLabel: {
+    color: theme.palette.text.secondary,
+    "&$errorState,&:active": {
+      color: theme.palette.error.main,
+    },
+    "&$successState,&:active": {
+      color: theme.palette.success.main,
+    },
+  },
+  errorState: {},
+  successState: {},
 }));
 
 
@@ -87,9 +95,14 @@ export function ElementTextInput(props) {
       fullWidth={true} 
       className={props.formControl}
     >
-      <FormLabel component="legend">
-          {props.text}
-      </FormLabel>
+      <RichLabel
+        className={clsx(
+          classes.questionLabel,
+          (props.showHelperText && props.error) ? classes.errorState : undefined,
+        )}
+      >
+        {props.text}
+      </RichLabel>
       <br />
         <TextField
             onChange={handleChange}

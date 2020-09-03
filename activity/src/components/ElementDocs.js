@@ -7,9 +7,9 @@ export class ElementDocs extends React.Component {
       <div
         style={{
           position: "relative",
-          paddingBottom: "56.25%",
+          /*paddingBottom: "56.25%",*/
           paddingTop: 25,
-          height: 0,
+          height: "600px",
         }}
         key={this.props.id + "-div"}
       >
@@ -19,7 +19,7 @@ export class ElementDocs extends React.Component {
             top: 0,
             left: 0,
             width: "100%",
-            height: "100px",
+            height: "100%",
           }}
           className="override"
           src={this.props.src}
