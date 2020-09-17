@@ -45,4 +45,31 @@ function MultiChoiceOption({ structure, name, select, onUpdate, onSelectCorrect,
   );
 }
 
+
+.multichoice-option {
+  border-right: 8px solid rgb(143, 143, 143);
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 16px;
+  background-color: rgba(143, 143, 143, 0.15);
+}
+
+.multichoice-option-radio label {
+  background-color: white;
+  border: 1px solid #707070;
+  border-radius: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13.333px;
+  padding: 2px 6px;
+  padding-left: 8px;
+  cursor: pointer;
+}
+
+.multichoice-option-radio input {
+  position: relative;
+  top: 2px;
+  cursor: pointer;
+}
+
+
 export default MultiChoiceOption;

@@ -1,3 +1,17 @@
+import React from 'react';
+import './delete-button.css';
+
+function DeleteButton({ onClick, className }) {
+  return (
+    <button
+      className={`delete-button dangerous ${className || ""}`}
+      onClick={onClick}
+    >
+      <i className="delete-icon"></i>
+      <b>מחק</b>
+    </button>);
+}
+
 
 .delete-button {
   padding: 2px 8px 2px 12px;
@@ -30,3 +44,6 @@
   border-width: 0 1px 0 0;
   transform: rotate(-45deg);
 }
+
+
+export default DeleteButton;

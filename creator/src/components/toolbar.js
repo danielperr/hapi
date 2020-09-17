@@ -15,4 +15,16 @@ function Toolbar({ children }) {
   return <div className="toolbar">{childrenWithClases}</div>;
 }
 
+
+.toolbar {
+  margin-bottom: 16px;
+}
+
+.toolbar-child {
+  margin-right: 6px;
+  border-radius: 12px;
+  display: inline;
+}
+
+
 export default Toolbar;

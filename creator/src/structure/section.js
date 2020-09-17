@@ -1,13 +1,14 @@
 import React from 'react';
 import produce from 'immer';
-import Element from '../element/element';
-import Editable from '../editable/editable';
-import ArrowButtons from '../arrow-buttons';
-import DeleteButton from '../delete-button';
-import { DEFAULT_ELEMENT } from '../../constants';
-import { makeid } from '../../utils';
+import Element from './element';
+import Editable from '../shared/editable';
+import ArrowButtons from '../components/arrow-buttons';
+import DeleteButton from '../components/delete-button';
+import { DEFAULT_ELEMENT } from '../shared/constants';
+import { makeid } from '../shared/utils';
 import './section.css';
-import Toolbar from '../toolbar';
+import Toolbar from '../components/toolbar';
+import styled from 'styled-components';
 
 function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
   
@@ -102,5 +103,25 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
     </div>
   );
 }
+
+const StyledSectionDiv = styled.div`
+  margin-top: 32px;
+  /* margin-bottom: 64px; */
+  padding: 32px;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+`;
+
+const StyledMedia = styled.div`
+
+
+`;
+@media (max-width: 900px) {
+  .section {
+    border-radius: 0;
+  }
+}
+
 
 export default Section;

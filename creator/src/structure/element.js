@@ -1,16 +1,16 @@
 import React from 'react';
 import produce from 'immer';
-import ElementLabel from '../element-label';
-import ElementYoutube from '../element-youtube';
-import ElementMultiChoice from '../element-multichoice';
-import ElementTextInput from '../element-text-input';
-import ElementImage from '../element-image';
-import ElementNumberInput from '../element-number-input';
-import ArrowButtons from '../arrow-buttons';
-import Toolbar from '../toolbar';
-import DeleteButton from '../delete-button';
+import ElementLabel from '../elements/element-label';
+import ElementYoutube from '../elements/element-youtube';
+import ElementMultiChoice from '../elements/element-multichoice';
+import ElementTextInput from '../elements/element-text-input';
+import ElementImage from '../elements/element-image';
+import ElementNumberInput from '../components/element-number-input';
+import ArrowButtons from '../components/arrow-buttons';
+import Toolbar from '../components/toolbar';
+import DeleteButton from '../components/delete-button';
 import './element.css';
-import ElementDocs from '../element-docs';
+import ElementDocs from '../elements/element-docs';
 
 
 export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
@@ -106,3 +106,14 @@ export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMov
     </div>
   );
 }
+
+
+
+.element {
+  margin-top: 32px;
+  padding: 16px;
+  border-radius: 8px;
+  border-right: 8px solid rgb(74, 149, 211);
+  background-color: rgba(74, 149, 211, 0.15);
+}
+  

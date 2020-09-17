@@ -67,4 +67,10 @@ function ElementNumberInput({ structure, onUpdate }) {
   );
 }
 
+
+.element-number-input {
+  width: 50px;
+}
+
+
 export default ElementNumberInput;

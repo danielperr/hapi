@@ -144,26 +144,7 @@ function App(props) {
     };
     xmlhttp.send();
   }
-
-  useEffect(() => {
-    // Fetch and store the empty activity in a variable, emptyActivityFile.
-    httpGet("https://hapi-app.netlify.app/empty.html");
-
-    document
-      .getElementById("fileinput")
-      .addEventListener("change", readSingleFile, false);
-
-    // window.onbeforeunload = function(){
-    //   return true;
-    // };
-
-    return () => {
-      document
-        .getElementById("fileinput")
-        .removeEventListener("change", readSingleFile, false);
-    };
-  });
-
+  
   function readSingleFile(evt) {
     //Retrieve the first (and only!) File from the FileList object
     var f = evt.target.files[0];
@@ -184,6 +165,27 @@ function App(props) {
       alert("Failed to load file");
     }
   }
+
+  useEffect(() => {
+    // Fetch and store the empty activity in a variable, emptyActivityFile.
+    httpGet("https://hapi-app.netlify.app/empty.html");
+
+    document
+      .getElementById("fileinput")
+      .addEventListener("change", readSingleFile, false);
+
+    // window.onbeforeunload = function(){
+    //   return true;
+    // };
+
+    return () => {
+      document
+        .getElementById("fileinput")
+        .removeEventListener("change", readSingleFile, false);
+    };
+  }, []);
+
+
 
   const handleSave = () => {
     SaveWorkFile(JSON.stringify(structure, null, 2));
