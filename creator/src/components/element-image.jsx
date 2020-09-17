@@ -1,7 +1,9 @@
 import React from "react";
-import Editable from "../editable";
+
 import produce from "immer";
-import "./element-image.css";
+import styled from 'styled-components';
+
+import Editable from "./editable";
 
 function ElementImage({ structure, onUpdate }) {
   const handleChange = (text) => {
@@ -17,13 +19,19 @@ function ElementImage({ structure, onUpdate }) {
       <Editable onChange={handleChange}>{structure.src}</Editable>
       <br />
       <br />
-      <img
-        className="element-image"
+      <StyledImage
         src={structure.src}
         onError="this.onerror=null; this.src='https://www.0404.co.il/wp-content/uploads/2019/10/valley-3916972__480.jpg';" 
       />
     </>
   );
 }
+
+const StyledImage = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 70%;
+`;
 
 export default ElementImage;

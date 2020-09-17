@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Editable from "../editable/editable";
-import Section from "../section/section";
-import { makeid } from "../../utils";
+
 import produce from "immer";
-import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from "../../constants";
-import "./app.css";
-import "react-dropzone-uploader/dist/styles.css";
+import styled from 'styled-components';
 import Dropzone from "react-dropzone-uploader";
-import DragAndDrop from "../drag-and-drop";
+import "react-dropzone-uploader/dist/styles.css";
+
+import { makeid } from "../utils";
+import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from "../constants";
+import Menu from './menu';
+import Editable from "./editable/editable";
+import Section from "./section/section";
+import DragAndDrop from "./drag-and-drop";
+
 
 // Cache the empty activity file.
 let emptyActivityFile = "";
@@ -149,9 +153,9 @@ function App(props) {
       .getElementById("fileinput")
       .addEventListener("change", readSingleFile, false);
 
-    window.onbeforeunload = function(){
-      return true;
-    };
+    // window.onbeforeunload = function(){
+    //   return true;
+    // };
 
     return () => {
       document
@@ -180,6 +184,14 @@ function App(props) {
       alert("Failed to load file");
     }
   }
+
+  const handleSave = () => {
+    SaveWorkFile(JSON.stringify(structure, null, 2));
+  };
+
+  const handleExport = () => {
+    Export(emptyActivityFile, JSON.stringify(structure));
+  };
 
   const handleChangeMainHeader = (text) => {
     setStructure(
@@ -276,49 +288,14 @@ function App(props) {
   };
 
   return (
-    <div className="app">
+    <StyledApp>
       {/*<SingleFileAutoSubmit changeStructure={changeStructure} />*/}
       <DragAndDrop changeStructure={changeStructure} />
       <p style={{position: "fixed", bottom: "0px", right: "14px"}}>😃 Prototype Hapi</p>
-      <div className="button-menu">
-        <div
-          style={{
-            lineHeight: "1px",
-            border: "1px solid black",
-            fontSize: 20,
-            textAlign: "center",
-            display: "block",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <p>Load Work file</p>
-          <input type="file" id="fileinput" />
-        </div>
-        <button
-          style={{ fontSize: 20, border: "1px solid black" }}
-          onClick={() => {
-            SaveWorkFile(JSON.stringify(structure, null, 2));
-          }}
-        >
-          Save Work file
-        </button>
-        <button
-          style={{ fontSize: 20, border: "1px solid black" }}
-          onClick={() => {
-            Export(emptyActivityFile, JSON.stringify(structure));
-          }}
-        >
-          Export Activity
-        </button>
-      </div>
-      {/* <div className="menu">
-        <textarea
-          dir="ltr"
-          value={JSON.stringify(structure, null, 2)}
-          style={{ height: "100%", width: "1vw" }}
-        />
-      </div> */}
+      <Menu
+        onSave={handleSave}
+        onExport={handleExport}
+      />
       <div>
         <Editable size={1} onChange={handleChangeMainHeader}>
           {structure.mainHeader}
@@ -329,8 +306,32 @@ function App(props) {
       <button onClick={handleClickAddSection}>
         <b>הוסף יחידה</b>
       </button>
-    </div>
+    </StyledApp>
   );
 }
+
+const StyledApp = styled.div`
+  min-width: 800px;
+  max-width: 800px;
+  padding: 32px;
+
+  @media (max-width: 900px) {
+    padding: 0;
+    max-width: none;
+  }
+`;
+
+const StyledDropzone = styled.div`
+  box-sizing: border-box;
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 99999;
+  background: rgba(96, 167, 220, 0.8);
+  border: 11px dashed #60a7dc;
+`;
 
 export default App;
