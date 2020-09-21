@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import Editable from './editable/editable';
+
 import produce from "immer";
 
-
-
-
-
+import Editable from '../shared/editable';
 
 function ElementYoutube({ structure, onUpdate }) {
   const [editableValue, setEditableValue] = useState((structure.youtubeId!==undefined)?`https://www.youtube.com/watch?v=${structure.youtubeId}`:"");
@@ -18,7 +15,7 @@ function ElementYoutube({ structure, onUpdate }) {
           output = newval.pop();
         } else if (newval = text.match(/(\.be\/)+([^\/]+)/)) {
           output = newval.pop();
-        } else if (newval = text.match(/(\embed\/)+([^\/]+)/)) {
+        } else if (newval = text.match(/(\\embed\/)+([^/]+)/)) {
           output = newval.pop().replace('?rel=0','');
         }
         newStructure.youtubeId = output;

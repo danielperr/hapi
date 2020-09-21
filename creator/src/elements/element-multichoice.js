@@ -1,10 +1,12 @@
 import React from 'react';
+
 import produce from 'immer';
-import Checkbox from './checkbox/checkbox';
+
+import Checkbox from '../shared/checkbox';
 import MultiChoiceOption from './multichoice-option';
-import Editable from './editable/editable';
-import { makeid } from '../utils';
-import { DEFAULT_MULTICHOICE_OPTION } from '../constants';
+import Editable from '../shared/editable';
+import { makeid } from '../shared/utils';
+import { DEFAULT_MULTICHOICE_OPTION } from '../shared/constants';
 
 function ElementMultiChoice({ structure, onUpdate }) {
 
@@ -78,13 +80,19 @@ function ElementMultiChoice({ structure, onUpdate }) {
   return (
     <>
       <Editable onChange={handleChangeText}>{text}</Editable>
-      <div className="multichoice">
+      <div>
         {optionsDom}
       </div>
       <br />
       <button onClick={handleClickAddOption}><b>הוסף תשובה</b></button>
       <br /><br />
-      <Checkbox id={id + '-shuffle'} checked={!(structure.dontShuffle || false)} onCheck={handleCheckShuffle}>לסדר תשובות באופן אקראי?</Checkbox>
+      <Checkbox
+        id={id + '-shuffle'}
+        checked={!(structure.dontShuffle || false)}
+        onCheck={handleCheckShuffle}
+      >
+        לסדר תשובות באופן אקראי?
+      </Checkbox>
     </>
   );
 }

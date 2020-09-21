@@ -1,6 +1,8 @@
 import React from 'react';
+
 import produce from 'immer';
-import Editable from './editable/editable';
+
+import Editable from '../shared/editable';
 
 function ElementLabel({ structure, onUpdate }) {
 

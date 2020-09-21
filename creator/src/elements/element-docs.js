@@ -1,6 +1,9 @@
 import React from 'react';
-import Editable from './editable/editable';
+
 import produce from "immer";
+import styled from 'styled-components';
+
+import Editable from '../shared/editable';
 
 function ElementDocs({ structure, onUpdate }) {
 
@@ -15,28 +18,29 @@ function ElementDocs({ structure, onUpdate }) {
       <Editable onChange={handleChange}>{structure.src}</Editable>
       <br />
       <br />
-      <div
-        style={{
-          position: "relative",
-          paddingBottom: "15%",
-          paddingTop: 25,
-          height: 0,
-        }}
-      >
-        <iframe
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100px",
-          }}
+      <Wrapper>
+        <StyledIframe
           className="override"
           src={structure.src}
         />
-      </div>
+      </Wrapper>
     </>
   );
 }
+
+const Wrapper = styled.div`
+  position: relative;
+  padding-bottom: 15%;
+  padding-top: 25px;
+  height: 0;
+`;
+
+const StyledIframe = styled.iframe`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+`;
 
 export default ElementDocs;

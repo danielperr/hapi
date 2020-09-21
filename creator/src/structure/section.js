@@ -1,14 +1,15 @@
 import React from 'react';
+
 import produce from 'immer';
+import styled from 'styled-components';
+
 import Element from './element';
 import Editable from '../shared/editable';
-import ArrowButtons from '../components/arrow-buttons';
-import DeleteButton from '../components/delete-button';
+import ArrowButtons from '../shared/arrow-buttons';
+import DeleteButton from '../shared/delete-button';
+import Toolbar from '../shared/horizontal-bar';
 import { DEFAULT_ELEMENT } from '../shared/constants';
 import { makeid } from '../shared/utils';
-import './section.css';
-import Toolbar from '../components/toolbar';
-import styled from 'styled-components';
 
 function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
   
@@ -91,7 +92,7 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
   });
 
   return (
-    <div className="section">
+    <StyledSectionDiv>
       <Toolbar>
         <ArrowButtons onClickUp={handleClickUp} onClickDown={handleClickDown} />
         <DeleteButton onClick={handleDeleteSelf} />
@@ -100,7 +101,7 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
       {elements}
       <br />
       <button onClick={handleClickAddElement}><b>הוסף רכיב</b></button>
-    </div>
+    </StyledSectionDiv>
   );
 }
 
@@ -111,17 +112,11 @@ const StyledSectionDiv = styled.div`
   background-color: white;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-`;
 
-const StyledMedia = styled.div`
-
-
-`;
-@media (max-width: 900px) {
-  .section {
+  @media (max-width: 900px) {
     border-radius: 0;
   }
-}
+`;
 
 
 export default Section;

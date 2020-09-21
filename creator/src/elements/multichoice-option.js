@@ -1,10 +1,12 @@
 import React from 'react';
+
 import produce from 'immer';
-import Editable from '../editable/editable';
-import Toolbar from '../toolbar';
-import DeleteButton from '../delete-button';
-import ArrowButtons from '../arrow-buttons';
-import './multichoice-option.css';
+import styled from 'styled-components';
+
+import Editable from '../shared/editable';
+import HorizontalBar from '../shared/horizontal-bar';
+import DeleteButton from '../shared/delete-button';
+import ArrowButtons from '../shared/arrow-buttons';
 
 function MultiChoiceOption({ structure, name, select, onUpdate, onSelectCorrect, onDeleteSelf }) {
 
@@ -24,11 +26,11 @@ function MultiChoiceOption({ structure, name, select, onUpdate, onSelectCorrect,
 
   const {id, text} = structure;
   return (
-    <div className="multichoice-option">
-      <Toolbar>
+    <StyledOptionDiv>
+      <HorizontalBar>
         <ArrowButtons />
-        <div className="multichoice-option-radio">
-          <input
+        <div>
+          <StyledOptionInput
             type="radio"
             name={name}
             value={id}
@@ -36,25 +38,30 @@ function MultiChoiceOption({ structure, name, select, onUpdate, onSelectCorrect,
             select={select.toString()}
             onChange={handleChangeIsCorrect}
           />
-          <label htmlFor={id}>תשובה נכונה?</label>
+          <StyledOptionLabel htmlFor={id}>תשובה נכונה?</StyledOptionLabel>
         </div>
         <DeleteButton onClick={handleClickDelete} />
-      </Toolbar>
+      </HorizontalBar>
       <Editable onChange={handleChangeText}>{text}</Editable>
-    </div>
+    </StyledOptionDiv>
   );
 }
 
-
-.multichoice-option {
+const StyledOptionDiv = styled.div`
   border-right: 8px solid rgb(143, 143, 143);
   border-radius: 8px;
   margin-top: 16px;
   padding: 16px;
   background-color: rgba(143, 143, 143, 0.15);
-}
+`;
 
-.multichoice-option-radio label {
+const StyledOptionInput = styled.input`
+  position: relative;
+  top: 2px;
+  cursor: pointer;
+`;
+
+const StyledOptionLabel = styled.label`
   background-color: white;
   border: 1px solid #707070;
   border-radius: 18px;
@@ -63,13 +70,6 @@ function MultiChoiceOption({ structure, name, select, onUpdate, onSelectCorrect,
   padding: 2px 6px;
   padding-left: 8px;
   cursor: pointer;
-}
-
-.multichoice-option-radio input {
-  position: relative;
-  top: 2px;
-  cursor: pointer;
-}
-
+`;
 
 export default MultiChoiceOption;

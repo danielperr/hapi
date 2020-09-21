@@ -1,6 +1,6 @@
 import React from 'react';
-import { makeid } from '../../utils';
 
+import { makeid } from '../shared/utils';
 
 export default function Checkbox({ children, id, checked, onCheck }) {
 
@@ -15,7 +15,7 @@ export default function Checkbox({ children, id, checked, onCheck }) {
   }
 
   return (
-    <div className="checkbox">
+    <div>
       <input
         type="checkbox"
         id={id}

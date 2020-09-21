@@ -1,19 +1,21 @@
-import React from 'react';
-import produce from 'immer';
-import ElementLabel from '../elements/element-label';
-import ElementYoutube from '../elements/element-youtube';
-import ElementMultiChoice from '../elements/element-multichoice';
-import ElementTextInput from '../elements/element-text-input';
-import ElementImage from '../elements/element-image';
-import ElementNumberInput from '../components/element-number-input';
-import ArrowButtons from '../components/arrow-buttons';
-import Toolbar from '../components/toolbar';
-import DeleteButton from '../components/delete-button';
-import './element.css';
-import ElementDocs from '../elements/element-docs';
+import React from "react";
+
+import produce from "immer";
+import styled from "styled-components";
+
+import ElementLabel from "../elements/element-label";
+import ElementYoutube from "../elements/element-youtube";
+import ElementMultiChoice from "../elements/element-multichoice";
+import ElementTextInput from "../elements/element-text-input";
+import ElementImage from "../elements/element-image";
+import ElementNumberInput from "../elements/element-number-input";
+import ElementDocs from "../elements/element-docs";
+import ArrowButtons from "../shared/arrow-buttons";
+import HorizontalBar from "../shared/horizontal-bar";
+import DeleteButton from "../shared/delete-button";
 
 
-export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
+export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMoveDown, }) {
   const { type } = structure;
 
   /*
@@ -27,12 +29,17 @@ export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMov
   }
   */
   const handleChangeType = (e) => {
-    onUpdate(produce(structure, newStructure => { 
-      newStructure.type = e.target.value;
-      if (newStructure.type == 'multi-choice' && newStructure.options === undefined) {
-        newStructure.options = [];
-      }
-    }));
+    onUpdate(
+      produce(structure, (newStructure) => {
+        newStructure.type = e.target.value;
+        if (
+          newStructure.type === "multi-choice" &&
+          newStructure.options === undefined
+        ) {
+          newStructure.options = [];
+        }
+      })
+    );
   };
 
   const handleUpdateElement = (updatedElement) => {
@@ -58,34 +65,34 @@ export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMov
 
   let obj;
   switch (structure.type) {
-    case 'label':
+    case "label":
       obj = <ElementLabel {...elementProps} />;
       break;
-    case 'image':
+    case "image":
       obj = <ElementImage {...elementProps} />;
       break;
-    case 'youtube':
+    case "youtube":
       obj = <ElementYoutube {...elementProps} />;
       break;
-    case 'docs':
+    case "docs":
       obj = <ElementDocs {...elementProps} />;
       break;
-    case 'multi-choice':
+    case "multi-choice":
       obj = <ElementMultiChoice {...elementProps} />;
       break;
-    case 'text-input':
+    case "text-input":
       obj = <ElementTextInput {...elementProps} />;
       break;
-    case 'number-input':
+    case "number-input":
       obj = <ElementNumberInput {...elementProps} />;
       break;
     default:
-      obj = <span style={{visibility: 'hidden'}}>אלמנט לא תקין</span>;
+      obj = <span style={{ visibility: "hidden" }}>אלמנט לא תקין</span>;
   }
 
   return (
-    <div className="element">
-      <Toolbar>
+    <StyledElement>
+      <HorizontalBar>
         <ArrowButtons onClickUp={handleClickUp} onClickDown={handleClickDown} />
         <select value={type} onChange={handleChangeType}>
           <optgroup label="תצוגה">
@@ -101,19 +108,16 @@ export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMov
           </optgroup>
         </select>
         <DeleteButton onClick={handleDeleteSelf} />
-      </Toolbar>
+      </HorizontalBar>
       {obj}
-    </div>
+    </StyledElement>
   );
 }
 
-
-
-.element {
+const StyledElement = styled.div`
   margin-top: 32px;
   padding: 16px;
   border-radius: 8px;
   border-right: 8px solid rgb(74, 149, 211);
   background-color: rgba(74, 149, 211, 0.15);
-}
-  
+`;

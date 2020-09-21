@@ -1,8 +1,9 @@
 import React from 'react';
+
+import styled from 'styled-components';
 import produce from 'immer';
 
-import Editable from '../editable';
-import './element-number-input.css';
+import Editable from '../shared/editable';
 
 function ElementNumberInput({ structure, onUpdate }) {
   
@@ -39,9 +40,8 @@ function ElementNumberInput({ structure, onUpdate }) {
             </td>
             <td></td>
             <td>
-              <input
+              <StyledInput
                 type="number"
-                className="element-number-input"
                 value={structure.min}
                 onChange={handleChangeMin}
               />
@@ -53,9 +53,8 @@ function ElementNumberInput({ structure, onUpdate }) {
             </td>
             <td></td>
             <td>
-              <input
+              <StyledInput
                 type="number"
-                className="element-number-input"
                 onChange={handleChangeMax}
                 value={structure.max}
               />
@@ -67,10 +66,8 @@ function ElementNumberInput({ structure, onUpdate }) {
   );
 }
 
-
-.element-number-input {
+const StyledInput = styled.input`
   width: 50px;
-}
-
+`;
 
 export default ElementNumberInput;

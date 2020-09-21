@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 
 import produce from "immer";
 import styled from 'styled-components';
-import Dropzone from "react-dropzone-uploader";
-import "react-dropzone-uploader/dist/styles.css";
 
-import { makeid } from "../utils";
-import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from "../constants";
+import { makeid } from "../shared/utils";
+import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from "../shared/constants";
+import Editable from "../shared/editable";
+import DragAndDrop from "../shared/drag-and-drop";
+import Section from "./section";
 import Menu from './menu';
-import Editable from "./editable/editable";
-import Section from "./section/section";
-import DragAndDrop from "./drag-and-drop";
 
 
 // Cache the empty activity file.
@@ -137,7 +135,7 @@ function App(props) {
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", theUrl, true);
     xmlhttp.onreadystatechange = function () {
-      if (xmlhttp.readyState == 4 /*&& xmlhttp.status == 200*/) {
+      if (xmlhttp.readyState === 4 /*&& xmlhttp.status == 200*/) {
         emptyActivityFile = xmlhttp.responseText;
         console.log("File fetched successfully");
       }
@@ -293,7 +291,7 @@ function App(props) {
     <StyledApp>
       {/*<SingleFileAutoSubmit changeStructure={changeStructure} />*/}
       <DragAndDrop changeStructure={changeStructure} />
-      <p style={{position: "fixed", bottom: "0px", right: "14px"}}>😃 Prototype Hapi</p>
+      <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
       <Menu
         onSave={handleSave}
         onExport={handleExport}
@@ -321,19 +319,6 @@ const StyledApp = styled.div`
     padding: 0;
     max-width: none;
   }
-`;
-
-const StyledDropzone = styled.div`
-  box-sizing: border-box;
-  display: none;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  z-index: 99999;
-  background: rgba(96, 167, 220, 0.8);
-  border: 11px dashed #60a7dc;
 `;
 
 export default App;
