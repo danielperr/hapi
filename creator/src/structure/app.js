@@ -130,6 +130,7 @@ function App(props) {
 
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initialStructure);
+  const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
 
   function httpGet(theUrl) {
     const xmlhttp = new XMLHttpRequest();
@@ -166,16 +167,11 @@ function App(props) {
 
   useEffect(() => {
     // Fetch and store the empty activity in a variable, emptyActivityFile.
-    httpGet("https://hapi-app.netlify.app/empty.html");
+    httpGet("https://hapi-app.netlify.app/empty.html"); 
 
     document
       .getElementById("fileinput")
       .addEventListener("change", readSingleFile, false);
-
-    // window.onbeforeunload = function(){
-    //   return true;
-    // };
-
     return () => {
       document
         .getElementById("fileinput")
@@ -183,10 +179,17 @@ function App(props) {
     };
   }, []);
 
+  useEffect(() => {
+    setSavedFlag(false);
+  }, [structure]);
 
+  useEffect(() => {
+    window.onbeforeunload = function(){ if (!savedFlag) { return true } };
+  }, [savedFlag]);
 
   const handleSave = () => {
     SaveWorkFile(JSON.stringify(structure, null, 2));
+    setSavedFlag(true);
   };
 
   const handleExport = () => {
