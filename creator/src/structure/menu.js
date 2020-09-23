@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -6,6 +6,8 @@ import { makeStyles, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import { useSpring, animated, config } from 'react-spring';
+
+import Dropzone from '../shared/dropzone';
 
 const useStyles = makeStyles(() => ({
   menuButton: {
@@ -19,14 +21,20 @@ const useStyles = makeStyles(() => ({
 }));
 
 
-function Menu({onSave, onExport}) {
+function Menu({ onLoad, onSave, onExport }) {
   const classes = useStyles();
   
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
+
+  
   
   const handleClickHamburger = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleDropzoneRead = (contents) => {
+    onLoad(contents);
+  }
 
   const handleClickSave = () => {
     onSave();
@@ -53,18 +61,14 @@ function Menu({onSave, onExport}) {
         }}
       >
         <StyledButtonMenu>
-            <StyledInnerButtonDiv>
-              <p>טעינת קובץ</p>
-              <input type="file" id="fileinput" />
-            </StyledInnerButtonDiv>
-            <StyledMenuButton
-              onClick={handleClickSave}
-            >
+            <StyledDropzone onRead={handleDropzoneRead}>
+              <h3>טעינת קובץ</h3>
+              <p>ניתן ללחוץ או לגרור הנה</p>
+            </StyledDropzone>
+            <StyledMenuButton onClick={handleClickSave}>
               שמירת קובץ
             </StyledMenuButton>
-            <StyledMenuButton
-              onClick={handleClickExport}
-            >
+            <StyledMenuButton onClick={handleClickExport}>
               ייצוא פעילות
             </StyledMenuButton>
         </StyledButtonMenu>
@@ -93,16 +97,17 @@ const StyledButtonMenu = styled.div`
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 `;
 
-const StyledInnerButtonDiv = styled.div`
+const StyledDropzone = styled(Dropzone)`
   line-height: 1px;
-  border: 1px solid gray;
+  border: 1px dashed gray;
   border-radius: 4px;
-  padding: 4px;
-  font-size: 20px;
+  padding: 4px 16px;
+  line-height: 50%;
   text-align: center;
   display: block;
   margin-left: auto;
   margin-right: auto;
+  cursor: pointer !important;
 `;
 
 const StyledMenuButton = styled.button`

@@ -1,148 +1,90 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import produce from "immer";
+import produce from 'immer';
 import styled from 'styled-components';
 
-import { makeid } from "../shared/utils";
-import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from "../shared/constants";
-import Editable from "../shared/editable";
-import DragAndDrop from "../shared/drag-and-drop";
-import Section from "./section";
+import { makeid, httpGet } from '../shared/utils';
+import { saveWorkFile, exportToActivity } from '../shared/file-utils';
+import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
+import Editable from '../shared/editable';
+import Section from './section';
 import Menu from './menu';
 
 
-// Cache the empty activity file.
-let emptyActivityFile = "";
+// const SingleFileAutoSubmit = (props) => {
+//   const toast = (innerHTML) => {
+//     const el = document.getElementById("toast");
+//     el.innerHTML = innerHTML;
+//     el.className = "show";
+//     setTimeout(() => {
+//       el.className = el.className.replace("show", "");
+//     }, 3000);
+//   };
 
-function download(filename, text) {
-  var element = document.createElement("a");
-  element.setAttribute(
-    "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
-  );
-  element.setAttribute("download", filename);
+//   const getUploadParams = () => {
+//     return { url: "https://httpbin.org/post" };
+//   };
 
-  element.style.display = "none";
-  document.body.appendChild(element);
+//   const handleChangeStatus = ({ meta, remove }, status) => {
+//     if (status === "headers_received") {
+//       toast(`${meta.name} uploaded!`);
+//     } else if (status === "aborted") {
+//       toast(`${meta.name}, upload failed...`);
+//     }
+//   };
 
-  element.click();
+//   const handleSubmit = (files, allFiles) => {
+//     try {
+//       props.changeStructure(
+//         JSON.parse(JSON.parse(files[0].xhr.response).files.file)
+//       );
+//     } catch (error) {
+//       console.log(error);
+//     }
 
-  document.body.removeChild(element);
-}
+//     allFiles.forEach((f) => f.remove());
+//   };
 
-function SaveWorkFile(structure) {
-  const filename = prompt("Save as:");
-  if (filename !== "" && filename !== null) {
-    download(filename + ".hapi.txt", structure);
-  }
-}
+//   return (
+//     <React.Fragment>
+//       <div id="toast">Upload</div>
+//       <Dropzone
+//         className="dropzone"
+//         getUploadParams={getUploadParams}
+//         onChangeStatus={handleChangeStatus}
+//         maxFiles={1}
+//         multiple={false}
+//         canCancel={true}
+//         onSubmit={handleSubmit}
+//         inputContent=""
+//         InputComponent={null}
+//         styles={{
+//           dropzone: {
+//             pointerEvents: "none",
+//             position: "fixed",
+//             top: 0,
+//             right: 0,
+//             width: "100%",
+//             height: "100%",
+//             overflow: "hidden",
+//           },
+//           dropzoneActive: { borderColor: "green" },
+//         }}
+//       />
+//       <br />
+//     </React.Fragment>
+//   );
+// };
 
-function InjectStructureToActivity(emtpyActivity, structure) {
-  // Copy the file to f
-  let f = emtpyActivity.slice();
 
-  const index = f.indexOf("structure=");
-  const firstSign = f.indexOf("{", index);
-  const secondSign = f.indexOf("}", index + 1);
-  f = f.substring(0, firstSign) + structure + f.substring(secondSign + 1);
-  return f;
-}
+const EMPTY_ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
-function Export(emptyActivity, structure) {
-  const filename = prompt("Save as:");
-  if (filename !== "" && filename !== null) {
-    download(
-      filename + ".hapi.html",
-      InjectStructureToActivity(emptyActivity, structure)
-    );
-  }
-}
-
-/*
-const SingleFileAutoSubmit = (props) => {
-  const toast = (innerHTML) => {
-    const el = document.getElementById("toast");
-    el.innerHTML = innerHTML;
-    el.className = "show";
-    setTimeout(() => {
-      el.className = el.className.replace("show", "");
-    }, 3000);
-  };
-
-  const getUploadParams = () => {
-    return { url: "https://httpbin.org/post" };
-  };
-
-  const handleChangeStatus = ({ meta, remove }, status) => {
-    if (status === "headers_received") {
-      toast(`${meta.name} uploaded!`);
-    } else if (status === "aborted") {
-      toast(`${meta.name}, upload failed...`);
-    }
-  };
-
-  const handleSubmit = (files, allFiles) => {
-    try {
-      props.changeStructure(
-        JSON.parse(JSON.parse(files[0].xhr.response).files.file)
-      );
-    } catch (error) {
-      console.log(error);
-    }
-
-    allFiles.forEach((f) => f.remove());
-  };
-
-  return (
-    <React.Fragment>
-      <div id="toast">Upload</div>
-      <Dropzone
-        className="dropzone"
-        getUploadParams={getUploadParams}
-        onChangeStatus={handleChangeStatus}
-        maxFiles={1}
-        multiple={false}
-        canCancel={true}
-        onSubmit={handleSubmit}
-        inputContent=""
-        InputComponent={null}
-        styles={{
-          dropzone: {
-            pointerEvents: "none",
-            position: "fixed",
-            top: 0,
-            right: 0,
-            width: "100%",
-            height: "100%",
-            overflow: "hidden",
-          },
-          dropzoneActive: { borderColor: "green" },
-        }}
-      />
-      <br />
-    </React.Fragment>
-  );
-};
-*/
-
-function App(props) {
+function App({ }) {
+  
   const initialStructure = DEFAULT_STRUCTURE;
-
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initialStructure);
   const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
-
-  function httpGet(theUrl) {
-    const xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", theUrl, true);
-    xmlhttp.onreadystatechange = function () {
-      if (xmlhttp.readyState === 4 /*&& xmlhttp.status == 200*/) {
-        emptyActivityFile = xmlhttp.responseText;
-        console.log("File fetched successfully");
-      }
-    };
-    xmlhttp.send();
-  }
   
   function readSingleFile(evt) {
     //Retrieve the first (and only!) File from the FileList object
@@ -165,35 +107,38 @@ function App(props) {
     }
   }
 
-  useEffect(() => {
-    // Fetch and store the empty activity in a variable, emptyActivityFile.
-    httpGet("https://hapi-app.netlify.app/empty.html"); 
+  // useEffect(() => {
+  //   // Fetch and store the empty activity in a variable, emptyActivityFile.
 
-    document
-      .getElementById("fileinput")
-      .addEventListener("change", readSingleFile, false);
-    return () => {
-      document
-        .getElementById("fileinput")
-        .removeEventListener("change", readSingleFile, false);
-    };
-  }, []);
+  //   document
+  //     .getElementById("fileinput")
+  //     .addEventListener("change", readSingleFile, false);
+  //   return () => {
+  //     document
+  //       .getElementById("fileinput")
+  //       .removeEventListener("change");
+  //   };
+  // }, []);
 
   useEffect(() => {
     setSavedFlag(false);
   }, [structure]);
 
   useEffect(() => {
-    window.onbeforeunload = function(){ if (!savedFlag) { return true } };
+    // window.onbeforeunload = function(){ if (!savedFlag) { return true } };
   }, [savedFlag]);
 
+  const handleLoad = (contents) => {
+    setStructure(JSON.parse(contents));
+  }
+  
   const handleSave = () => {
-    SaveWorkFile(JSON.stringify(structure, null, 2));
+    saveWorkFile(JSON.stringify(structure, null, 2));
     setSavedFlag(true);
   };
 
   const handleExport = () => {
-    Export(emptyActivityFile, JSON.stringify(structure));
+    exportToActivity(httpGet(EMPTY_ACTIVITY_URL), JSON.stringify(structure));
   };
 
   const handleChangeMainHeader = (text) => {
@@ -292,10 +237,9 @@ function App(props) {
 
   return (
     <StyledApp>
-      {/*<SingleFileAutoSubmit changeStructure={changeStructure} />*/}
-      <DragAndDrop changeStructure={changeStructure} />
       <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
       <Menu
+        onLoad={handleLoad}
         onSave={handleSave}
         onExport={handleExport}
       />
