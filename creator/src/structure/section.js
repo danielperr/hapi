@@ -1,23 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import produce from 'immer';
 import styled from 'styled-components';
 
+import { Box, makeStyles, Paper, IconButton, Collapse, Grow } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+
 import Element from './element';
 import Editable from '../shared/editable';
+import FocusAwarePaper from '../shared/focus-aware-paper';
 import ArrowButtons from '../shared/arrow-buttons';
 import DeleteButton from '../shared/delete-button';
 import Toolbar from '../shared/horizontal-bar';
 import { DEFAULT_ELEMENT } from '../shared/constants';
 import { makeid } from '../shared/utils';
 
+const useStyles = makeStyles((theme) => ({
+  section: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(4),
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+    marginTop: theme.spacing(4),
+    borderRadius: '8px',
+  },
+  topBar: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  collapseButton: {
+    marginRight: theme.spacing(2),
+  },
+  deleteButton: {
+    marginRight: theme.spacing(1),
+    color: theme.palette.negative.main,
+  }
+}));
+
 function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
   
+  const classes = useStyles();
+
+  const [isOpen, setIsOpen] = useState(true);  // Whether if open or collapsed
+  const [isVisible, setIsVisible] = useState(true);
+
   const handleChangeHeader = (text) => {
     onUpdate(produce(structure, newStructure => {
       newStructure.header = text;
     }));
   };
+
+  const handleCollapseClick = (e) => {
+    e.target.focus();
+    setIsOpen(!isOpen);
+  }
 
   const handleUpdateElement = (updatedElement) => {
     onUpdate(produce(structure, newStructure => {
@@ -65,9 +103,16 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
     }));
   };
 
-  const handleDeleteSelf = () => {
-    onDelete(structure.id);
+  const handleDeleteSelf = (e) => {
+    e.target.focus();
+    setIsVisible(false);
   };
+
+  const handleDeleteTransitionExited = () => {
+    if (!isVisible) {
+      onDelete(structure.id);
+    }
+  }
 
   const handleClickUp = () => {
     onMoveUp(structure.id);
@@ -92,31 +137,32 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
   });
 
   return (
-    <StyledSectionDiv>
-      <Toolbar>
-        <ArrowButtons onClickUp={handleClickUp} onClickDown={handleClickDown} />
-        <DeleteButton onClick={handleDeleteSelf} />
-      </Toolbar>
-      <Editable size={2} onChange={handleChangeHeader}>{structure.header}</Editable>
-      {elements}
-      <br />
-      <button onClick={handleClickAddElement}><b>הוסף רכיב</b></button>
-    </StyledSectionDiv>
+    <Grow in={isVisible} onExited={handleDeleteTransitionExited}>
+      <FocusAwarePaper className={classes.section}>
+        {/* <Toolbar>
+          <ArrowButtons onClickUp={handleClickUp} onClickDown={handleClickDown} />
+          <DeleteButton onClick={handleDeleteSelf} />
+        </Toolbar> */}
+        <Box className={classes.topBar}>
+          <Editable size={2} onChange={handleChangeHeader} isHeightFixed={true} height="50px">{structure.header}</Editable>
+          <IconButton className={classes.collapseButton} onClick={handleCollapseClick}>
+            {
+              isOpen ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />
+            }
+          </IconButton>
+          <IconButton className={classes.deleteButton} onClick={handleDeleteSelf}>
+            <DeleteIcon fontSize="inherit" />
+          </IconButton>
+        </Box>
+        <Collapse in={isOpen} unmountOnExit>
+          {elements}
+          <br />
+          <button onClick={handleClickAddElement}><b>הוסף רכיב</b></button>
+        </Collapse>
+      </FocusAwarePaper>
+    </Grow>
   );
 }
-
-const StyledSectionDiv = styled.div`
-  margin-top: 32px;
-  /* margin-bottom: 64px; */
-  padding: 32px;
-  background-color: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-
-  @media (max-width: 900px) {
-    border-radius: 0;
-  }
-`;
 
 
 export default Section;

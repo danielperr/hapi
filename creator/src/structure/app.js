@@ -3,122 +3,45 @@ import React, { useState, useEffect } from 'react';
 import produce from 'immer';
 import styled from 'styled-components';
 
+import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { lightBlue, red } from '@material-ui/core/colors';
+import { CssBaseline, Button, Paper } from '@material-ui/core';
+
 import { makeid, httpGet } from '../shared/utils';
 import { saveWorkFile, exportToActivity } from '../shared/file-utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
+import FocusAwarePaper from '../shared/focus-aware-paper';
 import Editable from '../shared/editable';
 import Section from './section';
 import Menu from './menu';
 
-
-// const SingleFileAutoSubmit = (props) => {
-//   const toast = (innerHTML) => {
-//     const el = document.getElementById("toast");
-//     el.innerHTML = innerHTML;
-//     el.className = "show";
-//     setTimeout(() => {
-//       el.className = el.className.replace("show", "");
-//     }, 3000);
-//   };
-
-//   const getUploadParams = () => {
-//     return { url: "https://httpbin.org/post" };
-//   };
-
-//   const handleChangeStatus = ({ meta, remove }, status) => {
-//     if (status === "headers_received") {
-//       toast(`${meta.name} uploaded!`);
-//     } else if (status === "aborted") {
-//       toast(`${meta.name}, upload failed...`);
-//     }
-//   };
-
-//   const handleSubmit = (files, allFiles) => {
-//     try {
-//       props.changeStructure(
-//         JSON.parse(JSON.parse(files[0].xhr.response).files.file)
-//       );
-//     } catch (error) {
-//       console.log(error);
-//     }
-
-//     allFiles.forEach((f) => f.remove());
-//   };
-
-//   return (
-//     <React.Fragment>
-//       <div id="toast">Upload</div>
-//       <Dropzone
-//         className="dropzone"
-//         getUploadParams={getUploadParams}
-//         onChangeStatus={handleChangeStatus}
-//         maxFiles={1}
-//         multiple={false}
-//         canCancel={true}
-//         onSubmit={handleSubmit}
-//         inputContent=""
-//         InputComponent={null}
-//         styles={{
-//           dropzone: {
-//             pointerEvents: "none",
-//             position: "fixed",
-//             top: 0,
-//             right: 0,
-//             width: "100%",
-//             height: "100%",
-//             overflow: "hidden",
-//           },
-//           dropzoneActive: { borderColor: "green" },
-//         }}
-//       />
-//       <br />
-//     </React.Fragment>
-//   );
-// };
-
-
 const EMPTY_ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
+const THEME = createMuiTheme({
+  spacing: 8,
+  palette: {
+    primary: lightBlue,
+    secondary: lightBlue,
+    negative: {
+      main: '#cf5959',
+    },
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  mainHeader: {
+    padding: theme.spacing(2),
+    borderRadius: '8px',
+  }
+}));
+
 function App({ }) {
-  
+  const classes = useStyles();
+
   const initialStructure = DEFAULT_STRUCTURE;
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initialStructure);
   const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
-  
-  function readSingleFile(evt) {
-    //Retrieve the first (and only!) File from the FileList object
-    var f = evt.target.files[0];
-
-    if (f) {
-      var r = new FileReader();
-      r.onload = function (e) {
-        var contents = e.target.result;
-        try {
-          console.log(JSON.parse(contents));
-          changeStructure(JSON.parse(contents));
-        } catch {
-          alert("Corrupted format");
-        }
-      };
-      r.readAsText(f);
-    } else {
-      alert("Failed to load file");
-    }
-  }
-
-  // useEffect(() => {
-  //   // Fetch and store the empty activity in a variable, emptyActivityFile.
-
-  //   document
-  //     .getElementById("fileinput")
-  //     .addEventListener("change", readSingleFile, false);
-  //   return () => {
-  //     document
-  //       .getElementById("fileinput")
-  //       .removeEventListener("change");
-  //   };
-  // }, []);
 
   useEffect(() => {
     setSavedFlag(false);
@@ -236,24 +159,29 @@ function App({ }) {
   };
 
   return (
-    <StyledApp>
-      <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
-      <Menu
-        onLoad={handleLoad}
-        onSave={handleSave}
-        onExport={handleExport}
-      />
-      <div>
-        <Editable size={1} onChange={handleChangeMainHeader}>
-          {structure.mainHeader}
-        </Editable>
-      </div>
-      {sections}
-      <br />
-      <button onClick={handleClickAddSection}>
-        <b>הוסף יחידה</b>
-      </button>
-    </StyledApp>
+    <>
+      <ThemeProvider theme={THEME}>
+        {/* <CssBaseline /> */}
+        <StyledApp>
+          <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
+          <Menu
+            onLoad={handleLoad}
+            onSave={handleSave}
+            onExport={handleExport}
+          />
+          <FocusAwarePaper className={classes.mainHeader}>
+            <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed={true} height='64px'>
+              {structure.mainHeader}
+            </Editable>
+          </FocusAwarePaper>
+          {sections}
+          <br />
+          <button onClick={handleClickAddSection}>
+            <b>הוסף יחידה</b>
+          </button>
+        </StyledApp>
+      </ThemeProvider>
+    </>
   );
 }
 

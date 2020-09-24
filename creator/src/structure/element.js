@@ -115,9 +115,10 @@ export default function Element({ structure, onUpdate, onDelete, onMoveUp, onMov
 }
 
 const StyledElement = styled.div`
-  margin-top: 32px;
+  margin-top: 16px;
+  margin-left: 16px;
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 4px;
   border-right: 8px solid rgb(74, 149, 211);
   background-color: rgba(74, 149, 211, 0.15);
 `;

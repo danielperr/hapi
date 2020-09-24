@@ -1,4 +1,3 @@
-import zIndex from "@material-ui/core/styles/zIndex";
 import React, { createRef } from "react";
 
 function Dropzone(props) {
