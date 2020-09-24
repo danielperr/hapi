@@ -3,28 +3,35 @@ import React, { useState } from 'react';
 import produce from 'immer';
 import styled from 'styled-components';
 
-import { Box, makeStyles, Paper, IconButton, Collapse, Grow } from '@material-ui/core';
+import { Box, makeStyles, Button, IconButton, Collapse, Grow } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import DragHandleIcon from '@material-ui/icons/DragHandle';
+import AddIcon from '@material-ui/icons/Add';
 
 import Element from './element';
 import Editable from '../shared/editable';
 import FocusAwarePaper from '../shared/focus-aware-paper';
-import ArrowButtons from '../shared/arrow-buttons';
-import DeleteButton from '../shared/delete-button';
-import Toolbar from '../shared/horizontal-bar';
 import { DEFAULT_ELEMENT } from '../shared/constants';
 import { makeid } from '../shared/utils';
+import { Draggable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme) => ({
   section: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(4),
-    paddingTop: theme.spacing(4),
+    paddingTop: theme.spacing(0),
     paddingBottom: theme.spacing(4),
-    marginTop: theme.spacing(4),
     borderRadius: '8px',
+  },
+  sectionContainer: {
+    paddingTop: theme.spacing(2),
+  },
+  dragHandle: {
+    marginBottom: theme.spacing(0),
+    textAlign: 'center',
+    color: '#BBB',
   },
   topBar: {
     display: 'flex',
@@ -36,10 +43,17 @@ const useStyles = makeStyles((theme) => ({
   deleteButton: {
     marginRight: theme.spacing(1),
     color: theme.palette.negative.main,
-  }
+  },
+  center: {
+    textAlign: 'center',
+  },
+  addIcon: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(-1.5),
+  },
 }));
 
-function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
+function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown, index }) {
   
   const classes = useStyles();
 
@@ -137,30 +151,42 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown }) {
   });
 
   return (
-    <Grow in={isVisible} onExited={handleDeleteTransitionExited}>
-      <FocusAwarePaper className={classes.section}>
-        {/* <Toolbar>
-          <ArrowButtons onClickUp={handleClickUp} onClickDown={handleClickDown} />
-          <DeleteButton onClick={handleDeleteSelf} />
-        </Toolbar> */}
-        <Box className={classes.topBar}>
-          <Editable size={2} onChange={handleChangeHeader} isHeightFixed={true} height="50px">{structure.header}</Editable>
-          <IconButton className={classes.collapseButton} onClick={handleCollapseClick}>
-            {
-              isOpen ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />
-            }
-          </IconButton>
-          <IconButton className={classes.deleteButton} onClick={handleDeleteSelf}>
-            <DeleteIcon fontSize="inherit" />
-          </IconButton>
-        </Box>
-        <Collapse in={isOpen} unmountOnExit>
-          {elements}
-          <br />
-          <button onClick={handleClickAddElement}><b>הוסף רכיב</b></button>
-        </Collapse>
-      </FocusAwarePaper>
-    </Grow>
+    <Draggable draggableId={structure.id} index={index}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+        >
+          <Grow in={isVisible} onExited={handleDeleteTransitionExited}>
+            <Box className={classes.sectionContainer}>
+              <FocusAwarePaper className={classes.section}>
+                <Box className={classes.dragHandle}>
+                  <div {...provided.dragHandleProps}>
+                    <DragHandleIcon />
+                  </div>
+                </Box>
+                <Box className={classes.topBar}>
+                  <Editable size={2} onChange={handleChangeHeader} isHeightFixed={true} height="50px">{structure.header}</Editable>
+                  <IconButton className={classes.collapseButton} onClick={handleCollapseClick}>
+                    {isOpen ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+                  </IconButton>
+                  <IconButton className={classes.deleteButton} onClick={handleDeleteSelf}>
+                    <DeleteIcon fontSize="inherit" />
+                  </IconButton>
+                </Box>
+                <Collapse in={isOpen} unmountOnExit>
+                  {elements}
+                  <br />
+                  <Box className={classes.center}>
+                    <Button onClick={handleClickAddElement} variant="outlined" color="primary" startIcon={<AddIcon className={classes.addIcon} />}><b>רכיב חדש</b></Button>
+                  </Box>
+                </Collapse>
+              </FocusAwarePaper>
+            </Box>
+          </Grow>
+        </div>
+      )}
+    </Draggable>
   );
 }
 

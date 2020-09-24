@@ -5,9 +5,12 @@ import styled from 'styled-components';
 
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { lightBlue, red } from '@material-ui/core/colors';
-import { CssBaseline, Button, Paper } from '@material-ui/core';
+import { CssBaseline, Button, Paper, Fab } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 
-import { makeid, httpGet } from '../shared/utils';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
+import { makeid, httpGet, reorder } from '../shared/utils';
 import { saveWorkFile, exportToActivity } from '../shared/file-utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
 import FocusAwarePaper from '../shared/focus-aware-paper';
@@ -18,9 +21,12 @@ import Menu from './menu';
 const EMPTY_ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
 const THEME = createMuiTheme({
+  direction: 'rtl',
   spacing: 8,
   palette: {
-    primary: lightBlue,
+    primary: {
+      main: '#4a95d3'
+    },
     secondary: lightBlue,
     negative: {
       main: '#cf5959',
@@ -32,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   mainHeader: {
     padding: theme.spacing(2),
     borderRadius: '8px',
+    marginBottom: theme.spacing(4),
   }
 }));
 
@@ -108,47 +115,32 @@ function App({ }) {
     );
   };
 
-  const handleMoveUpSection = (sectionId) => {
-    setStructure(
-      produce(structure, (newStructure) => {
-        let o = newStructure.sections;
-        let i = o
-          .map((s) => {
-            return s.id;
-          })
-          .indexOf(sectionId);
-        if (i > 0) {
-          [o[i], o[i - 1]] = [o[i - 1], o[i]];
-        }
-      })
-    );
-  };
+  const handleDragEnd = (result) => {
+    console.log(result);
 
-  const handleMoveDownSection = (sectionId) => {
+    if (!result.destination) {
+      return;
+    }
+
     setStructure(
       produce(structure, (newStructure) => {
-        let o = newStructure.sections;
-        let i = o
-          .map((s) => {
-            return s.id;
-          })
-          .indexOf(sectionId);
-        if (i >= 0 && i < o.length - 1) {
-          [o[i], o[i + 1]] = [o[i + 1], o[i]];
-        }
+        newStructure.sections = reorder(
+          newStructure.sections,
+          result.source.index,
+          result.destination.index
+        );
       })
     );
   };
 
   const sections = [];
-  structure.sections.forEach((section) => {
+  structure.sections.forEach((section, index) => {
     sections.push(
       <Section
         structure={section}
         onUpdate={handleUpdateSection}
         onDelete={handleDeleteSection}
-        onMoveUp={handleMoveUpSection}
-        onMoveDown={handleMoveDownSection}
+        index={index}
         key={section.id}
       />
     );
@@ -159,7 +151,7 @@ function App({ }) {
   };
 
   return (
-    <>
+    <DragDropContext onDragEnd={handleDragEnd}>
       <ThemeProvider theme={THEME}>
         {/* <CssBaseline /> */}
         <StyledApp>
@@ -174,14 +166,24 @@ function App({ }) {
               {structure.mainHeader}
             </Editable>
           </FocusAwarePaper>
-          {sections}
+          <Droppable droppableId="sections">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {sections}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
           <br />
-          <button onClick={handleClickAddSection}>
-            <b>הוסף יחידה</b>
-          </button>
+          <Fab onClick={handleClickAddSection} color="primary">
+            <AddIcon />
+          </Fab>
         </StyledApp>
       </ThemeProvider>
-    </>
+    </DragDropContext>
   );
 }
 

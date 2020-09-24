@@ -9,18 +9,17 @@ function FocusAwarePaper(props) {
 
   const handleFocus = () => {
     setIsFocused(true);
-    console.log('focus')
   };
 
   const handleBlur = () => {
     setIsFocused(false);
-    console.log('blur')
   };
 
   return (
     <Paper
       // variant={isFocused ? 'elevation' : 'outlined'}
-      elevation={isFocused ? 4 : 0}
+      elevation={isFocused ? 4 : 1}
+      // elevation={4}
       {...props}
     >
       <div
