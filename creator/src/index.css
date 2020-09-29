@@ -14,6 +14,16 @@ body {
   line-height: 1.5;
 }
 
+* ::selection {
+  background-color: #4a95d3;
+  color: white;
+}
+
+* ::-moz-selection {
+  background-color: #4a95d3;
+  color: white;
+}
+
 button {
   outline: 0;
   border: 1px solid #888;
