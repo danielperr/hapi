@@ -192,9 +192,12 @@ const StyledApp = styled.div`
   max-width: 800px;
   padding: 32px;
 
-  @media (max-width: 900px) {
-    padding: 0;
-    max-width: none;
+  @media (max-width: 800px) {
+    min-width: inherit;
+    max-width: inherit;
+    width: 100vw;
+    padding-left: 0;
+    padding-right: 0;
   }
 `;
 
