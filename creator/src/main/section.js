@@ -69,7 +69,7 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown, index })
   const handleCollapseClick = (e) => {
     e.target.focus();
     setIsOpen(!isOpen);
-  }
+  };
 
   const handleUpdateElement = (updatedElement) => {
     onUpdate(produce(structure, newStructure => {
@@ -126,14 +126,6 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown, index })
     if (!isVisible) {
       onDelete(structure.id);
     }
-  }
-
-  const handleClickUp = () => {
-    onMoveUp(structure.id);
-  };
-
-  const handleClickDown = () => {
-    onMoveDown(structure.id);
   };
 
   const elements = [];
@@ -156,10 +148,11 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown, index })
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
+          style={{...provided.draggableProps.style, opacity: (snapshot.isDragging && !snapshot.isDropAnimating) ? 0.8 : 1}}
         >
           <Grow in={isVisible} onExited={handleDeleteTransitionExited}>
             <Box className={classes.sectionContainer}>
-              <FocusAwarePaper className={classes.section}>
+              <FocusAwarePaper className={classes.section} isDragging={snapshot.isDragging && !snapshot.isDropAnimating}>
                 <Box className={classes.dragHandle}>
                   <div {...provided.dragHandleProps}>
                     <DragHandleIcon />

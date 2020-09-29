@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Paper } from '@material-ui/core';
 
 function FocusAwarePaper(props) {
-  const { children, elevation } = props;
+  const { children, isDragging } = props;
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -15,11 +15,13 @@ function FocusAwarePaper(props) {
     setIsFocused(false);
   };
 
+  let elevation = 1;
+  if (isFocused) { elevation = 4 }
+  if (isDragging) { elevation = 8 }
+
   return (
     <Paper
-      // variant={isFocused ? 'elevation' : 'outlined'}
-      elevation={isFocused ? 4 : 1}
-      // elevation={4}
+      elevation={elevation}
       {...props}
     >
       <div
