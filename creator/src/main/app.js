@@ -4,14 +4,13 @@ import produce from 'immer';
 import styled from 'styled-components';
 
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { lightBlue, red } from '@material-ui/core/colors';
-import { CssBaseline, Button, Paper, Fab } from '@material-ui/core';
+import { lightBlue } from '@material-ui/core/colors';
+import { CssBaseline, Box, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { makeid, httpGet, reorder } from '../shared/utils';
-import { saveWorkFile, exportToActivity } from '../shared/file-utils';
+import { makeid, httpGet, reorder, saveWorkFile, exportToActivity, reorderStructure, findById } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
 import FocusAwarePaper from '../shared/focus-aware-paper';
 import Editable from '../shared/editable';
@@ -35,6 +34,14 @@ const THEME = createMuiTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
+  mainContainer: {
+    width: '800px',
+    padding: '32px',
+    ['@media (max-width: 800px)']: {
+      width: '100vw',
+      padding: '32px 0',
+    },
+  },
   mainHeader: {
     padding: theme.spacing(2),
     borderRadius: '8px',
@@ -52,11 +59,10 @@ function App({ }) {
 
   useEffect(() => {
     setSavedFlag(false);
+    if (process.env.NODE_ENV !== 'development') {
+      window.onbeforeunload = function(){ if (!savedFlag) { return true } };
+    }
   }, [structure]);
-
-  useEffect(() => {
-    // window.onbeforeunload = function(){ if (!savedFlag) { return true } };
-  }, [savedFlag]);
 
   const handleLoad = (contents) => {
     setStructure(JSON.parse(contents));
@@ -116,89 +122,110 @@ function App({ }) {
   };
 
   const handleDragEnd = (result) => {
-    console.log(result);
-
-    if (!result.destination) {
+    const { source, destination } = result;
+    
+    // dropped nowhere
+    if (!destination) {
       return;
     }
 
-    setStructure(
-      produce(structure, (newStructure) => {
+    // did not move
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
+    }
+
+    // reorder sections
+    if (result.type === 'SECTION') {
+      setStructure(produce(structure, (newStructure) => {
         newStructure.sections = reorder(
           newStructure.sections,
-          result.source.index,
-          result.destination.index
-        );
+          source.index,
+          destination.index
+        )
+      }));
+      return;
+    }
+
+    // reorder elements
+    // element is in the same section as before
+    if (source.droppableId === destination.droppableId) {
+      setStructure(produce(structure, (newStructure) => {
+        newStructure.sections.forEach((section, index, sections) => {
+          if (section.id === destination.droppableId) {
+            sections[index].elements = reorder(
+              section.elements,
+              source.index,
+              destination.index
+            )
+          }
+        })
+      }));
+      return;
+    }
+
+    // element is moving between sections
+    setStructure(produce(structure, (newStructure) => {
+      let element;
+      newStructure.sections.forEach((section, index, sections) => {
+        if (section.id === source.droppableId) {
+          [element] = sections[index].elements.splice(source.index, 1);
+        }
       })
-    );
-  };
+      newStructure.sections.forEach((section, index, sections) => {
+        if (section.id === destination.droppableId) {
+          sections[index].elements.splice(destination.index, 0, element);
+        }
+      })
+    }))
 
-  const sections = [];
-  structure.sections.forEach((section, index) => {
-    sections.push(
-      <Section
-        structure={section}
-        onUpdate={handleUpdateSection}
-        onDelete={handleDeleteSection}
-        index={index}
-        key={section.id}
-      />
-    );
-  });
-
-  const changeStructure = (newStructure) => {
-    setStructure(newStructure);
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <ThemeProvider theme={THEME}>
-        {/* <CssBaseline /> */}
-        <StyledApp>
-          <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
-          <Menu
-            onLoad={handleLoad}
-            onSave={handleSave}
-            onExport={handleExport}
-          />
-          <FocusAwarePaper className={classes.mainHeader}>
-            <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed={true} height='64px'>
-              {structure.mainHeader}
-            </Editable>
-          </FocusAwarePaper>
-          <Droppable droppableId="sections">
-            {(provided, snapshot) => (
+    <ThemeProvider theme={THEME}>
+      {/* <CssBaseline /> */}
+      <Box className={classes.mainContainer}>
+        <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
+        <Menu
+          onLoad={handleLoad}
+          onSave={handleSave}
+          onExport={handleExport}
+        />
+        <FocusAwarePaper className={classes.mainHeader}>
+          <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed={true} height='64px'>
+            {structure.mainHeader}
+          </Editable>
+        </FocusAwarePaper>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="sections" type="SECTION">
+            {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {sections}
+                {structure.sections.map((section, index) => (
+                  <Section
+                    key={section.id}
+                    index={index}
+                    structure={section}
+                    onUpdate={handleUpdateSection}
+                    onDelete={handleDeleteSection}
+                  />
+                ))}
                 {provided.placeholder}
               </div>
             )}
           </Droppable>
-          <br />
-          <Fab onClick={handleClickAddSection} color="primary">
-            <AddIcon />
-          </Fab>
-        </StyledApp>
-      </ThemeProvider>
-    </DragDropContext>
+        </DragDropContext>
+        <br />
+        <Fab onClick={handleClickAddSection} color="primary">
+          <AddIcon />
+        </Fab>
+      </Box>
+    </ThemeProvider>
   );
 }
-
-const StyledApp = styled.div`
-  min-width: 800px;
-  max-width: 800px;
-  padding: 32px;
-
-  @media (max-width: 800px) {
-    min-width: inherit;
-    max-width: inherit;
-    width: 100vw;
-    padding-left: 0;
-    padding-right: 0;
-  }
-`;
 
 export default App;

@@ -5,7 +5,7 @@ import produce from 'immer';
 import Checkbox from '../shared/checkbox';
 import MultiChoiceOption from './multichoice-option';
 import Editable from '../shared/editable';
-import { makeid } from '../shared/utils';
+import { makeid } from '../utils';
 import { DEFAULT_MULTICHOICE_OPTION } from '../shared/constants';
 
 function ElementMultiChoice({ structure, onUpdate }) {

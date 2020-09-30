@@ -14,12 +14,12 @@ import Element from './element';
 import Editable from '../shared/editable';
 import FocusAwarePaper from '../shared/focus-aware-paper';
 import { DEFAULT_ELEMENT } from '../shared/constants';
-import { makeid } from '../shared/utils';
-import { Draggable } from 'react-beautiful-dnd';
+import { makeid } from '../utils';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme) => ({
   section: {
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
     paddingTop: theme.spacing(0),
     paddingBottom: theme.spacing(4),
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown, index }) {
+function Section({ index, structure, onUpdate, onDelete }) {
   
   const classes = useStyles();
 
@@ -128,20 +128,6 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown, index })
     }
   };
 
-  const elements = [];
-  structure.elements.forEach(element => {
-    elements.push(
-      <Element
-        structure={element}
-        onUpdate={handleUpdateElement}
-        onDelete={handleDeleteElement}
-        onMoveUp={handleMoveUpElement}
-        onMoveDown={handleMoveDownElement}
-        key={element.id}
-      />
-    );
-  });
-
   return (
     <Draggable draggableId={structure.id} index={index}>
       {(provided, snapshot) => (
@@ -168,7 +154,27 @@ function Section({ structure, onUpdate, onDelete, onMoveUp, onMoveDown, index })
                   </IconButton>
                 </Box>
                 <Collapse in={isOpen} unmountOnExit>
-                  {elements}
+                  <Droppable droppableId={structure.id}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                      >
+                        {structure.elements.map((element, index) => (
+                          <Element
+                            key={element.id}
+                            index={index}
+                            structure={element}
+                            onUpdate={handleUpdateElement}
+                            onDelete={handleDeleteElement}
+                            onMoveUp={handleMoveUpElement}
+                            onMoveDown={handleMoveDownElement}
+                          />
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
                   <br />
                   <Box className={classes.center}>
                     <Button onClick={handleClickAddElement} variant="outlined" color="primary" startIcon={<AddIcon className={classes.addIcon} />}><b>רכיב חדש</b></Button>
