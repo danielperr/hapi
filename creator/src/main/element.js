@@ -116,11 +116,15 @@ export default function Element({ index, structure, onUpdate, onDelete }) {
 
   return (
     <Draggable draggableId={structure.id} index={index}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <Box
           ref={provided.innerRef}
           {...provided.draggableProps}
           className={`${classes.container} ${provided.draggableProps.className}`}
+          style={{
+            ...provided.draggableProps.style,
+            opacity: (snapshot.isDragging && !snapshot.isDropAnimating) ? 0.6 : 1,
+          }}
         >
           <Box className={classes.dragHandleArea} {...provided.dragHandleProps}></Box>
           <Box className={classes.dragHandleIcon}>

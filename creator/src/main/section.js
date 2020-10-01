@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
   center: {
     textAlign: 'center',
   },
+  droppable: {
+    marginTop: theme.spacing(4),
+  },
   addIcon: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(-1.5),
@@ -154,27 +157,29 @@ function Section({ index, structure, onUpdate, onDelete }) {
                   </IconButton>
                 </Box>
                 <Collapse in={isOpen} unmountOnExit>
-                  <Droppable droppableId={structure.id}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                      >
-                        {structure.elements.map((element, index) => (
-                          <Element
-                            key={element.id}
-                            index={index}
-                            structure={element}
-                            onUpdate={handleUpdateElement}
-                            onDelete={handleDeleteElement}
-                            onMoveUp={handleMoveUpElement}
-                            onMoveDown={handleMoveDownElement}
-                          />
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
+                  <Box className={classes.droppable}>
+                    <Droppable droppableId={structure.id}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                        >
+                          {structure.elements.map((element, index) => (
+                            <Element
+                              key={element.id}
+                              index={index}
+                              structure={element}
+                              onUpdate={handleUpdateElement}
+                              onDelete={handleDeleteElement}
+                              onMoveUp={handleMoveUpElement}
+                              onMoveDown={handleMoveDownElement}
+                            />
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </Box>
                   <br />
                   <Box className={classes.center}>
                     <Button onClick={handleClickAddElement} variant="outlined" color="primary" startIcon={<AddIcon className={classes.addIcon} />}><b>רכיב חדש</b></Button>
