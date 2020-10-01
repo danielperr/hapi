@@ -1,75 +1,111 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import produce from 'immer';
-import styled from 'styled-components';
 
-import Editable from '../shared/editable';
-import HorizontalBar from '../shared/horizontal-bar';
-import DeleteButton from '../shared/delete-button';
-import ArrowButtons from '../shared/arrow-buttons';
+import { Box, FormControl, FormControlLabel, IconButton, Radio, RadioGroup, TextField } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import CloseIcon from '@material-ui/icons/Close';
 
-function MultiChoiceOption({ structure, name, select, onUpdate, onSelectCorrect, onDeleteSelf }) {
+const useStyles = makeStyles((theme) => ({
+  horizontalBar: {
+    marginBottom: theme.spacing(-0.5),
+    marginRight: theme.spacing(-2),
+    marginLeft: theme.spacing(-1),
+    display: 'flex',
+    flexDirection: 'row',
+    '&:hover .MuiInput-underline:not(.Mui-disabled):before': {
+      borderBottom: '1px solid lightgray',
+    },
+  },
+  dragHandle: {
+    color: '#BBB',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  formControlLabel: {
+    marginRight: theme.spacing(-1),
+    marginLeft: theme.spacing(1),
+    width: '100%',
+    '& .MuiTypography-root': { width: '100%' },
+  },
+  textField: {
+    width: '100%',
+    '& .MuiInput-underline:before': {
+      borderBottom: 'none',
+      transition: 'none',
+    },
+    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+      borderBottom: '1px solid lightgray',
+    },
+  },
+}));
 
-  const handleChangeText = text => {
+function MultiChoiceOption({ structure, name, checked, onUpdate, onSelectCorrect, onNew, onDestroy }) {
+  const classes = useStyles();
+
+  const [hover, setHover] = useState(false);
+
+  const handleChangeText = (e) => {
+    const newText = e.target.value;
+
     onUpdate(produce(structure, newStructure => {
-      newStructure.text = text
+      newStructure.text = newText;
     }));
   };
 
-  const handleChangeIsCorrect = e => {
-    onSelectCorrect(id);
+  const handleChangeIsCorrect = () => {
+    onSelectCorrect(structure.id);
   };
 
   const handleClickDelete = () => {
-    onDeleteSelf(id);
+    onDestroy(structure.id);
   }
 
-  const {id, text} = structure;
+  const handleKeyDown = (e) => {
+    switch(e.keyCode) {
+      case 8:  // backspace
+      case 46:  // delete
+        onDestroy(structure.id);
+      break;
+    }
+  }
+
   return (
-    <StyledOptionDiv>
-      <HorizontalBar>
-        <ArrowButtons />
-        <div>
-          <StyledOptionInput
-            type="radio"
+    <Box
+      className={classes.horizontalBar}
+      onMouseOver={() => { setHover(true); }}
+      onMouseOut={() => { setHover(false); }}
+    >
+      <Box className={classes.dragHandle} style={{ visibility: 'hidden' }} {/*style={{ visibility: hover ? 'visible' : 'hidden' }}*/...{}} >
+        <DragIndicatorIcon fontSize="small" />
+      </Box>
+      <FormControlLabel
+        value={structure.id}
+        checked={checked}
+        onChange={handleChangeIsCorrect}
+        className={classes.formControlLabel}
+        control={
+          <Radio
             name={name}
-            value={id}
-            id={id} 
-            select={select.toString()}
-            onChange={handleChangeIsCorrect}
+            value={structure.id}
           />
-          <StyledOptionLabel htmlFor={id}>תשובה נכונה?</StyledOptionLabel>
-        </div>
-        <DeleteButton onClick={handleClickDelete} />
-      </HorizontalBar>
-      <Editable onChange={handleChangeText}>{text}</Editable>
-    </StyledOptionDiv>
+        }
+        label={
+          <TextField
+            onChange={handleChangeText}
+            value={structure.text}
+            placeholder="תשובה ריקה"
+            onKeyDown={handleKeyDown}
+            className={classes.textField}
+          />
+        }
+      />
+      <IconButton onClick={handleClickDelete}>
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Box>
   );
 }
-
-const StyledOptionDiv = styled.div`
-  border-right: 8px solid rgb(143, 143, 143);
-  border-radius: 8px;
-  margin-top: 16px;
-  padding: 16px;
-  background-color: rgba(143, 143, 143, 0.15);
-`;
-
-const StyledOptionInput = styled.input`
-  position: relative;
-  top: 2px;
-  cursor: pointer;
-`;
-
-const StyledOptionLabel = styled.label`
-  background-color: white;
-  border: 1px solid #707070;
-  border-radius: 18px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 13.333px;
-  padding: 2px 6px;
-  padding-left: 8px;
-  cursor: pointer;
-`;
 
 export default MultiChoiceOption;

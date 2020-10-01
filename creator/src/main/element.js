@@ -20,8 +20,10 @@ import ElementDocs from "../elements/element-docs";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    marginTop: '16px',
-    padding: '0 16px 16px 16px',
+    marginTop: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     borderRadius: '4px',
     border: '1px solid rgb(74, 149, 211)',
     backgroundColor: 'hsl(207, 61%, 98%)',

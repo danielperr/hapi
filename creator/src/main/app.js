@@ -31,6 +31,13 @@ const THEME = createMuiTheme({
       main: '#cf5959',
     },
   },
+  overrides: {
+    MuiIconButton: {
+      root: {
+        color: '#333333',
+      }
+    },
+  }
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -49,12 +56,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function App({ }) {
+function App({ initial }) {
   const classes = useStyles();
 
   const initialStructure = DEFAULT_STRUCTURE;
   initialStructure.id = makeid(20);
-  const [structure, setStructure] = useState(initialStructure);
+  const [structure, setStructure] = useState(initial || initialStructure);
   const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
 
   useEffect(() => {
