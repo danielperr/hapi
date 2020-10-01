@@ -136,7 +136,7 @@ function Section({ index, structure, onUpdate, onDelete }) {
           {...provided.draggableProps}
           style={{...provided.draggableProps.style, opacity: (snapshot.isDragging && !snapshot.isDropAnimating) ? 0.8 : 1}}
         >
-          <Grow in={isVisible} onExited={handleDeleteTransitionExited}>
+          <Grow in={isVisible} onExited={handleDeleteTransitionExited} timeout={{ enter: 400, exit: 200 }}>
             <Box className={classes.sectionContainer}>
               <FocusAwarePaper className={classes.section} isDragging={snapshot.isDragging && !snapshot.isDropAnimating}>
                 <Box className={classes.dragHandle}>

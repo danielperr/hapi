@@ -37,7 +37,15 @@ const THEME = createMuiTheme({
         color: '#333333',
       }
     },
-  }
+    MuiTouchRipple: {
+      rippleVisible: {
+        animationDuration: '300ms',
+      },
+      childLeaving: {
+        animationDuration: '300ms',
+      },
+    },
+  },
 });
 
 const useStyles = makeStyles((theme) => ({
