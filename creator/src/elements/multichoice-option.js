@@ -66,7 +66,9 @@ function MultiChoiceOption({ structure, name, checked, onUpdate, onSelectCorrect
     switch(e.keyCode) {
       case 8:  // backspace
       case 46:  // delete
-        onDestroy(structure.id);
+        if (structure.text === '') {
+          onDestroy(structure.id);
+        }
       break;
     }
   }
