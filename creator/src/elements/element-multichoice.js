@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import produce from 'immer';
 
+import { Droppable } from 'react-beautiful-dnd';
+
 import { FormControl, RadioGroup, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
@@ -79,17 +81,26 @@ function ElementMultiChoice({ structure, onUpdate }) {
       <Editable onChange={handleChangeText}>{structure.text}</Editable>
       <FormControl style={{ width: '100%' }}>
         <RadioGroup name={structure.id} value={(structure.correct || [''])[0]}>
-          {options.map((option) => (
-            <MultiChoiceOption
-              key={option.id}
-              structure={option}
-              name={structure.id}
-              onUpdate={handleUpdateOption}
-              onSelectCorrect={handleSelectCorrectOption}
-              onDestroy={handleDestroyOption}
-              checked={(structure.correct || []).includes(option.id)}
-            />
-          ))}
+          <Droppable droppableId={structure.id} type="MULTICHOICE">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {options.map((option, index) => (
+                  <MultiChoiceOption
+                    key={option.id}
+                    index={index}
+                    structure={option}
+                    name={structure.id}
+                    onUpdate={handleUpdateOption}
+                    onSelectCorrect={handleSelectCorrectOption}
+                    onDestroy={handleDestroyOption}
+                    checked={(structure.correct || []).includes(option.id)}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          
+          </Droppable>
         </RadioGroup>
       </FormControl>
       <br />

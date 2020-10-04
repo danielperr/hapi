@@ -158,7 +158,7 @@ function Section({ index, structure, onUpdate, onDelete }) {
                 </Box>
                 <Collapse in={isOpen} unmountOnExit>
                   <Box className={classes.droppable}>
-                    <Droppable droppableId={structure.id}>
+                    <Droppable droppableId={structure.id} type="ELEMENT">
                       {(provided) => (
                         <div
                           ref={provided.innerRef}

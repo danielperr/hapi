@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import produce from 'immer';
 import styled from 'styled-components';
@@ -72,11 +72,15 @@ function App({ initial }) {
   const [structure, setStructure] = useState(initial || initialStructure);
   const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
 
+  const didMount = useRef(false);
   useEffect(() => {
-    setSavedFlag(false);
-    if (process.env.NODE_ENV !== 'development') {
-      window.onbeforeunload = function(){ if (!savedFlag) { return true } };
+    if (didMount.current) {
+      setSavedFlag(false);
+      if (process.env.NODE_ENV !== 'development') {
+        window.onbeforeunload = function(){ if (!savedFlag) { return true } };
+      }
     }
+    else didMount.current = true;
   }, [structure]);
 
   const handleLoad = (contents) => {
@@ -165,37 +169,58 @@ function App({ initial }) {
     }
 
     // reorder elements
-    // element is in the same section as before
-    if (source.droppableId === destination.droppableId) {
+    if (result.type === 'ELEMENT') {
+      // element is in the same section as before
+      if (source.droppableId === destination.droppableId) {
+        setStructure(produce(structure, (newStructure) => {
+          newStructure.sections.forEach((section, index, sections) => {
+            if (section.id === destination.droppableId) {
+              sections[index].elements = reorder(
+                section.elements,
+                source.index,
+                destination.index
+              )
+            }
+          })
+        }));
+        return;
+      }
+
+      // element is moving between sections
       setStructure(produce(structure, (newStructure) => {
+        let element;
+        newStructure.sections.forEach((section, index, sections) => {
+          if (section.id === source.droppableId) {
+            [element] = sections[index].elements.splice(source.index, 1);
+          }
+        })
         newStructure.sections.forEach((section, index, sections) => {
           if (section.id === destination.droppableId) {
-            sections[index].elements = reorder(
-              section.elements,
-              source.index,
-              destination.index
-            )
+            sections[index].elements.splice(destination.index, 0, element);
           }
         })
       }));
       return;
     }
 
-    // element is moving between sections
-    setStructure(produce(structure, (newStructure) => {
-      let element;
-      newStructure.sections.forEach((section, index, sections) => {
-        if (section.id === source.droppableId) {
-          [element] = sections[index].elements.splice(source.index, 1);
-        }
-      })
-      newStructure.sections.forEach((section, index, sections) => {
-        if (section.id === destination.droppableId) {
-          sections[index].elements.splice(destination.index, 0, element);
-        }
-      })
-    }))
-
+    // reorder multichoice options
+    // option is in the same element
+    if (source.droppableId === destination.droppableId) {
+      setStructure(produce(structure, (newStructure) => {
+        newStructure.sections.forEach((section) => {
+          section.elements.forEach((element, index, elements) => {
+            if (element.id === destination.droppableId) {
+              elements[index].options = reorder(
+                element.options,
+                source.index,
+                destination.index
+              );
+            }
+          });
+        });
+      }));
+      return;
+    }
   };
 
   return (

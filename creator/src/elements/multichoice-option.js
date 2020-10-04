@@ -6,10 +6,10 @@ import { Box, FormControl, FormControlLabel, IconButton, Radio, RadioGroup, Text
 import { makeStyles } from '@material-ui/core/styles';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import CloseIcon from '@material-ui/icons/Close';
+import { Draggable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme) => ({
-  horizontalBar: {
-    marginBottom: theme.spacing(-0.5),
+  container: {
     marginRight: theme.spacing(-2),
     marginLeft: theme.spacing(-1),
     display: 'flex',
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MultiChoiceOption({ structure, name, checked, onUpdate, onSelectCorrect, onNew, onDestroy }) {
+function MultiChoiceOption({ index, structure, name, checked, onUpdate, onSelectCorrect, onNew, onDestroy }) {
   const classes = useStyles();
 
   const [hover, setHover] = useState(false);
@@ -74,39 +74,50 @@ function MultiChoiceOption({ structure, name, checked, onUpdate, onSelectCorrect
   }
 
   return (
-    <Box
-      className={classes.horizontalBar}
-      onMouseOver={() => { setHover(true); }}
-      onMouseOut={() => { setHover(false); }}
-    >
-      <Box className={classes.dragHandle} style={{ visibility: 'hidden' }} {/*style={{ visibility: hover ? 'visible' : 'hidden' }}*/...{}} >
-        <DragIndicatorIcon fontSize="small" />
-      </Box>
-      <FormControlLabel
-        value={structure.id}
-        checked={checked}
-        onChange={handleChangeIsCorrect}
-        className={classes.formControlLabel}
-        control={
-          <Radio
-            name={name}
-            value={structure.id}
-          />
-        }
-        label={
-          <TextField
-            onChange={handleChangeText}
-            value={structure.text}
-            placeholder="תשובה ריקה"
-            onKeyDown={handleKeyDown}
-            className={classes.textField}
-          />
-        }
-      />
-      <IconButton onClick={handleClickDelete}>
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </Box>
+    <Draggable draggableId={structure.id} index={index}>
+      {(provided) => (
+        <div ref={provided.innerRef} {...provided.draggableProps}>
+          <Box
+            className={classes.container}
+            onMouseOver={() => { setHover(true); }}
+            onMouseOut={() => { setHover(false); }}
+          >
+            <Box
+              {...provided.dragHandleProps}
+              className={classes.dragHandle}
+              style={{ ...provided.dragHandleProps.style, visibility: hover ? 'visible' : 'hidden' }}
+            >
+              <DragIndicatorIcon fontSize="small" />
+            </Box>
+            <FormControlLabel
+              value={structure.id}
+              checked={checked}
+              onChange={handleChangeIsCorrect}
+              className={classes.formControlLabel}
+              control={
+                <Radio
+                  name={name}
+                  value={structure.id}
+                />
+              }
+              label={
+                <TextField
+                  onChange={handleChangeText}
+                  value={structure.text}
+                  placeholder="תשובה ריקה"
+                  onKeyDown={handleKeyDown}
+                  className={classes.textField}
+                />
+              }
+            />
+            <IconButton onClick={handleClickDelete}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </Box>
+        </div>
+      )}
+    </Draggable>
+    
   );
 }
 
