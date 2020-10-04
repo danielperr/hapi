@@ -99,14 +99,13 @@ function ElementMultiChoice({ structure, onUpdate }) {
                 {provided.placeholder}
               </div>
             )}
-          
           </Droppable>
         </RadioGroup>
       </FormControl>
-      <br />
       <IconButton className={classes.addIcon} onClick={handleNewOption}>
         <AddIcon fontSize="small" />
       </IconButton>
+      <br />
       <br />
       <Checkbox
         id={structure.id + '-shuffle'}
