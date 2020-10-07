@@ -70,7 +70,7 @@ function TopBar(props) {
             <InsertEmoticonIcon />
           </Typography>
         </Toolbar>
-        {<LinearProgress
+        {/* {<LinearProgress
           color="primary"
           classes={{
             colorPrimary: classes.colorPrimary,
@@ -78,7 +78,7 @@ function TopBar(props) {
           }}
           variant="determinate"
           value={props.progress}
-        />}
+        />} */}
       </AppBar>
     </div>
   );

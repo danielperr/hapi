@@ -114,23 +114,15 @@ function App(props) {
     strings.setLanguage(lang);
   }
 
-  // /* Handle scroll event */
-  // const [progress, setProgress] = React.useState(0); // top bar progress bar percentage
-  // const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
-  // const handleScroll = () => {
-  //   const winScroll =
-  //     document.body.scrollTop || document.documentElement.scrollTop;
-  //   const height =
-  //     document.documentElement.scrollHeight -
-  //     document.documentElement.clientHeight;
-  //   const scrolled = Math.round((100 * winScroll) / height);
-  //   setTopBarElevation(scrolled);
-  //   // setProgress(scrolled);
-  // };
+  const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
+  const handleScroll = () => {
+    setTopBarElevation(window.pageYOffset !== 0);
+  };
 
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-  // }, []);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll');
+  }, []);
 
   /* When the user answers a question */
   const handleAnswer = (elementId, answer) => {
@@ -380,8 +372,7 @@ function App(props) {
         <CssBaseline />
         <div id="back-to-top-anchor" />
         <TopBar
-          // progress={progress}
-          // elevation={topBarElevation}
+          elevation={topBarElevation}
           mainHeader={props.structure.mainHeader}
           onDownload={() => {
             SaveAs(JSON.stringify(answers));
