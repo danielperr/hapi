@@ -1,4 +1,3 @@
-import zIndex from "@material-ui/core/styles/zIndex";
 import React, { createRef } from "react";
 
 function Dropzone(props) {
@@ -48,16 +47,14 @@ function Dropzone(props) {
       <div
         ref={containerRef}
         onClick={handleClick}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
         {...props}
+        id="container"
       >
         {children}
-        <div
-          style={{position: "absolute", top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000, backgroundColor: 'transparent'}}
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        ></div>
       </div>
       <input
         type="file"

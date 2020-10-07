@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeid } from '../shared/utils';
+import { makeid } from '../utils';
 
 export default function Checkbox({ children, id, checked, onCheck }) {
 

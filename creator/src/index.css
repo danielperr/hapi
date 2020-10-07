@@ -1,3 +1,7 @@
+html {
+  padding-left: calc(100vw - 100%);
+}
+
 body {
   margin: 0;
   font-size: 16px;
@@ -8,16 +12,27 @@ body {
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   justify-content: center;
-  background-image: linear-gradient(to top left, #aaa, rgb(178, 206, 231));
+  /* background-image: linear-gradient(to top left, rgb(233, 234, 255), rgb(255, 255, 255)); */
+  background-color: rgb(191, 212, 230);
   background-attachment: fixed;
   line-height: 1.5;
+}
+
+* ::selection {
+  background-color: #4a95d3;
+  color: white;
+}
+
+* ::-moz-selection {
+  background-color: #4a95d3;
+  color: white;
 }
 
 button {
   outline: 0;
   border: 1px solid #888;
   box-sizing: border-box;
-  box-shadow: 0 1px 1px #eee;
+  /* box-shadow: 0 1px 1px #eee; */
   padding: 2px 8px;
 }
 
@@ -25,10 +40,10 @@ button:hover {
   background-color: #f7f7f7;
 }
 
-button:active {
+/* button:active {
   border: 1px solid #999;
   background-color: #bbb;
-}
+} */
 
 select {
   padding: 1px;
@@ -36,7 +51,7 @@ select {
 }
 
 button.dangerous {
-  background-color: rgb(255, 199, 199);
+  background-color: #ffc7c7;
   border: 1px solid rgb(128, 93, 93);
   color: #744;
   font-weight: bold;

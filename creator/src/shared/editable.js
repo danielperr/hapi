@@ -201,7 +201,7 @@ const InlineStyleControls = (props) => {
   );
 };
 
-function Editable({ children, size, onChange, isRich }) {
+function Editable({ children, size, onChange, isRich, isHeightFixed, height }) {
   const handleChange = (e) => {
     if (isRich) {
       console.log(e.getCurrentContent().getPlainText());
@@ -216,6 +216,8 @@ function Editable({ children, size, onChange, isRich }) {
       size={size}
       value={children}
       onChange={handleChange}
+      isHeightFixed={isHeightFixed}
+      height={height}
     />
   );
 
@@ -231,13 +233,14 @@ function Editable({ children, size, onChange, isRich }) {
 }
 
 const StyledEditableTextarea = styled.textarea`
-  border: 1px dashed gray;
+  background-color: transparent;
+  border: 1px dashed lightgray;
   border-radius: 4px;
   padding: 8px;
   outline: none;
-  min-width: 100%;
-  max-width: 100%;
-  resize: vertical;
+  width: 100%;
+  resize: ${({isHeightFixed}) => isHeightFixed ? 'none' : 'vertical'};
+  ${({height}) => {if (height !== null) { return 'height: ' + height + ';' } }}
   font-family: 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
