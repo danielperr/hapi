@@ -5,7 +5,83 @@ import App from './app/App';
 
 import './style.css';
 
-const structure = {
+const structureEn = {
+  "serialNumber": "bJbiiGDGd29p7xJPI4xk",
+  "language": "en",
+  "mainHeader": "Objects in Motion - Part 1",
+  "sections": [{
+      "header": "Test",
+      "id": "km8hGF9kA8",
+      "elements": [{
+        "type": "number-input",
+        "text": "How much is 2 + 3?",
+        "id": "a8HJvwa243",
+        "min": "4.5",
+        "max": "5.5",
+      }],
+    }, {
+      "header": "Watching a Video",
+      "id": "cwcXgOAKpC",
+      "elements": [{
+        "type": "label",
+        "text": "Watch the video and answer the following questions.",
+        "id": "hYF8kvGV49"
+      }, {
+        "type": "youtube",
+        "youtubeId": "HPpvh1-ZeLQ",
+        "id": "Xg77GHD91r"
+      }, {
+        "type": "text-input",
+        "text": "Write in your own words, how do you create the illusion that a circle is moving on the screen?",
+        "id": "HHbrsIPQD4"
+      }]
+    }, {
+      "header": "The First Code Block",
+      "id": "9Icl3Pg1Jn",
+      "elements": [{
+        "type": "label",
+        "text": "Open a new ifigures page by clicking on the following link: [empty ifigure](https://webhome.weizmann.ac.il/home/ifigures/ifigure.ifig.html)\n\nCopy the following code to the first code block (on the top left side, see attached image) and run it.",
+        "id": "KjaUH3GiYA"
+      }, {
+        "type": "image",
+        "src": "https://webhome.weizmann.ac.il/home/ifigures/Hapi/SimulatingMotion/Ex1/images/1.png",
+        "id": "RdF0Nw2lHr"
+      }, {
+        "type": "multi-choice",
+        "text": "After you ran it, what happened?",
+        "id": "Ob4YXMJI1S",
+        "correct": ["dfN7KqKAvc"],
+        "options": [{
+          "text": "A blue circle formed on the screen and nothing else happened",
+          "id": "dfN7KqKAvc",
+        }, {
+          "text": "Nothing happened that can be seen",
+          "id": "bERliHW5id"
+        }, {
+          "text": "A simulation of a moving ball was created",
+          "id": "BezdSQlolS"
+        }],
+      }, {
+        "type": "multi-choice",
+        "text": "Run the cell over and over again. What's happening?",
+        "id": "wmNXgWxrYt",
+        "correct": ["Z1uCwirDbE"],
+        "options": [{
+          "text": "Nothing seems to be happening",
+          "id": "Z1uCwirDbE"
+        }, {
+          "text": "When pressed again the circle disappears",
+          "id": "RmjQJmbAeX"
+        }, {
+          "text": "Each time the circle moves",
+          "id": "Xqf0Qri5VA"
+        }]
+      }]
+    },
+  ]
+};
+
+const structureHe = {
   "serialNumber": "bJbiiGDGd29p7xJPI4xk",
   "mainHeader": "הדמיית תנועה - פעילות ראשונה",
   "sections": [{
@@ -256,6 +332,9 @@ const structure = {
     }
   ]
 };
+
+const structure = structureEn;
+// const structure = structureHe;
 
 document.title = structure.mainHeader;
 

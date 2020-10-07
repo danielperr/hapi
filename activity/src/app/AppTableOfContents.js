@@ -5,17 +5,17 @@ import { Link, Events } from "react-scroll";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box } from "@material-ui/core";
+import { strings } from "../shared/localization";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     top: 60,
-    left: 0,
-    marginTop: 0,
+    right: 0,
+    margin: theme.spacing(0, 2),
     width: 175,
     flexShrink: 0,
     order: 2,
     position: "fixed",
-    height: "calc(100vh - 70px)",
     overflowY: "auto",
     padding: theme.spacing(2, 0, 2, 2),
     display: "none",
@@ -25,29 +25,32 @@ const useStyles = makeStyles((theme) => ({
   },
   contents: {
     marginTop: theme.spacing(2),
-    paddingRight: theme.spacing(1.5),
+    paddingLeft: theme.spacing(1.5),
   },
   ul: {
     padding: 0,
     margin: 0,
     listStyleType: "none",
   },
+  li: {
+    display: 'flex',
+  },
   item: {
     fontSize: 13,
-    padding: theme.spacing(0.5, 1, 0.5, 0),
-    borderRight: "4px solid transparent",
+    padding: theme.spacing(0.5, 1),
+    borderLeft: "4px solid transparent",
     textDecoration: "none",
     boxSizing: "content-box",
     color: theme.palette.text.secondary,
     "&:hover": {
-      borderRight: `4px solid ${
+      borderLeft: `4px solid ${
         theme.palette.type === "light"
           ? theme.palette.grey[400]
           : theme.palette.grey[900]
       }`,
     },
     "&$active,&:active": {
-      borderRight: `4px solid ${
+      borderLeft: `4px solid ${
         theme.palette.type === "light"
           ? theme.palette.grey[500]
           : theme.palette.grey[800]
@@ -147,11 +150,11 @@ const AppTableOfContents = (props) => {
       {items.length > 0 ? (
         <React.Fragment>
           <Typography gutterBottom className={classes.contents}>
-            <Box fontWeight="fontWeightBold">{"תוכן עניינים"}</Box>
+            <Box fontWeight="fontWeightBold">{strings.tableOfContents}</Box>
           </Typography>
           <Typography component="ul" className={classes.ul}>
             {items.map((item) => (
-              <li key={item.text}>{itemLink(item)}</li>
+              <li key={item.text} className={classes.li}>{itemLink(item)}</li>
             ))}
           </Typography>
         </React.Fragment>

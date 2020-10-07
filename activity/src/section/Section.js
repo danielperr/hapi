@@ -13,9 +13,11 @@ import {
   ElementMultiChoice,
   ElementNumberInput
 } from "../elements";
+import { strings } from '../shared/localization';
 
 const useStyles = makeStyles((theme) => ({
   sectionPaper: {
+    borderRadius: '8px',
     marginBottom: theme.spacing(4),
     paddingLeft: theme.spacing(6),
     paddingRight: theme.spacing(6),
@@ -137,7 +139,7 @@ function Section(props) {
         break;
       
       default:
-        obj = <label>{"אלמנט לא מזוהה"}</label>;
+        obj = <label>{strings.unknownElement}</label>;
     }
     elements.push(<div className="element"
       id={element.id}
@@ -171,7 +173,7 @@ function Section(props) {
             color="primary"
             className={classes.button}
           >
-            בדוק תשובות
+            {strings.actionCheckAnswer}
           </Button>
         }
       </form>

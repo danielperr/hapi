@@ -22,7 +22,6 @@ html {
 
 body {
   font-family: "Heebo", sans-serif;
-  text-align: right;
   margin: 0px;
   background-color: var(--background-color);
 }

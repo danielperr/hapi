@@ -17,11 +17,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginLeft: theme.spacing(2),
-  },
   title: {
     flexGrow: 1,
+    textAlign: 'left',
   },
   colorPrimary: {
     background: "#9FA8DA",
@@ -31,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     color: "#ffd180",
+    flip: false,
+    direction: 'ltr',
   },
   divider: {
     margin: theme.spacing(2),
@@ -66,8 +66,8 @@ function TopBar(props) {
             className={classes.divider}
           />
           <Typography edge="end" variant="h6" className={classes.logo}>
-            <InsertEmoticonIcon />
             Hapi
+            <InsertEmoticonIcon />
           </Typography>
         </Toolbar>
         {<LinearProgress
