@@ -15,6 +15,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    flip: false,
+    direction: 'rtl',
     flexGrow: 1,
   },
   title: {
@@ -54,6 +56,11 @@ function TopBar(props) {
           <Typography variant="h6" className={classes.title}>
             {props.mainHeader}
           </Typography>
+          <Divider
+            orientation="vertical"
+            flexItem
+            className={classes.divider}
+          />
           <IconButton color="inherit" onClick={props.onDownload}>
             <SaveAltIcon />
           </IconButton>

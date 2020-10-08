@@ -9,8 +9,9 @@ import { strings } from "../shared/localization";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    flip: false,
     top: 60,
-    right: 0,
+    left: 0,
     margin: theme.spacing(0, 2),
     width: 175,
     flexShrink: 0,
