@@ -120,6 +120,7 @@ function App(props) {
   };
 
   useEffect(() => {
+    document.title = props.structure.mainHeader;
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll');
   }, []);
