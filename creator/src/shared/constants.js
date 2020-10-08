@@ -1,6 +1,7 @@
 
 const DEFAULT_STRUCTURE = {
   mainHeader: "פעילות ריקה",
+  language: "he",
   sections: [],
 };
 

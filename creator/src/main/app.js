@@ -83,9 +83,15 @@ function App({ initial }) {
     else didMount.current = true;
   }, [structure]);
 
+  const handleChangeLanguage = (language) => {
+    setStructure(produce(structure, (newStructure) => {
+      newStructure.language = language;
+    }));
+  };
+
   const handleLoad = (contents) => {
     setStructure(JSON.parse(contents));
-  }
+  };
   
   const handleSave = () => {
     saveWorkFile(JSON.stringify(structure, null, 2));
@@ -229,6 +235,8 @@ function App({ initial }) {
       <Box className={classes.mainContainer}>
         <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
         <Menu
+          language={structure.language}
+          onChangeLanguage={handleChangeLanguage}
           onLoad={handleLoad}
           onSave={handleSave}
           onExport={handleExport}
