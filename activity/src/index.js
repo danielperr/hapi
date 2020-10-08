@@ -335,10 +335,11 @@ import './style.css';
 
 // const structure = structureEn;
 // const structure = structureHe;
+const structure = {};
 
 ReactDOM.render(
   <React.StrictMode>
-    <App structure={{}} />
+    <App structure={structure} />
   </React.StrictMode>,
   document.getElementById('root')
 );
