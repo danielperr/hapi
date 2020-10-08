@@ -123,7 +123,7 @@ const AppTableOfContents = (props) => {
       to={item.hash}
       spy={true}
       smooth={true}
-      offset={-98}
+      offset={item.index === 0 ? -98 : -90}
       duration={500}
       isDynamic={true}
       onSetActive={() => handleSetActive(item.hash)}
@@ -141,8 +141,8 @@ const AppTableOfContents = (props) => {
   );
 
   const items = [];
-  props.structure.sections.forEach((section) => {
-    items.push({ text: section.header, hash: section.id });
+  props.structure.sections.forEach((section, index) => {
+    items.push({ text: section.header, hash: section.id, index: index });
   });
   
   
