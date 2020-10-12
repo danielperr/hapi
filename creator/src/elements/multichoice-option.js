@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import produce from 'immer';
 
@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import CloseIcon from '@material-ui/icons/Close';
 import { Draggable } from 'react-beautiful-dnd';
+import LanguageContext from '../shared/language-context';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -43,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
 
 function MultiChoiceOption({ index, structure, name, checked, onUpdate, onSelectCorrect, onNew, onDestroy }) {
   const classes = useStyles();
+
+  const language = useContext(LanguageContext);
+  const direction = language === 'he' ? 'rtl' : 'ltr';
 
   const [hover, setHover] = useState(false);
 
@@ -91,6 +95,7 @@ function MultiChoiceOption({ index, structure, name, checked, onUpdate, onSelect
             </Box>
             <FormControlLabel
               value={structure.id}
+              dir={direction}
               checked={checked}
               onChange={handleChangeIsCorrect}
               className={classes.formControlLabel}

@@ -12,6 +12,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { makeid, httpGet, reorder, saveWorkFile, exportToActivity, reorderStructure, findById } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
+import LanguageContext from '../shared/language-context';
 import FocusAwarePaper from '../shared/focus-aware-paper';
 import Editable from '../shared/editable';
 import Section from './section';
@@ -230,49 +231,51 @@ function App({ initial }) {
   };
 
   return (
-    <ThemeProvider theme={THEME}>
-      {/* <CssBaseline /> */}
-      <Box className={classes.mainContainer}>
-        <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
-        <Menu
-          language={structure.language}
-          onChangeLanguage={handleChangeLanguage}
-          onLoad={handleLoad}
-          onSave={handleSave}
-          onExport={handleExport}
-        />
-        <FocusAwarePaper className={classes.mainHeader}>
-          <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed={true} height='64px'>
-            {structure.mainHeader}
-          </Editable>
-        </FocusAwarePaper>
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="sections" type="SECTION">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {structure.sections.map((section, index) => (
-                  <Section
-                    key={section.id}
-                    index={index}
-                    structure={section}
-                    onUpdate={handleUpdateSection}
-                    onDelete={handleDeleteSection}
-                  />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        <br />
-        <Fab onClick={handleClickAddSection} color="primary">
-          <AddIcon />
-        </Fab>
-      </Box>
-    </ThemeProvider>
+    <LanguageContext.Provider value={structure.language}>
+      <ThemeProvider theme={THEME}>
+        {/* <CssBaseline /> */}
+        <Box className={classes.mainContainer}>
+          <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
+          <Menu
+            language={structure.language}
+            onChangeLanguage={handleChangeLanguage}
+            onLoad={handleLoad}
+            onSave={handleSave}
+            onExport={handleExport}
+          />
+          <FocusAwarePaper className={classes.mainHeader}>
+            <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed={true} height='64px'>
+              {structure.mainHeader}
+            </Editable>
+          </FocusAwarePaper>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="sections" type="SECTION">
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {structure.sections.map((section, index) => (
+                    <Section
+                      key={section.id}
+                      index={index}
+                      structure={section}
+                      onUpdate={handleUpdateSection}
+                      onDelete={handleDeleteSection}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          <br />
+          <Fab onClick={handleClickAddSection} color="primary">
+            <AddIcon />
+          </Fab>
+        </Box>
+      </ThemeProvider>
+    </LanguageContext.Provider>
   );
 }
 
