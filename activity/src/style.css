@@ -4,7 +4,7 @@
   --main-color:  #bdbdbd;
   --secondary-color: black;
   --third-color: white;
-  --background-color: #E9D8F0;
+  --background-color: #E8EAF6;
   --paper-color: #f5f5f5;
 }
 
@@ -22,7 +22,6 @@ html {
 
 body {
   font-family: "Heebo", sans-serif;
-  text-align: right;
   margin: 0px;
   background-color: var(--background-color);
 }

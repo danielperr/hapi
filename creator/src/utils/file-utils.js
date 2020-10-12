@@ -35,7 +35,7 @@ export function saveWorkFile(structure) {
  */
 export function injectStructureToActivity(emptyActivity, structure) {
   let f = emptyActivity.slice();
-  const index = f.indexOf("structure=");
+  const index = f.indexOf("structure:");
   const firstSign = f.indexOf("{", index);
   const secondSign = f.indexOf("}", index + 1);
   return f.substring(0, firstSign) + structure + f.substring(secondSign + 1);

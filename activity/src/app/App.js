@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { scroller } from "react-scroll";
 
 import { ThemeProvider, createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Container, Box, Fab, Snackbar, IconButton } from "@material-ui/core";
+import { CssBaseline, Container, Box, Fab, Snackbar, IconButton, Toolbar, Typography } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import CheckIcon from "@material-ui/icons/Check";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
+import { strings } from '../shared/localization';
+import RTL from './RTL';
 import TopBar from './TopBar';
 import AppTableOfContents from "./AppTableOfContents";
 import { dropConfetti } from "./confetti";
@@ -18,7 +20,6 @@ import { getPhrase } from "../shared/utils";
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
 const theme = createMuiTheme({
-  direction: "rtl",
   palette: {
     primary: {
       main: "#3f51b5",
@@ -38,25 +39,27 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    // maxWidth: "800px",
     marginTop: theme.spacing(2),
   },
-  checkAllBtn: {
-    marginTop: theme.spacing(-2),
-    marginBottom: theme.spacing(0),
-    fontWeight: "bold",
-    fontSize: "1rem",
+  checkAllBtnContainer: {
+    marginBottom: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
-  successSnackbarCloseIcon: {
-    marginRight: theme.spacing(2),
-    marginLeft: theme.spacing(-2),
+  checkAllBtn: {
+    fontWeight: "bold",
+    // width: '150px',
+    // minWidth: '150px',
+    // padding: theme.spacing(0, 1),
   },
   root: {
     background: "#4caf50",
   },
-  checkIcon: {
-    marginLeft: theme.spacing(1),
-  },
+  checkTypography: {
+    margin: theme.spacing(0, 1),
+    fontWeight: 'bold',
+  }
 }));
 
 function download(filename, text) {
@@ -106,23 +109,21 @@ function App(props) {
   const sectionCount = props.structure.sections.length;
   const [showSuccess, setShowSuccess] = React.useState(false);
 
-  // /* Handle scroll event */
-  // const [progress, setProgress] = React.useState(0); // top bar progress bar percentage
-  // const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
-  // const handleScroll = () => {
-  //   const winScroll =
-  //     document.body.scrollTop || document.documentElement.scrollTop;
-  //   const height =
-  //     document.documentElement.scrollHeight -
-  //     document.documentElement.clientHeight;
-  //   const scrolled = Math.round((100 * winScroll) / height);
-  //   setTopBarElevation(scrolled);
-  //   // setProgress(scrolled);
-  // };
+  const lang = props.structure.language;
+  if (lang !== undefined && strings.getLanguage() !== lang) {
+    strings.setLanguage(lang);
+  }
 
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-  // }, []);
+  const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
+  const handleScroll = () => {
+    setTopBarElevation(window.pageYOffset !== 0);
+  };
+
+  useEffect(() => {
+    document.title = props.structure.mainHeader;
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll');
+  }, []);
 
   /* When the user answers a question */
   const handleAnswer = (elementId, answer) => {
@@ -181,7 +182,7 @@ function App(props) {
   /* Prompt for confirmation, erase all the answers and reload the activity */
   const resetActivity = () => {
     var conf = window.confirm(
-      " כל התשובות בפעילות זו יימחקו לצמיתות.\n להמשיך?"
+      strings.dialogResetActivity
     );
     if (conf) {
       setAnswers({});
@@ -249,7 +250,7 @@ function App(props) {
       validationsCopy[elementId].helperText = getPhrase(!error);
     } else {
       // This element has no answer in App's answers therefore its emepty and has to be filled.
-      validationsCopy[elementId].helperText = "חסרה תשובה";
+      validationsCopy[elementId].helperText = strings.answerMissing;
     }
 
     validationsCopy[elementId].showHelperText = true;
@@ -277,7 +278,7 @@ function App(props) {
       validationsCopy[elementId].helperText = " ";
     } else {
       // This element has no answer in App's answers therefore its emepty and has to be filled.
-      validationsCopy[elementId].helperText = "חסרה תשובה";
+      validationsCopy[elementId].helperText = strings.answerMissing;
     }
 
     validationsCopy[elementId].showHelperText = true;
@@ -304,7 +305,7 @@ function App(props) {
       validationsCopy[elementId].helperText = getPhrase(!error);
     } else {
       // This element has no answer in App's answers therefore its emepty and has to be filled.
-      validationsCopy[elementId].helperText = "חסרה תשובה";
+      validationsCopy[elementId].helperText = strings.answerMissing;
     }
 
     validationsCopy[elementId].showHelperText = true;
@@ -364,44 +365,42 @@ function App(props) {
     );
   });
 
+  const rtl = strings.direction === 'rtl';
+
   return (
-    <React.Fragment>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <RTL active={rtl}>
         <CssBaseline />
         <div id="back-to-top-anchor" />
         <TopBar
-          // progress={progress}
-          // elevation={topBarElevation}
+          elevation={topBarElevation}
           mainHeader={props.structure.mainHeader}
           onDownload={() => {
             SaveAs(JSON.stringify(answers));
           }}
           onReset={resetActivity}
         />
+        <Toolbar />
         <AppTableOfContents {...props}></AppTableOfContents>
         <Container maxWidth="md" className={classes.container}>
-          <br /><br /><br />
           {sections}
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="stretch"
-            padding="10px 385px 10px 385px"
-          >
+          <Box className={classes.checkAllBtnContainer}>
             <Fab
               variant="extended"
               color="secondary"
               className={classes.checkAllBtn}
               onClick={handleSubmit}
             >
-              <CheckIcon className={classes.checkIcon} />
-              בדוק הכל
+              <CheckIcon />
+              <Typography className={classes.checkTypography}>
+                {strings.actionCheckAll}
+              </Typography>
             </Fab>
           </Box>
           <Snackbar
             anchorOrigin={{
               vertical: "bottom",
-              horizontal: "right",
+              horizontal: rtl ? "right" : "left",
             }}
             ContentProps={{
               classes: {
@@ -411,8 +410,7 @@ function App(props) {
             open={showSuccess}
             autoHideDuration={6000}
             onClose={handleSuccessClose}
-            message="כל הכבוד! השלמתם את הפעילות בהצלחה!"
-            dir="rtl"
+            message={strings.activityComplete}
             action={
               <React.Fragment>
                 <IconButton
@@ -420,7 +418,6 @@ function App(props) {
                   aria-label="close"
                   color="inherit"
                   onClick={handleSuccessClose}
-                  className={classes.successSnackbarCloseIcon}
                 >
                   <CloseIcon fontSize="small" />
                 </IconButton>
@@ -433,8 +430,8 @@ function App(props) {
             <KeyboardArrowUpIcon />
           </Fab>
         </ScrollTop>
-      </ThemeProvider>
-    </React.Fragment>
+      </RTL>
+    </ThemeProvider>
   );
 }
 

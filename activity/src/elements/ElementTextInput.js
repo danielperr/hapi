@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
   },
   formHelperText: {
     margin: theme.spacing(1, 1, 2, 0),
-    textAlign: "right",
   },
   button: {
     margin: theme.spacing(1, 1, 0, 0),

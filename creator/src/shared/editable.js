@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import styled from 'styled-components';
 
@@ -6,6 +6,10 @@ import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from "draft-js";
 import "draft-js/dist/Draft.css";
 import "./rich-editor.css";
 
+import LanguageContext from './language-context';
+import { makeStyles } from "@material-ui/core";
+
+{
 class RichEditorExample extends React.Component {
   constructor(props) {
     super(props);
@@ -200,8 +204,28 @@ const InlineStyleControls = (props) => {
     </div>
   );
 };
+}
+
+const useStyles = makeStyles((theme) => ({
+  basicTextArea: {
+    backgroundColor: 'transparent',
+    border: '1px dashed lightgray',
+    borderRadius: '4px',
+    padding: theme.spacing(1),
+    outline: 'none',
+    width: '100%',
+    resize: 'vertical',
+    fontFamily: "'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+    boxSizing: 'border-box',
+  }
+}));
 
 function Editable({ children, size, onChange, isRich, isHeightFixed, height }) {
+  const classes = useStyles();
+
+  const language = useContext(LanguageContext);
+  const direction = language === 'he' ? 'rtl' : 'ltr';
+
   const handleChange = (e) => {
     if (isRich) {
       console.log(e.getCurrentContent().getPlainText());
@@ -211,45 +235,26 @@ function Editable({ children, size, onChange, isRich, isHeightFixed, height }) {
     }
   };
 
-  const basicTextArea = (
-    <StyledEditableTextarea
-      size={size}
+  const styleOverride = { direction };
+  if (isHeightFixed) { styleOverride.resize = 'none'; }
+  if (height !== undefined) { styleOverride.height = height; }
+  if (size !== undefined) {
+    styleOverride.fontWeight = 'bold';
+    styleOverride.fontSize = (() => { switch(size) {
+      case 1: return '2rem';
+      case 2: return '1.5rem';
+    }})();
+  }
+
+  return (
+    <textarea
       value={children}
+      className={classes.basicTextArea}
+      style={styleOverride}
       onChange={handleChange}
-      isHeightFixed={isHeightFixed}
-      height={height}
     />
   );
-
-  const richTextArea = (
-    <RichEditorExample
-      value={children}
-      onChange={handleChange}
-    />
-  );
-
-  const renderedElement = isRich ? richTextArea : basicTextArea;
-  return renderedElement;
 }
 
-const StyledEditableTextarea = styled.textarea`
-  background-color: transparent;
-  border: 1px dashed lightgray;
-  border-radius: 4px;
-  padding: 8px;
-  outline: none;
-  width: 100%;
-  resize: ${({isHeightFixed}) => isHeightFixed ? 'none' : 'vertical'};
-  ${({height}) => {if (height !== null) { return 'height: ' + height + ';' } }}
-  font-family: 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  box-sizing: border-box;
-  ${({size}) => { if (size !== undefined) {
-    if (size === 1) { return 'font-size: 2rem;' }
-    if (size === 2) { return 'font-size: 1.5rem;' }
-  }}}
-  ${({size}) => size ? 'font-weight: bold;' : ''}
-`;
 
 export default Editable;

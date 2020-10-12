@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
   },
   formHelperText: {
     margin: theme.spacing(1, 1, 2, 0),
-    textAlign: "right",
     "&$successState,&:active": {
       color: theme.palette.success.main,
     },

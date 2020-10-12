@@ -15,13 +15,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    flip: false,
+    direction: 'rtl',
     flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
+    textAlign: 'left',
   },
   colorPrimary: {
     background: "#9FA8DA",
@@ -31,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     color: "#ffd180",
+    flip: false,
+    direction: 'ltr',
   },
   divider: {
     margin: theme.spacing(2),
@@ -54,6 +56,11 @@ function TopBar(props) {
           <Typography variant="h6" className={classes.title}>
             {props.mainHeader}
           </Typography>
+          <Divider
+            orientation="vertical"
+            flexItem
+            className={classes.divider}
+          />
           <IconButton color="inherit" onClick={props.onDownload}>
             <SaveAltIcon />
           </IconButton>
@@ -66,11 +73,11 @@ function TopBar(props) {
             className={classes.divider}
           />
           <Typography edge="end" variant="h6" className={classes.logo}>
-            <InsertEmoticonIcon />
             Hapi
+            <InsertEmoticonIcon />
           </Typography>
         </Toolbar>
-        {<LinearProgress
+        {/* {<LinearProgress
           color="primary"
           classes={{
             colorPrimary: classes.colorPrimary,
@@ -78,7 +85,7 @@ function TopBar(props) {
           }}
           variant="determinate"
           value={props.progress}
-        />}
+        />} */}
       </AppBar>
     </div>
   );

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { makeStyles, IconButton } from '@material-ui/core';
+import { makeStyles, IconButton, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import { useSpring, animated, config } from 'react-spring';
 
 import Dropzone from '../shared/dropzone';
 
-const useStyles = makeStyles(() => ({
-  menuButton: {
+const useStyles = makeStyles((theme) => ({
+  menuOpenButton: {
     backgroundColor: 'white',
     '&:hover': {
       backgroundColor: '#DDDDDD',
@@ -18,15 +18,19 @@ const useStyles = makeStyles(() => ({
     border: 'none',
     outline: 'none',
   },
+  menuButton: {
+    marginTop: theme.spacing(1),
+  },
+  languageFormControl: {
+    marginTop: theme.spacing(1),
+  },
 }));
 
 
-function Menu({ onLoad, onSave, onExport }) {
+function Menu({ onLoad, onSave, onExport, language, onChangeLanguage }) {
   const classes = useStyles();
   
   const [isOpen, setIsOpen] = useState(true);
-
-  
   
   const handleClickHamburger = () => {
     setIsOpen(!isOpen);
@@ -34,7 +38,7 @@ function Menu({ onLoad, onSave, onExport }) {
 
   const handleDropzoneRead = (contents) => {
     onLoad(contents);
-  }
+  };
 
   const handleClickSave = () => {
     onSave();
@@ -44,12 +48,16 @@ function Menu({ onLoad, onSave, onExport }) {
     onExport();
   };
 
+  const handleChangeLanguage = (e) => {
+    onChangeLanguage(e.target.value);
+  };
+
   const { right } = useSpring({ from: { right: '-320px' }, right: isOpen ? '-20px' : '-320px', config: config.stiff });
 
   return (
     <>
       <StyledHamburgerDiv>
-        <IconButton aria-label="menu" className={classes.menuButton} onClick={handleClickHamburger}>
+        <IconButton aria-label="menu" className={classes.menuOpenButton} onClick={handleClickHamburger}>
           <MenuIcon />
         </IconButton>
       </StyledHamburgerDiv>
@@ -65,12 +73,32 @@ function Menu({ onLoad, onSave, onExport }) {
               <h3>טעינת קובץ</h3>
               <p>ניתן ללחוץ או לגרור הנה</p>
             </StyledDropzone>
-            <StyledMenuButton onClick={handleClickSave}>
+            <Button
+              className={classes.menuButton}
+              variant="outlined"
+              onClick={handleClickSave}
+            >
               שמירת קובץ
-            </StyledMenuButton>
-            <StyledMenuButton onClick={handleClickExport}>
+            </Button>
+            <Button
+              className={classes.menuButton}
+              variant="outlined"
+              onClick={handleClickExport}
+            >
               ייצוא פעילות
-            </StyledMenuButton>
+            </Button>
+            <FormControl
+              variant="outlined"
+              className={classes.languageFormControl}
+            >
+              <Select
+                value={language}
+                onChange={handleChangeLanguage}
+              >
+                <MenuItem value="en">אנגלית</MenuItem>
+                <MenuItem value="he">עברית</MenuItem>
+              </Select>
+            </FormControl>
         </StyledButtonMenu>
       </animated.div>
     </>
@@ -93,7 +121,6 @@ const StyledButtonMenu = styled.div`
   border-radius: 8px 0 0 8px;
   flex-direction: column;
   justify-content: space-between;
-  height: 150px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 `;
 
