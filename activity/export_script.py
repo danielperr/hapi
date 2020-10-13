@@ -1,8 +1,9 @@
-from bs4 import BeautifulSoup
-
-import pathlib
 import io
+import os
+import pathlib
 import webbrowser
+
+from bs4 import BeautifulSoup
 
 
 CWD = pathlib.Path(__file__).parent.absolute()
@@ -14,6 +15,11 @@ EXPORT_DIR = CWD / 'export'
 EXPORT_FNAME = 'activity.html'
 
 
+def open_file(filename, mode='r'):
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    return io.open(filename, mode=mode, encoding='utf-8')
+
+
 def get_file_contents(src, ftype):
     assert src
     assert src.endswith(f'.{ftype}')
@@ -21,7 +27,7 @@ def get_file_contents(src, ftype):
     src_abs = BUILD_DIR / src
     assert src_abs.exists()
     print(f'Trying to open {src_abs}')
-    with io.open(src_abs, mode='r', encoding='utf-8') as f:
+    with open_file(src_abs) as f:
         return f.read()
 
 
@@ -51,11 +57,11 @@ def main():
     if not path.exists():
         raise IOError('Build not found')
     contents = ''
-    with io.open(path, mode='r', encoding='utf-8') as f:
+    with open_file(path) as f:
         contents = f.read()
     soup = BeautifulSoup(contents, 'html.parser')
     embed_docs(soup)
-    with io.open(EXPORT_DIR / EXPORT_FNAME, mode='w', encoding='utf-8') as f:
+    with open_file(EXPORT_DIR / EXPORT_FNAME, 'w') as f:
         f.write(str(soup))
         print('\nExport successful')
         webbrowser.open_new_tab(EXPORT_DIR / EXPORT_FNAME)
