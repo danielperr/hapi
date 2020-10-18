@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import clsx from "clsx";
-import { Link, Events } from "react-scroll";
+import clsx from 'clsx';
+import { Link, Events } from 'react-scroll';
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Box } from "@material-ui/core";
-import { strings } from "../shared/localization";
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Box } from '@material-ui/core';
+import { strings } from '../shared/localization';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,12 +16,12 @@ const useStyles = makeStyles((theme) => ({
     width: 175,
     flexShrink: 0,
     order: 2,
-    position: "fixed",
-    overflowY: "auto",
+    position: 'fixed',
+    overflowY: 'auto',
     padding: theme.spacing(2, 0, 2, 2),
-    display: "none",
-    [theme.breakpoints.up("lg")]: {
-      display: "block",
+    display: 'none',
+    [theme.breakpoints.up('lg')]: {
+      display: 'block',
     },
   },
   contents: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   ul: {
     padding: 0,
     margin: 0,
-    listStyleType: "none",
+    listStyleType: 'none',
   },
   li: {
     display: 'flex',
@@ -39,20 +39,20 @@ const useStyles = makeStyles((theme) => ({
   item: {
     fontSize: 13,
     padding: theme.spacing(0.5, 1),
-    borderLeft: "4px solid transparent",
-    textDecoration: "none",
-    boxSizing: "content-box",
+    borderLeft: '4px solid transparent',
+    textDecoration: 'none',
+    boxSizing: 'content-box',
     color: theme.palette.text.secondary,
-    "&:hover": {
+    '&:hover': {
       borderLeft: `4px solid ${
-        theme.palette.type === "light"
+        theme.palette.type === 'light'
           ? theme.palette.grey[400]
           : theme.palette.grey[900]
       }`,
     },
-    "&$active,&:active": {
+    '&$active,&:active': {
       borderLeft: `4px solid ${
-        theme.palette.type === "light"
+        theme.palette.type === 'light'
           ? theme.palette.grey[500]
           : theme.palette.grey[800]
       }`,
@@ -68,19 +68,19 @@ const AppTableOfContents = ({ structure }) => {
 
   useEffect(() => {
     // componentDidMount
-    Events.scrollEvent.register("begin", function (to, element) {
+    Events.scrollEvent.register('begin', (to, element) =>s {
       //console.log('begin', to, element);
     });
 
-    Events.scrollEvent.register("end", function (to, element) {
+    Events.scrollEvent.register('end', function (to, element) {
       //console.log('end', to, element);
       setActiveState(element.id);
     });
 
     return () => {
       // componentWillUnmount
-      Events.scrollEvent.remove("begin");
-      Events.scrollEvent.remove("end");
+      Events.scrollEvent.remove('begin');
+      Events.scrollEvent.remove('end');
     };
   }, []);
 
@@ -147,7 +147,7 @@ const AppTableOfContents = ({ structure }) => {
   
   
   return (
-    <nav className={classes.root} aria-label={"Page Table Of Contents"}>
+    <nav className={classes.root} aria-label={'Page Table Of Contents'}>
       {items.length > 0 ? (
         <React.Fragment>
           <Typography gutterBottom className={classes.contents}>
