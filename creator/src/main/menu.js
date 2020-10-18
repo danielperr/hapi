@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { makeStyles, IconButton, Button, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import { makeStyles, IconButton, Button, Box, CircularProgress, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import { useSpring, animated, config } from 'react-spring';
@@ -24,10 +24,23 @@ const useStyles = makeStyles((theme) => ({
   languageFormControl: {
     marginTop: theme.spacing(1),
   },
+  exportContainer: {
+    position: 'relative',
+  },
+  exportButton: {
+    width: '100%',
+  },
+  exportProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -8,
+    marginLeft: -12,
+  },
 }));
 
 
-function Menu({ onLoad, onSave, onExport, language, onChangeLanguage }) {
+function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLanguage }) {
   const classes = useStyles();
   
   const [isOpen, setIsOpen] = useState(true);
@@ -80,13 +93,17 @@ function Menu({ onLoad, onSave, onExport, language, onChangeLanguage }) {
             >
               שמירת קובץ
             </Button>
-            <Button
-              className={classes.menuButton}
-              variant="outlined"
-              onClick={handleClickExport}
-            >
-              ייצוא פעילות
-            </Button>
+            <Box className={classes.exportContainer}>
+              <Button
+                className={`${classes.menuButton} ${classes.exportButton}`}
+                variant="outlined"
+                onClick={handleClickExport}
+                disabled={exportLoading}
+              >
+                ייצוא פעילות
+              </Button>
+              {exportLoading && <CircularProgress size={24} className={classes.exportProgress} />}
+            </Box>
             <FormControl
               variant="outlined"
               className={classes.languageFormControl}

@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { makeid, httpGet, reorder, saveWorkFile, exportToActivity, reorderStructure, findById } from '../utils';
+import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
 import LanguageContext from '../shared/language-context';
 import FocusAwarePaper from '../shared/focus-aware-paper';
@@ -72,6 +72,7 @@ function App({ initial }) {
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initial || initialStructure);
   const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
+  const [exportButtonLoading, setExportButtonLoading] = useState(false);
 
   const didMount = useRef(false);
   useEffect(() => {
@@ -99,8 +100,10 @@ function App({ initial }) {
     setSavedFlag(true);
   };
 
-  const handleExport = () => {
-    exportToActivity(httpGet(EMPTY_ACTIVITY_URL), JSON.stringify(structure));
+  const handleExport = async () => {
+    setExportButtonLoading(true);
+    exportToActivity((await (await fetch(EMPTY_ACTIVITY_URL)).text()), JSON.stringify(structure));
+    setExportButtonLoading(false);
   };
 
   const handleChangeMainHeader = (text) => {
@@ -242,6 +245,7 @@ function App({ initial }) {
             onLoad={handleLoad}
             onSave={handleSave}
             onExport={handleExport}
+            exportLoading={exportButtonLoading}
           />
           <FocusAwarePaper className={classes.mainHeader}>
             <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed={true} height='64px'>
