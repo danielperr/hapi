@@ -4,10 +4,12 @@ import styled from 'styled-components';
 
 import { makeStyles, IconButton, Button, Box, CircularProgress, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import { useSpring, animated, config } from 'react-spring';
 
 import Dropzone from '../shared/dropzone';
+import RotatingIcon from '../shared/rotating-icon';
 
 const useStyles = makeStyles((theme) => ({
   menuOpenButton: {
@@ -71,7 +73,11 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
     <>
       <StyledHamburgerDiv>
         <IconButton aria-label="menu" className={classes.menuOpenButton} onClick={handleClickHamburger}>
-          <MenuIcon />
+          <RotatingIcon
+            active={isOpen}
+            passiveIcon={<MenuIcon />}
+            activeIcon={<ArrowForwardIcon/>}
+          />
         </IconButton>
       </StyledHamburgerDiv>
       <animated.div
