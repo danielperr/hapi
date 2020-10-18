@@ -63,37 +63,10 @@ function ElementNumberInput({
   id,
 }) {
   const classes = useStyles();
-  const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-  const [value, setValue] = React.useState(answer);
-
-  const reset = () => {
-    setSeconds(0);
-    setIsActive(false);
-  };
 
   const handleChange = (e) => {
-    setValue(e.target.value);
-    setSeconds(0);
-    setIsActive(true);
+    onAnswer(id, e.target.value);
   };
-
-  useEffect(() => {
-    let interval = null;
-    if (isActive) {
-      if (seconds >= 2) {
-        onAnswer(id, value);
-        reset();
-      } else {
-        interval = setInterval(() => {
-          setSeconds((seconds) => seconds + 1);
-        }, 100);
-      }
-    } else if (!isActive && seconds !== 0) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [isActive, seconds]);
 
   return (
     <FormControl
