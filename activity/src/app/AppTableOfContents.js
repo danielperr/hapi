@@ -68,7 +68,7 @@ const AppTableOfContents = ({ structure }) => {
 
   useEffect(() => {
     // componentDidMount
-    Events.scrollEvent.register('begin', (to, element) =>s {
+    Events.scrollEvent.register('begin', (to, element) => {
       //console.log('begin', to, element);
     });
 
