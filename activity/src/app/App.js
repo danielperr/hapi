@@ -119,21 +119,17 @@ function App(props) {
     }));
   };
 
-  const scrollTo = (elementId, offset) => {
-    scroller.scrollTo(elementId, {
-      duration: 1000,
-      delay: 100,
-      smooth: "easeInOutQuint",
-      offset: offset,
-    });
-  };
-
   /* check the whole activity and display confirmation if complete */
-  const handleSubmit = () => {
+  const handleSubmitActivity = () => {
     if (props.structure.sections.every((section) => {
       const errorElementsIds = checkSection(section);
       if (errorElementsIds.length) {
-        scrollTo(errorElementsIds[0], -100);
+        scroller.scrollTo(errorElementsIds[0], {
+          duration: 1000,
+          delay: 100,
+          smooth: "easeInOutQuint",
+          offset: -100,
+        });
       }
       return !errorElementsIds.length;
     })) {
@@ -166,6 +162,11 @@ function App(props) {
       }
       window.location.reload();
     }
+  };
+
+  const handleCheckSection = (sectionId) => {
+    const section = props.structure.sections.find((s) => s.id === sectionId);
+    return checkSection(section);
   };
 
   /* success snackbar on close */
@@ -209,11 +210,6 @@ function App(props) {
     return errorElements;
   };
 
-  const handleCheckSection = (sectionId) => {
-    const section = props.structure.sections.find((s) => s.id === sectionId);
-    return checkSection(section);
-  };
-
   const rtl = strings.direction === 'rtl';
 
   return (
@@ -247,7 +243,7 @@ function App(props) {
               variant="extended"
               color="secondary"
               className={classes.checkAllBtn}
-              onClick={handleSubmit}
+              onClick={handleSubmitActivity}
             >
               <CheckIcon />
               <Typography className={classes.checkTypography}>
