@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import produce from 'immer';
 import styled from 'styled-components';
 
-import { Box, makeStyles, Button, IconButton, Collapse, Grow } from '@material-ui/core';
+import { Box, makeStyles, Button, IconButton, Collapse, Grow, Tooltip } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import AddIcon from '@material-ui/icons/Add';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 import Element from './element';
 import Editable from '../shared/editable';
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
   collapseButton: {
     marginRight: theme.spacing(2),
   },
+  duplicateButton: {
+
+  },
   deleteButton: {
     marginRight: theme.spacing(1),
     color: theme.palette.negative.main,
@@ -56,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Section({ index, structure, onUpdate, onDelete }) {
+function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
   
   const classes = useStyles();
 
@@ -120,6 +124,10 @@ function Section({ index, structure, onUpdate, onDelete }) {
     }));
   };
 
+  const handleDuplicateSelf = () => {
+    onDuplicate(structure.id);
+  }
+
   const handleDeleteSelf = (e) => {
     e.target.focus();
     setIsVisible(false);
@@ -152,6 +160,11 @@ function Section({ index, structure, onUpdate, onDelete }) {
                   <IconButton className={classes.collapseButton} onClick={handleCollapseClick}>
                     {isOpen ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
                   </IconButton>
+                  <Tooltip title="שכפל">
+                    <IconButton className={classes.duplicateButton} onClick={handleDuplicateSelf}>
+                      <FileCopyIcon />
+                    </IconButton>
+                  </Tooltip>
                   <IconButton className={classes.deleteButton} onClick={handleDeleteSelf}>
                     <DeleteIcon fontSize="inherit" />
                   </IconButton>

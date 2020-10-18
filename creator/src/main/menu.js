@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLanguage }) {
   const classes = useStyles();
   
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   
   const handleClickHamburger = () => {
     setIsOpen(!isOpen);

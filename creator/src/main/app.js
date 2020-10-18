@@ -138,6 +138,25 @@ function App({ initial }) {
     );
   };
 
+  const handleDuplicateSection = (sectionId) => {
+    const s = produce(structure.sections.find((s) => s.id === sectionId), (newSection) => {
+      // repalce all ids
+      let json = JSON.stringify(newSection);
+      const re = /"id":"(.*?)"/g;
+      let match;
+      do {
+        match = re.exec(json);
+        if (match) {
+          json = json.replaceAll(match[1], makeid(10));
+        }
+      } while (match);
+      Object.assign(newSection, JSON.parse(json));
+    });
+    setStructure(produce(structure, (newStructure) => {
+      newStructure.sections.push(s);
+    }))
+  }
+
   const handleDeleteSection = (sectionId) => {
     setStructure(
       produce(structure, (newStructure) => {
@@ -265,6 +284,7 @@ function App({ initial }) {
                       index={index}
                       structure={section}
                       onUpdate={handleUpdateSection}
+                      onDuplicate={handleDuplicateSection}
                       onDelete={handleDeleteSection}
                     />
                   ))}
