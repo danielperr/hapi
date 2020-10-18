@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import clsx from "clsx";
-import NumberFormat from "react-number-format";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import clsx from 'clsx';
+import NumberFormat from 'react-number-format';
 
-import { makeStyles } from "@material-ui/core/styles";
-import { FormControl, FormLabel, TextField, FormHelperText, Divider } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+import { FormControl, TextField, FormHelperText, Divider } from '@material-ui/core';
 
-import RichLabel from "../shared/RichLabel";
+import RichLabel from '../shared/RichLabel';
 
 const useStyles = makeStyles((theme) => ({
   textField: {
-    textAlign: "left",
+    textAlign: 'left',
   },
   formControlLabel: {
     margin: -theme.spacing(0.25),
   },
   formHelperText: {
     margin: theme.spacing(1, 1, 2, 0),
-    "&$successState,&:active": {
+    '&$successState,&:active': {
       color: theme.palette.success.main,
     },
   },
@@ -29,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
   questionLabel: {
     color: theme.palette.text.secondary,
-    "&$errorState,&:active": {
+    '&$errorState,&:active': {
       color: theme.palette.error.main,
     },
-    "&$successState,&:active": {
+    '&$successState,&:active': {
       color: theme.palette.success.main,
     },
   },
@@ -64,7 +65,7 @@ function ElementNumberInput({
   const classes = useStyles();
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  let [value, setValue] = React.useState(answer);
+  const [value, setValue] = React.useState(answer);
 
   const reset = () => {
     setSeconds(0);
@@ -99,13 +100,13 @@ function ElementNumberInput({
       error={showHelperText && error}
       noValidate
       autoComplete="off"
-      fullWidth={true}
+      fullWidth
       className={classes.formControl}
     >
       <RichLabel
         className={clsx(
           classes.questionLabel,
-          showHelperText && error ? classes.errorState : undefined
+          showHelperText && error ? classes.errorState : undefined,
         )}
       >
         {text}
@@ -116,16 +117,13 @@ function ElementNumberInput({
         onChange={handleChange}
         defaultValue={answer}
         variant="outlined"
-        inputProps={{ min: 0, style: { textAlign: "left" } }}
-        InputProps={{
-          inputComponent: NumberFormatCustom,
-        }}
+        inputProps={{ min: 0, style: { textAlign: 'left' }, inputComponent: NumberFormatCustom }}
         className={classes.textField}
       />
       <FormHelperText
         className={clsx(
           classes.formHelperText,
-          showHelperText && !error ? classes.successState : undefined
+          showHelperText && !error ? classes.successState : undefined,
         )}
       >
         {helperText}
