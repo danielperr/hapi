@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 
+import produce from 'immer';
 import { scroller } from "react-scroll";
-
 import { ThemeProvider, createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Container, Box, Fab, Snackbar, IconButton, Toolbar, Typography } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import { CssBaseline, Container, Box, Fab, Toolbar, Typography } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
@@ -15,7 +14,8 @@ import AppTableOfContents from "./AppTableOfContents";
 import { dropConfetti } from "./confetti";
 import ScrollTop from "./ScrollTop";
 import Section from '../section/Section';
-import { getPhrase } from "../shared/utils";
+import { download, getPhrase } from "../shared/utils";
+import SuccessSnackbar from "./SuccessSnackbar";
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
@@ -49,12 +49,6 @@ const useStyles = makeStyles((theme) => ({
   },
   checkAllBtn: {
     fontWeight: "bold",
-    // width: '150px',
-    // minWidth: '150px',
-    // padding: theme.spacing(0, 1),
-  },
-  root: {
-    background: "#4caf50",
   },
   checkTypography: {
     margin: theme.spacing(0, 1),
@@ -62,87 +56,71 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function download(filename, text) {
-  var element = document.createElement("a");
-  element.setAttribute(
-    "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
-  );
-  element.setAttribute("download", filename);
-
-  element.style.display = "none";
-  document.body.appendChild(element);
-
-  element.click();
-
-  document.body.removeChild(element);
-}
-
-function SaveAs(answersString) {
-  let thisFileCode = thisFileCodeSnapshot.cloneNode(true);
-  let x = thisFileCode.querySelectorAll("#save-input");
-
-  x.forEach(function (element) {
-    if (element.id === "save-input") {
-      element.value = answersString;
-    }
-  });
-
-  const filename = prompt("Save as:");
-  if (filename !== "" && filename !== null) {
-    download(filename + ".hapi.html", thisFileCode.innerHTML);
-  }
-}
+const FILLABLE_TYPES = ["multi-choice", "text-input", "number-input"];
 
 function App(props) {
+  /* styles */
   const classes = useStyles(theme);
 
-  let initialAnswers = JSON.parse(
-    document.getElementById("save-input").value || "{}"
-  );
+  /* answers */
+  let initialAnswers = JSON.parse(document.getElementById("save-input").value || "{}");  // from file save
   if (!Object.keys(initialAnswers).length) {
-    // Get answers from local storage
-    initialAnswers =
-      JSON.parse(localStorage.getItem(props.structure.serialNumber)) || {};
+    initialAnswers = JSON.parse(localStorage.getItem(props.structure.serialNumber) || "{}");  // from local storage
   }
   const [answers, setAnswers] = React.useState(initialAnswers);
-  const sectionCount = props.structure.sections.length;
   const [showSuccess, setShowSuccess] = React.useState(false);
+  
+  const allFillableElements = props.structure.sections.map((s) => s.elements.filter((e) => FILLABLE_TYPES.includes(e.type))).flat(1);
+  const initialElementsFeedback = {};
+  allFillableElements.forEach((element) => {
+    initialElementsFeedback[element.id] = {
+      error: false,
+      showHelperText: false,
+      helperText: " ",
+    };
+  });
+  // provides the helper text data and the error flag for each fillable element
+  const [elementsFeedback, setElementsFeedback] = React.useState(initialElementsFeedback);
 
+  useEffect(() => {
+    document.title = props.structure.mainHeader;
+  }, []);
+
+  useEffect(() => {  
+    // update local storage when an answer changes
+    localStorage.setItem(props.structure.serialNumber, JSON.stringify(answers));
+  }, [answers]);
+
+  /* topbar elevation */
+  const [topBarElevation, setTopBarElevation] = React.useState(0);
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      setTopBarElevation(window.pageYOffset !== 0);
+    }, { passive: true });
+    return () => { window.removeEventListener('scroll') };
+  }, []);
+
+  /* language */
   const lang = props.structure.language;
   if (lang !== undefined && strings.getLanguage() !== lang) {
     strings.setLanguage(lang);
   }
 
-  const [topBarElevation, setTopBarElevation] = React.useState(0); // top bar elevation value (shadow)
-  const handleScroll = () => {
-    setTopBarElevation(window.pageYOffset !== 0);
-  };
-
-  useEffect(() => {
-    document.title = props.structure.mainHeader;
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll');
-  }, []);
-
-  /* When the user answers a question */
+  /* when a question's value changes */
   const handleAnswer = (elementId, answer) => {
-    const validationsCopy = Object.assign({}, elementsValidations);
-    validationsCopy[elementId].helperText = " ";
-    validationsCopy[elementId].showHelperText = false;
-    validationsCopy[elementId].error = false;
-    setElementsValidations(validationsCopy);
-
-    const answersCopy = Object.assign({}, answers, { [elementId]: answer });
-    setAnswers(answersCopy);
-    localStorage.setItem(
-      props.structure.serialNumber,
-      JSON.stringify(answersCopy)
-    );
+    // reset form feedback text & color
+    setElementsFeedback(produce(elementsFeedback, (newElementsFeedback) => {
+      newElementsFeedback[elementId].helperText = " ";
+      newElementsFeedback[elementId].showHelperText = false;
+      newElementsFeedback[elementId].error = false;
+    }));
+    setAnswers(produce(answers, (newAnswers) => {
+      newAnswers[elementId] = answer;
+    }));
   };
 
-  const scrollTo = (eId, offset) => {
-    scroller.scrollTo(eId, {
+  const scrollTo = (elementId, offset) => {
+    scroller.scrollTo(elementId, {
       duration: 1000,
       delay: 100,
       smooth: "easeInOutQuint",
@@ -150,43 +128,39 @@ function App(props) {
     });
   };
 
-  /* When the user attempts to check the whole activity */
+  /* check the whole activity and display confirmation if complete */
   const handleSubmit = () => {
-    let finishedSections = 0;
-
-    props.structure.sections.forEach((se) => {
-      finishedSections += checkSection(se) ? 1 : 0;
-    });
-
-    /* Find the first element that has an error and scroll to it */
-    let elementId = "";
-    allFillableElements.some((el) => {
-      if (elementsValidations[el.id].error === true) {
-        elementId = el.id;
-        // acts as a break.
-        return true;
+    if (props.structure.sections.every((section) => {
+      const errorElementsIds = checkSection(section);
+      if (errorElementsIds.length) {
+        scrollTo(errorElementsIds[0], -100);
       }
-      return false;
-    });
-
-    if (elementId !== "") {
-      scrollTo(elementId, -100);
-    }
-
-    if (finishedSections === sectionCount) {
+      return !errorElementsIds.length;
+    })) {
       dropConfetti();
       setShowSuccess(true);
     }
   };
 
-  /* Prompt for confirmation, erase all the answers and reload the activity */
-  const resetActivity = () => {
-    var conf = window.confirm(
-      strings.dialogResetActivity
-    );
-    if (conf) {
+  /* save activity to a file */
+  const handleSaveActivity = () => {
+    const answersString = JSON.stringify(answers);
+    let thisFileCode = thisFileCodeSnapshot.cloneNode(true);
+    thisFileCode.querySelectorAll("#save-input").forEach(function (element) {
+      if (element.id === "save-input") {
+        element.value = answersString;
+      }
+    });
+    const filename = prompt("Save as:");
+    if (filename !== "" && filename !== null) {
+      download(filename + ".hapi.html", thisFileCode.innerHTML);
+    }
+  };
+
+  /* prompt for confirmation, erase all the answers and reload */
+  const handleResetActivity = () => {
+    if (window.confirm(strings.dialogResetActivity)) {
       setAnswers({});
-      localStorage.setItem(props.structure.serialNumber, JSON.stringify({}));
       if ("scrollRestoration" in window.history) {
         window.history.scrollRestoration = "manual";
       }
@@ -194,176 +168,51 @@ function App(props) {
     }
   };
 
-  /* When the user closes the success snackbar */
-  const handleSuccessClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
+  /* success snackbar on close */
+  const handleSuccessSnackbarClose = () => {
     setShowSuccess(false);
   };
 
-  const getSectionById = (sectionId) => {
-    let section;
-    props.structure.sections.forEach((se) => {
-      if (se.id === sectionId) {
-        section = se;
-      }
-    });
-
-    return section;
-  };
-
-  const fillableTypes = ["multi-choice", "text-input", "number-input"];
-  const allFillableElements = props.structure.sections
-    .map((s) => s.elements.filter((e) => fillableTypes.includes(e.type)))
-    .flat(1);
-  const initialValidations = {};
-  // {questionId: {error: (boolean), showHelperText: (boolean), helperText: (string)}}
-  allFillableElements.forEach((element) => {
-    initialValidations[element.id] = {
-      error: false,
-      showHelperText: false,
-      helperText: " ",
-    };
-  });
-
-  const [elementsValidations, setElementsValidations] = React.useState(
-    initialValidations
-  );
-
-  const checkMultiChoiceElement = (
-    element,
-    elementId,
-    answer,
-    correctElements
-  ) => {
-    const validationsCopy = Object.assign({}, elementsValidations);
-    let error = true;
-
-    if (answer !== "") {
-      // Check if the answer is right
-      if (element.correct.includes(answer)) {
-        correctElements.add(elementId);
-        error = false;
-      }
-
-      validationsCopy[elementId].helperText = getPhrase(!error);
-    } else {
-      // This element has no answer in App's answers therefore its emepty and has to be filled.
-      validationsCopy[elementId].helperText = strings.answerMissing;
-    }
-
-    validationsCopy[elementId].showHelperText = true;
-    validationsCopy[elementId].error = error;
-    setElementsValidations(validationsCopy);
-  };
-
-  const checkTextInputElement = (
-    element,
-    elementId,
-    answer,
-    correctElements
-  ) => {
-    const validationsCopy = Object.assign({}, elementsValidations);
-    let error = true;
-
-    if (
-      elementId in answers &&
-      answer.replace(/[ (\r\n|\r|\n)]/gi, "") !== ""
-    ) {
-      // Check if there is an answer, if there is then the element is correct.
-      correctElements.add(elementId);
-      error = false;
-
-      validationsCopy[elementId].helperText = " ";
-    } else {
-      // This element has no answer in App's answers therefore its emepty and has to be filled.
-      validationsCopy[elementId].helperText = strings.answerMissing;
-    }
-
-    validationsCopy[elementId].showHelperText = true;
-    validationsCopy[elementId].error = error;
-    setElementsValidations(validationsCopy);
-  };
-
-  const checkNumberInputElement = (
-    element,
-    elementId,
-    answer,
-    correctElements
-  ) => {
-    const validationsCopy = Object.assign({}, elementsValidations);
-    let error = true;
-
-    if (answer !== "") {
-      // Check if the answer is right, which means the number is witin th given range.
-      if (element.min <= answer && answer <= element.max) {
-        correctElements.add(elementId);
-        error = false;
-      }
-
-      validationsCopy[elementId].helperText = getPhrase(!error);
-    } else {
-      // This element has no answer in App's answers therefore its emepty and has to be filled.
-      validationsCopy[elementId].helperText = strings.answerMissing;
-    }
-
-    validationsCopy[elementId].showHelperText = true;
-    validationsCopy[elementId].error = error;
-    setElementsValidations(validationsCopy);
-  };
-
-  /* Check section and return whether it's completely finished;
-     section is an object */
+  /**
+   * check the given section
+   * @returns array of incorrect or empty elements' ids (empty array if section is complete)
+   */
   const checkSection = (section) => {
-    let correctElements = new Set();
-
-    section.elements.forEach((element) => {
-      const questionId = element.id;
-      const answer = answers[questionId] || "";
-
-      switch (element.type) {
-        case "text-input":
-          checkTextInputElement(element, questionId, answer, correctElements);
-          break;
-        case "multi-choice":
-          checkMultiChoiceElement(element, questionId, answer, correctElements);
-          break;
-        case "number-input":
-          checkNumberInputElement(element, questionId, answer, correctElements);
-          break;
-        default:
-          break;
-      }
-    });
-
-    const fillableAmount = section.elements.filter((e) =>
-      fillableTypes.includes(e.type)
-    ).length;
-    return correctElements.size === fillableAmount;
+    const errorElements = [];
+    setElementsFeedback(produce(elementsFeedback, (newElementsFeedback) => {
+      // we give the draft state of elementsFeedback to the functions to mutate
+      section.elements.forEach((element) => {
+        const answer = answers[element.id] || "";
+        let correct;
+        switch (element.type) {
+          case "multi-choice":
+            if (element.correct === undefined) { return; }
+            if (!element.options.map((o) => o.id).includes(element.correct[0])) { return; }
+            correct = answer !== '' && element.correct.includes(answer);
+            break;
+          case "text-input":
+            correct = answer.replace(/[ (\r\n|\r|\n)]/gi, "") !== "";
+            break;
+          case "number-input":
+            correct = answer !== '' && element.min <= answer && answer <= element.max;
+            break;
+          default: return;
+        }
+        newElementsFeedback[element.id].helperText = answer === '' ? strings.answerMissing : getPhrase(correct);
+        newElementsFeedback[element.id].showHelperText = true;
+        newElementsFeedback[element.id].error = !correct;
+        if (!correct) {
+          errorElements.push(element.id);
+        }
+      });
+    }));
+    return errorElements;
   };
 
-  /* Same as 'checkSection' but the argument is id (string) and not section (object) */
-  const checkSectionById = (sectionId) => {
-    const section = getSectionById(sectionId);
+  const handleCheckSection = (sectionId) => {
+    const section = props.structure.sections.find((s) => s.id === sectionId);
     return checkSection(section);
   };
-
-  const sections = [];
-  props.structure.sections.forEach((section) => {
-    sections.push(
-      <Section
-        header={section.header}
-        elements={section.elements}
-        answers={answers}
-        validations={elementsValidations}
-        onAnswer={handleAnswer}
-        onCheck={checkSectionById}
-        id={section.id}
-        key={section.id}
-      />
-    );
-  });
 
   const rtl = strings.direction === 'rtl';
 
@@ -375,15 +224,24 @@ function App(props) {
         <TopBar
           elevation={topBarElevation}
           mainHeader={props.structure.mainHeader}
-          onDownload={() => {
-            SaveAs(JSON.stringify(answers));
-          }}
-          onReset={resetActivity}
+          onDownload={handleSaveActivity}
+          onReset={handleResetActivity}
         />
         <Toolbar />
         <AppTableOfContents {...props}></AppTableOfContents>
         <Container maxWidth="md" className={classes.container}>
-          {sections}
+          {props.structure.sections.map((section) => (
+            <Section
+              header={section.header}
+              elements={section.elements}
+              answers={answers}
+              feedback={elementsFeedback}
+              onAnswer={handleAnswer}
+              onCheck={handleCheckSection}
+              id={section.id}
+              key={section.id}
+            />
+          ))}
           <Box className={classes.checkAllBtnContainer}>
             <Fab
               variant="extended"
@@ -397,32 +255,10 @@ function App(props) {
               </Typography>
             </Fab>
           </Box>
-          <Snackbar
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: rtl ? "right" : "left",
-            }}
-            ContentProps={{
-              classes: {
-                root: classes.root,
-              },
-            }}
+          <SuccessSnackbar
             open={showSuccess}
-            autoHideDuration={6000}
-            onClose={handleSuccessClose}
-            message={strings.activityComplete}
-            action={
-              <React.Fragment>
-                <IconButton
-                  size="small"
-                  aria-label="close"
-                  color="inherit"
-                  onClick={handleSuccessClose}
-                >
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              </React.Fragment>
-            }
+            onClose={handleSuccessSnackbarClose}
+            rtl={rtl}
           />
         </Container>
         <ScrollTop {...props}>

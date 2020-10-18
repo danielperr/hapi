@@ -59,7 +59,7 @@ function Section(props) {
   props.elements.forEach((element) => {
     let obj;
 
-    const validationState = props.validations[element.id] || "";
+    const feedback = props.feedback[element.id] || "";
     const answer = props.answers[element.id] || "";
 
     switch (element.type) {
@@ -99,9 +99,9 @@ function Section(props) {
         obj = <ElementTextInput
           text={element.text}
           multiline={element.multiline}
-          error={validationState.error}
-          showHelperText={validationState.showHelperText}
-          helperText={validationState.helperText}
+          error={feedback.error}
+          showHelperText={feedback.showHelperText}
+          helperText={feedback.helperText}
           answer={answer}
           onAnswer={handleAnswer}
           id={element.id}
@@ -115,9 +115,9 @@ function Section(props) {
           correct={element.correct}
           options={element.options}
           dontShuffle={element.dontShuffle}
-          error={validationState.error}
-          showHelperText={validationState.showHelperText}
-          helperText={validationState.helperText}
+          error={feedback.error}
+          showHelperText={feedback.showHelperText}
+          helperText={feedback.helperText}
           answer={answer}
           onAnswer={handleAnswer}
           id={element.id}
@@ -128,9 +128,9 @@ function Section(props) {
       case 'number-input':
         obj = <ElementNumberInput
           text={element.text}
-          error={validationState.error}
-          helperText={validationState.helperText}
-          showHelperText={validationState.showHelperText}
+          error={feedback.error}
+          helperText={feedback.helperText}
+          showHelperText={feedback.showHelperText}
           answer={answer}
           onAnswer={handleAnswer}
           id={element.id}
