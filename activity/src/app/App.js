@@ -7,15 +7,15 @@ import { CssBaseline, Container, Box, Fab, Toolbar, Typography } from "@material
 import CheckIcon from "@material-ui/icons/Check";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
-import { strings } from '../shared/localization';
 import RTL from './RTL';
-import TopBar from './TopBar';
-import AppTableOfContents from "./AppTableOfContents";
-import { dropConfetti } from "./confetti";
 import ScrollTop from "./ScrollTop";
+import AppTableOfContents from "./AppTableOfContents";
+import TopBar from './TopBar';
 import Section from '../section/Section';
-import { download, getPhrase } from "../shared/utils";
 import SuccessSnackbar from "./SuccessSnackbar";
+import { strings } from '../shared/localization';
+import { download, getPhrase } from "../shared/utils";
+import { dropConfetti } from "./confetti";
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
@@ -58,19 +58,19 @@ const useStyles = makeStyles((theme) => ({
 
 const FILLABLE_TYPES = ["multi-choice", "text-input", "number-input"];
 
-function App(props) {
+function App({ structure }) {
   /* styles */
   const classes = useStyles(theme);
 
   /* answers */
   let initialAnswers = JSON.parse(document.getElementById("save-input").value || "{}");  // from file save
   if (!Object.keys(initialAnswers).length) {
-    initialAnswers = JSON.parse(localStorage.getItem(props.structure.serialNumber) || "{}");  // from local storage
+    initialAnswers = JSON.parse(localStorage.getItem(structure.serialNumber) || "{}");  // from local storage
   }
   const [answers, setAnswers] = React.useState(initialAnswers);
   const [showSuccess, setShowSuccess] = React.useState(false);
   
-  const allFillableElements = props.structure.sections.map((s) => s.elements.filter((e) => FILLABLE_TYPES.includes(e.type))).flat(1);
+  const allFillableElements = structure.sections.map((s) => s.elements.filter((e) => FILLABLE_TYPES.includes(e.type))).flat(1);
   const initialElementsFeedback = {};
   allFillableElements.forEach((element) => {
     initialElementsFeedback[element.id] = {
@@ -83,12 +83,12 @@ function App(props) {
   const [elementsFeedback, setElementsFeedback] = React.useState(initialElementsFeedback);
 
   useEffect(() => {
-    document.title = props.structure.mainHeader;
+    document.title = structure.mainHeader;
   }, []);
 
   useEffect(() => {  
     // update local storage when an answer changes
-    localStorage.setItem(props.structure.serialNumber, JSON.stringify(answers));
+    localStorage.setItem(structure.serialNumber, JSON.stringify(answers));
   }, [answers]);
 
   /* topbar elevation */
@@ -101,7 +101,7 @@ function App(props) {
   }, []);
 
   /* language */
-  const lang = props.structure.language;
+  const lang = structure.language;
   if (lang !== undefined && strings.getLanguage() !== lang) {
     strings.setLanguage(lang);
   }
@@ -121,7 +121,7 @@ function App(props) {
 
   /* check the whole activity and display confirmation if complete */
   const handleSubmitActivity = () => {
-    if (props.structure.sections.every((section) => {
+    if (structure.sections.every((section) => {
       const errorElementsIds = checkSection(section);
       if (errorElementsIds.length) {
         scroller.scrollTo(errorElementsIds[0], {
@@ -165,7 +165,7 @@ function App(props) {
   };
 
   const handleCheckSection = (sectionId) => {
-    const section = props.structure.sections.find((s) => s.id === sectionId);
+    const section = structure.sections.find((s) => s.id === sectionId);
     return checkSection(section);
   };
 
@@ -219,14 +219,14 @@ function App(props) {
         <div id="back-to-top-anchor" />
         <TopBar
           elevation={topBarElevation}
-          mainHeader={props.structure.mainHeader}
+          mainHeader={structure.mainHeader}
           onDownload={handleSaveActivity}
           onReset={handleResetActivity}
         />
         <Toolbar />
-        <AppTableOfContents {...props}></AppTableOfContents>
+        <AppTableOfContents structure={structure}></AppTableOfContents>
         <Container maxWidth="md" className={classes.container}>
-          {props.structure.sections.map((section) => (
+          {structure.sections.map((section) => (
             <Section
               header={section.header}
               elements={section.elements}
@@ -257,7 +257,7 @@ function App(props) {
             rtl={rtl}
           />
         </Container>
-        <ScrollTop {...props}>
+        <ScrollTop>
           <Fab color="secondary" size="small" aria-label="scroll back to top">
             <KeyboardArrowUpIcon />
           </Fab>

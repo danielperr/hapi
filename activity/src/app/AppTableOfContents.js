@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   active: {},
 }));
 
-const AppTableOfContents = (props) => {
+const AppTableOfContents = ({ structure }) => {
   const classes = useStyles();
   const [activeState, setActiveState] = React.useState();
 
@@ -141,7 +141,7 @@ const AppTableOfContents = (props) => {
   );
 
   const items = [];
-  props.structure.sections.forEach((section, index) => {
+  structure.sections.forEach((section, index) => {
     items.push({ text: section.header, hash: section.id, index: index });
   });
   
