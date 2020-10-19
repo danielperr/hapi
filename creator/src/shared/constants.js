@@ -1,12 +1,12 @@
 
 const DEFAULT_STRUCTURE = {
-  mainHeader: "פעילות ריקה",
+  mainHeader: "פעילות חדשה",
   language: "he",
   sections: [],
 };
 
 const DEFAULT_SECTION = {
-  header: "יחידה ריקה",
+  header: "יחידה חדשה",
   elements: [],
 };
 

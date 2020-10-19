@@ -85,6 +85,10 @@ function App({ initial }) {
     else didMount.current = true;
   }, [structure]);
 
+  useEffect(() => {
+    handleClickAddSection();
+  }, [])
+
   const handleChangeLanguage = (language) => {
     setStructure(produce(structure, (newStructure) => {
       newStructure.language = language;
