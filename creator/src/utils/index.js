@@ -4,5 +4,11 @@ export {
   injectStructureToActivity,
   exportToActivity
 } from './file-utils';
-export { makeid, findById } from './id';
+
+export {
+  makeid,
+  findById,
+  replaceIds,
+} from './id';
+
 export { reorder } from './reorder';

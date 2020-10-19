@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById } from '../utils';
+import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
 import LanguageContext from '../shared/language-context';
 import FocusAwarePaper from '../shared/focus-aware-paper';
@@ -139,23 +139,10 @@ function App({ initial }) {
   };
 
   const handleDuplicateSection = (sectionId) => {
-    const s = produce(structure.sections.find((s) => s.id === sectionId), (newSection) => {
-      // repalce all ids
-      let json = JSON.stringify(newSection);
-      const re = /"id":"(.*?)"/g;
-      let match;
-      do {
-        match = re.exec(json);
-        if (match) {
-          json = json.replaceAll(match[1], makeid(10));
-        }
-      } while (match);
-      Object.assign(newSection, JSON.parse(json));
-    });
     setStructure(produce(structure, (newStructure) => {
-      newStructure.sections.push(s);
+      newStructure.sections.push(replaceIds(structure.sections.find((s) => s.id === sectionId)));
     }))
-  }
+  };
 
   const handleDeleteSection = (sectionId) => {
     setStructure(

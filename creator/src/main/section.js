@@ -16,7 +16,7 @@ import Editable from '../shared/editable';
 import FocusAwarePaper from '../shared/focus-aware-paper';
 import RotatingIcon from '../shared/rotating-icon';
 import { DEFAULT_ELEMENT } from '../shared/constants';
-import { makeid } from '../utils';
+import { makeid, replaceIds } from '../utils';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme) => ({
@@ -95,6 +95,12 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
     }));
   };
 
+  const handleDuplicateElement = (elementId) => {
+    onUpdate(produce(structure, (newStructure) => {
+      newStructure.elements.push(replaceIds(structure.elements.find((s) => s.id === elementId)));
+    }))
+  };
+
   const handleDeleteElement = (elementId) => {
     onUpdate(produce(structure, newStructure => {
       newStructure.elements.forEach((element, index, object) => {
@@ -127,7 +133,7 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
 
   const handleDuplicateSelf = () => {
     onDuplicate(structure.id);
-  }
+  };
 
   const handleDeleteSelf = (e) => {
     e.target.focus();
@@ -188,6 +194,7 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
                               index={index}
                               structure={element}
                               onUpdate={handleUpdateElement}
+                              onDuplicate={handleDuplicateElement}
                               onDelete={handleDeleteElement}
                               onMoveUp={handleMoveUpElement}
                               onMoveDown={handleMoveDownElement}

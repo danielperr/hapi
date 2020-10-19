@@ -4,10 +4,10 @@ import produce from "immer";
 import styled from "styled-components";
 import { Draggable } from 'react-beautiful-dnd';
 
-import { IconButton, Box } from '@material-ui/core';
+import { IconButton, Box, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import ElementLabel from "../elements/element-label";
@@ -49,14 +49,16 @@ const useStyles = makeStyles((theme) => ({
     height: '24px',
     zIndex: '1',
   },
+  duplicateButton: {
+    marginRight: 'auto',
+  },
   deleteButton: {
     marginRight: theme.spacing(1),
     color: theme.palette.negative.main,
-    marginRight: 'auto',
   },
 }));
 
-export default function Element({ index, structure, onUpdate, onDelete }) {
+export default function Element({ index, structure, onUpdate, onDuplicate, onDelete }) {
   const classes = useStyles();
   const { type } = structure;
 
@@ -76,6 +78,10 @@ export default function Element({ index, structure, onUpdate, onDelete }) {
 
   const handleUpdateElement = (updatedElement) => {
     onUpdate(updatedElement);
+  };
+
+  const handleDuplicateSelf = () => {
+    onDuplicate(structure.id);
   };
 
   const handleDeleteSelf = () => {
@@ -147,6 +153,11 @@ export default function Element({ index, structure, onUpdate, onDelete }) {
                 <option value="number-input">שאלת מספר</option>
               </optgroup>
             </select>
+            <Tooltip title="שכפל">
+              <IconButton className={classes.duplicateButton} onClick={handleDuplicateSelf}>
+                <FileCopyIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
             <IconButton aria-label="delete element" className={classes.deleteButton} onClick={handleDeleteSelf}>
               <DeleteIcon fontSize="small" />
             </IconButton>
