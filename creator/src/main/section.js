@@ -14,6 +14,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Element from './element';
 import Editable from '../shared/editable';
 import FocusAwarePaper from '../shared/focus-aware-paper';
+import RotatingIcon from '../shared/rotating-icon';
 import { DEFAULT_ELEMENT } from '../shared/constants';
 import { makeid } from '../utils';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
@@ -158,7 +159,11 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
                 <Box className={classes.topBar}>
                   <Editable size={2} onChange={handleChangeHeader} isHeightFixed={true} height="50px">{structure.header}</Editable>
                   <IconButton className={classes.collapseButton} onClick={handleCollapseClick}>
-                    {isOpen ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+                    <RotatingIcon
+                      active={isOpen}
+                      passiveIcon={<ArrowDownwardIcon />}
+                      activeIcon={<ArrowUpwardIcon />}
+                    />
                   </IconButton>
                   <Tooltip title="שכפל">
                     <IconButton className={classes.duplicateButton} onClick={handleDuplicateSelf}>
