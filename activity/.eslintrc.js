@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    browser: true,
+    // browser: true,
     es2021: true,
   },
   extends: [
@@ -16,8 +16,10 @@ module.exports = {
   },
   plugins: [
     'react',
+    'only-warn',
   ],
   rules: {
+    'lindebreak-style': 0,
     'object-curly-newline': 0,
     'no-shadow': 0,
     'no-param-reassign': 0,
