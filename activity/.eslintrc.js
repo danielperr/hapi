@@ -19,7 +19,7 @@ module.exports = {
     'only-warn',
   ],
   rules: {
-    'lindebreak-style': 0,
+    'linebreak-style': 0,
     'object-curly-newline': 0,
     'no-shadow': 0,
     'no-param-reassign': 0,
