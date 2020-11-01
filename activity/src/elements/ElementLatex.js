@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     margin: theme.spacing(-2, 0, 0),
     fontSize: '16px',
+    direction: 'ltr',
   },
 }));
 
