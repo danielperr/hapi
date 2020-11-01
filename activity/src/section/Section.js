@@ -11,8 +11,9 @@ import {
   ElementDocs,
   ElementTextInput,
   ElementMultiChoice,
-  ElementNumberInput
-} from "../elements";
+  ElementNumberInput,
+  ElementLatex,
+} from '../elements';
 import { strings } from '../shared/localization';
 
 const useStyles = makeStyles((theme) => ({
@@ -92,6 +93,14 @@ function Section(props) {
           youtubeId={element.youtubeId}
           id={element.id}
           key={element.id} 
+        />;
+        break;
+      
+      case 'latex':
+        obj = <ElementLatex
+          latex={element.latex}
+          id={element.id}
+          key={element.id}
         />;
         break;
         
