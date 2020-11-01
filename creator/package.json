@@ -16,6 +16,7 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
     "react-markdown-editor-lite": "^1.2.2",
+    "react-mathquill": "^1.0.1",
     "react-scripts": "^3.4.3",
     "react-spring": "^8.0.27",
     "serialize-javascript": "^4.0.0",

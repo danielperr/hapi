@@ -220,11 +220,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Editable({ children, size, onChange, isRich, isHeightFixed, height }) {
+function Editable({ children, size, onChange, isRich, isHeightFixed, height, directionOverride }) {
   const classes = useStyles();
 
   const language = useContext(LanguageContext);
-  const direction = language === 'he' ? 'rtl' : 'ltr';
+  const direction = directionOverride || (language === 'he' ? 'rtl' : 'ltr');
 
   const handleChange = (e) => {
     if (isRich) {

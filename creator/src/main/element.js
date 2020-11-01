@@ -17,6 +17,7 @@ import ElementTextInput from "../elements/element-text-input";
 import ElementImage from "../elements/element-image";
 import ElementNumberInput from "../elements/element-number-input";
 import ElementDocs from "../elements/element-docs";
+import ElementLatex from "../elements/element-latex";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -104,6 +105,9 @@ export default function Element({ index, structure, onUpdate, onDuplicate, onDel
     case "youtube":
       obj = <ElementYoutube {...elementProps} />;
       break;
+    case 'latex':
+      obj = <ElementLatex {...elementProps} />;
+      break;
     case "docs":
       obj = <ElementDocs {...elementProps} />;
       break;
@@ -145,6 +149,7 @@ export default function Element({ index, structure, onUpdate, onDuplicate, onDel
                 <option value="label">טקסט</option>
                 <option value="image">תמונה</option>
                 <option value="youtube">סרטון</option>
+                <option value="latex">ביטוי מתמטי</option>
                 <option value="docs">Google Docs</option>
               </optgroup>
               <optgroup label="מילוי">
