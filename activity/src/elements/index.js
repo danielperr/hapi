@@ -6,6 +6,7 @@ import ElementMultiChoice from './ElementMultiChoice';
 import ElementNumberInput from './ElementNumberInput';
 import ElementTextInput from './ElementTextInput';
 import ElementYoutube from './ElementYoutube';
+import ElementLatex from './ElementLatex';
 
 export {
   ElementDocs,
@@ -16,4 +17,5 @@ export {
   ElementNumberInput,
   ElementTextInput,
   ElementYoutube,
+  ElementLatex,
 };
