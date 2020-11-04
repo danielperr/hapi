@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import produce from 'immer';
 import styled from 'styled-components';
@@ -65,6 +66,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * Main app component, blah blah blah
+ */
 function App({ initial }) {
   const classes = useStyles();
 
@@ -292,6 +296,20 @@ function App({ initial }) {
       </ThemeProvider>
     </LanguageContext.Provider>
   );
+}
+
+App.propTypes = {
+  /** Initial structure to start with */
+  initial: PropTypes.shape({
+    mainHeader: PropTypes.string.isRequired,
+    sections: PropTypes.arrayOf(PropTypes.shape({
+      header: PropTypes.string.isRequired,
+      elements: PropTypes.arrayOf(PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
+      })).isRequired,
+    })).isRequired,
+  })
 }
 
 export default App;
