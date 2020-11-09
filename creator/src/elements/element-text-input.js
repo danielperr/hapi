@@ -24,7 +24,7 @@ function ElementTextInput({ structure, onUpdate }) {
   }
   
   return (
-    <>
+    <React.Fragment>
       <Editable onChange={handleChangeText}>{structure.text}</Editable>
       <br /><br />
       <Checkbox 
@@ -34,7 +34,7 @@ function ElementTextInput({ structure, onUpdate }) {
       >
         תשובה ארוכה? (יותר משורה אחת)
       </Checkbox>
-    </>
+    </React.Fragment>
   );
 }
 

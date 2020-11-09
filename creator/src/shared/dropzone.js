@@ -43,7 +43,7 @@ function Dropzone(props) {
   };
 
   return (
-    <>
+    <React.Fragment>
       <div
         ref={containerRef}
         onClick={handleClick}
@@ -62,7 +62,7 @@ function Dropzone(props) {
         onChange={handleFileChange}
         style={{display: 'none'}}
       />
-    </>
+    </React.Fragment>
   );
 }
 

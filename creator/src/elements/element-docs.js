@@ -14,7 +14,7 @@ function ElementDocs({ structure, onUpdate }) {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Editable onChange={handleChange}>{structure.src}</Editable>
       <br />
       <br />
@@ -24,7 +24,7 @@ function ElementDocs({ structure, onUpdate }) {
           src={structure.src}
         />
       </Wrapper>
-    </>
+    </React.Fragment>
   );
 }
 

@@ -28,7 +28,7 @@ function ElementNumberInput({ structure, onUpdate }) {
   }
 
   return (
-    <>
+    <React.Fragment>
       <Editable onChange={handleChangeText}>{structure.text}</Editable>
       <br /><br />
       <label>טווח תשובה נכונה:</label>
@@ -62,7 +62,7 @@ function ElementNumberInput({ structure, onUpdate }) {
           </tr>
         </tbody>
       </table>
-    </>
+    </React.Fragment>
   );
 }
 

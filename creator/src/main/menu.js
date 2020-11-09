@@ -70,7 +70,7 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
   const { right } = useSpring({ from: { right: '-320px' }, right: isOpen ? '-20px' : '-320px', config: config.stiff });
 
   return (
-    <>
+    <React.Fragment>
       <StyledHamburgerDiv>
         <IconButton aria-label="menu" className={classes.menuOpenButton} onClick={handleClickHamburger}>
           <RotatingIcon
@@ -124,7 +124,7 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
             </FormControl>
         </StyledButtonMenu>
       </animated.div>
-    </>
+    </React.Fragment>
   );
 }
 

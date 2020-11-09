@@ -18,9 +18,9 @@ function RTL({ active, children }) {
       </StylesProvider>
     </ThemeProvider>
   ) : (
-    <>
+    <React.Fragment>
       {children}
-    </>
+    </React.Fragment>
   );
 }
 
