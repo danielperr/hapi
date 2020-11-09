@@ -7,10 +7,10 @@
 A platform of HTML forms (a.k.a activities) that students and children can complete at home. :memo:  
 These activities can be used to teach subjects and provide questions & excercises with answer checking. :100:
 
-[v] **No registration or log in!**  
-[v] **Works completely on internet browsers - no installation required!**  
-[v] Activities are constantly and automatically saving your progress in local storage  
-[v] Activities can be saved as single html files that can be used without internet  
+- [x] **No registration or log in!**  
+- [x] **Works completely on internet browsers - no installation required!**  
+- [x] Activities are constantly and automatically saving your progress in local storage  
+- [x] Activities can be saved as single html files that can be used without internet  
 
 
 KEEP IN MIND that This repository is a work in progress and will have many issues.  
