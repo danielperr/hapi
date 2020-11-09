@@ -1,5 +1,5 @@
 {
-  "name": "creator",
+  "name": "hapi-creator",
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
@@ -17,7 +17,7 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
     "react-markdown-editor-lite": "^1.2.2",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^4.0.0",
     "react-spring": "^8.0.27",
     "serialize-javascript": "^4.0.0",
     "styled-components": "^5.2.0"
