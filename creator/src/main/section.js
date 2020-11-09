@@ -207,7 +207,9 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
                   </Box>
                   <br />
                   <Box className={classes.center}>
-                    <Button onClick={handleClickAddElement} variant="outlined" color="primary" startIcon={<AddIcon className={classes.addIcon} />}><b>רכיב חדש</b></Button>
+                    <Button onClick={handleClickAddElement} variant="outlined" color="primary" startIcon={<AddIcon className={classes.addIcon} />}>
+                      <b>רכיב חדש</b>
+                    </Button>
                   </Box>
                 </Collapse>
               </FocusAwarePaper>
