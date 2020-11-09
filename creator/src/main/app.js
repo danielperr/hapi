@@ -19,7 +19,12 @@ import Editable from '../shared/editable';
 import Section from './section';
 import Menu from './menu';
 
-const EMPTY_ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
+let EMPTY_ACTIVITY_URL;
+if (process.env.NODE_ENV === 'development') {
+  EMPTY_ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
+} else {
+  EMPTY_ACTIVITY_URL = `${window.location.origin}/empty.html`;
+}
 
 const THEME = createMuiTheme({
   direction: 'rtl',

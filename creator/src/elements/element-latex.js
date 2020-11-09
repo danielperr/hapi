@@ -34,7 +34,7 @@ function ElementLatex({ structure, onUpdate }) {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Editable
         directionOverride="ltr"
         onChange={handleChangeLatex}
@@ -43,7 +43,7 @@ function ElementLatex({ structure, onUpdate }) {
       </Editable>
       {/* Here we assign the ref to the div in which katex renders */}
       <div ref={latexFieldRef} className={classes.latexField}></div>
-    </>
+    </React.Fragment>
   );
 }
 

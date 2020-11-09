@@ -26,7 +26,7 @@ function ElementYoutube({ structure, onUpdate }) {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Editable onChange={handleChange}>{ editableValue }</Editable>
       <br />
       <br />
@@ -37,7 +37,7 @@ function ElementYoutube({ structure, onUpdate }) {
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen={true}
         title="video"></iframe>
-    </>
+    </React.Fragment>
   );
 }
 

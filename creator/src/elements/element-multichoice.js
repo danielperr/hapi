@@ -77,7 +77,7 @@ function ElementMultiChoice({ structure, onUpdate }) {
   };
   
   return (
-    <>
+    <React.Fragment>
       <Editable onChange={handleChangeText}>{structure.text}</Editable>
       <FormControl style={{ width: '100%' }}>
         <RadioGroup name={structure.id} value={(structure.correct || [''])[0]}>
@@ -114,7 +114,7 @@ function ElementMultiChoice({ structure, onUpdate }) {
       >
         לסדר תשובות באופן אקראי?
       </Checkbox>
-    </>
+    </React.Fragment>
   );
 }
 

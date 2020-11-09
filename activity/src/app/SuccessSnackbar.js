@@ -40,7 +40,7 @@ function SuccessSnackbar({ open, onClose, rtl }) {
       onClose={handleClose}
       message={strings.activityComplete}
       action={
-        <>
+        <React.Fragment>
           <IconButton
             size="small"
             aria-label="close"
@@ -49,7 +49,7 @@ function SuccessSnackbar({ open, onClose, rtl }) {
           >
             <CloseIcon fontSize="small" />
           </IconButton>
-        </>
+        </React.Fragment>
       }
     />
   );

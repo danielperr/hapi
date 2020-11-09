@@ -1,5 +1,5 @@
 {
-  "name": "demo-project",
+  "name": "hapi-activity",
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
@@ -15,7 +15,6 @@
     "jss-rtl": "^0.3.0",
     "lodash": "^4.17.20",
     "react": "^16.13.1",
-    "react-create-app": "^2.0.6",
     "react-dom": "^16.13.1",
     "react-localization": "^1.0.15",
     "react-markdown": "^4.3.1",

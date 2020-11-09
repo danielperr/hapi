@@ -17,7 +17,7 @@ const CustomCss = withStyles({
 
 function RichLabel(props) {
   return (
-    <>
+    <React.Fragment>
       <CustomCss />
       <label
         className={props.className}
@@ -38,7 +38,7 @@ function RichLabel(props) {
             </a>}}
         />
       </label>
-    </>
+    </React.Fragment>
   );
 }
 

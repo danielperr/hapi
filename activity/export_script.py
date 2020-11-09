@@ -1,7 +1,6 @@
 import io
 import os
 import pathlib
-import webbrowser
 
 from bs4 import BeautifulSoup
 
@@ -12,7 +11,7 @@ BUILD_DIR = CWD / 'build'
 BUILD_FNAME = 'index.html'
 # OUTPUT
 EXPORT_DIR = CWD / 'export'
-EXPORT_FNAME = 'activity.html'
+EXPORT_FNAME = 'empty.html'
 
 
 def open_file(filename, mode='r'):
@@ -64,7 +63,6 @@ def main():
     with open_file(EXPORT_DIR / EXPORT_FNAME, 'w') as f:
         f.write(str(soup))
         print('\nExport successful')
-        webbrowser.open_new_tab(EXPORT_DIR / EXPORT_FNAME)
 
 
 if __name__ == '__main__':

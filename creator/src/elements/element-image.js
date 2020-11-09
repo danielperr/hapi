@@ -15,7 +15,7 @@ function ElementImage({ structure, onUpdate }) {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Editable onChange={handleChange}>{structure.src}</Editable>
       <br />
       <br />
@@ -23,7 +23,7 @@ function ElementImage({ structure, onUpdate }) {
         src={structure.src}
         onError="this.onerror=null; this.src='https://www.0404.co.il/wp-content/uploads/2019/10/valley-3916972__480.jpg';" 
       />
-    </>
+    </React.Fragment>
   );
 }
 
