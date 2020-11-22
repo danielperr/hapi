@@ -6,13 +6,11 @@
   "scripts": {
     "start": "npm run start-activity && npm run start-creator",
     "build": "npm run build-activity && npm run build-creator",
-    "deploy": "npm run build && npm run deploy-activity && npm run deploy-creator",
+    "deploy": "npm run build && node move-files.js",
     "start-activity": "cd ./activity && npm start",
     "start-creator": "cd ./creator && npm start",
     "build-activity": "cd ./activity && npm run build",
     "build-creator": "cd ./creator && npm run build",
-    "deploy-activity": "copyfiles \"./activity/build/*.html\" ./deploy -u 2",
-    "deploy-creator": "copyfiles \"./creator/build/**/*.*\" ./deploy -u 2",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -30,6 +28,10 @@
     "hapi-creator": "file:creator"
   },
   "devDependencies": {
-    "copyfiles": "^2.4.0"
+    "copyfiles": "^2.4.0",
+    "fs-extra": "^9.0.1",
+    "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
+    "html-webpack-plugin": "^4.5.0",
+    "react-app-rewired": "^2.1.6"
   }
 }

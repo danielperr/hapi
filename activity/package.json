@@ -26,7 +26,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-app-rewired build",
-    "export": "py ./export_script.py",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
