@@ -11,7 +11,7 @@
     "start-creator": "cd ./creator && npm start",
     "build-activity": "cd ./activity && npm run build",
     "build-creator": "cd ./creator && npm run build",
-    "deploy-activity": "copyfiles \"./activity/export/*.html\" ./deploy -u 2",
+    "deploy-activity": "copyfiles \"./activity/build/*.html\" ./deploy -u 2",
     "deploy-creator": "copyfiles \"./creator/build/**/*.*\" ./deploy -u 2",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
