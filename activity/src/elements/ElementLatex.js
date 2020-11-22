@@ -1,14 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import { addStyles, StaticMathField } from 'react-mathquill';
-
-import Box from '@material-ui/core/Box';
+import katex from 'katex'
 import { makeStyles } from '@material-ui/core/styles';
 
-addStyles();
-
 const useStyles = makeStyles((theme) => ({
-  container: {
+  latexField: {
     display: 'flex',
     justifyContent: 'center',
     margin: theme.spacing(-2, 0, 0),
@@ -21,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
 function ElementLatex({ latex }) {
   const classes = useStyles();
 
-  return (
-    <Box className={classes.container}>
-      <StaticMathField>
-        {latex}
-      </StaticMathField>
-    </Box>
-  );
+  const latexFieldRef = useRef();
+
+  useEffect(() => {
+    katex.render(latex, latexFieldRef.current, { throwOnError: false, displayMode: true });
+  }, []);
+
+  return <div ref={latexFieldRef} className={classes.latexField}></div>;
 }
 
 export default ElementLatex;
