@@ -7,8 +7,27 @@ import './style.css';
 
 let structure = {};
 
-if (process.env.NODE_ENV && process.env.NODE_ENV !== 'production') {
-  structure = JSON.parse(atob(process.env.REACT_APP_STRUCTURE));
+// Use dev mode structure in local storage
+if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
+  const localStorageStructure = localStorage.getItem('devmode-structure');
+  try {
+    structure = JSON.parse(localStorageStructure);
+  } catch {
+    alert('There was a problem parsing the current devmode structure');
+  }
+  if (!Object.entries(structure).length) {
+    structure = {
+      language: 'en',
+      mainHeader: 'Developer Mode Activity',
+      sections: [
+        {
+          header: 'Empty Section',
+          elements: [],
+        },
+      ],
+    };
+    localStorage.setItem('devmode-structure', JSON.stringify(structure));
+  }
 }
 
 ReactDOM.render(
