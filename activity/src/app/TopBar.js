@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
@@ -7,11 +7,14 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Tooltip,
 } from '@material-ui/core';
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
+import CodeIcon from '@material-ui/icons/Code';
+
+import DevMenu from './DevMenu';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,16 +46,13 @@ function TopBar(props) {
   const theme = useTheme();
   const classes = useStyles(theme);
 
+  const [devMenuOpen, setDevMenuOpen] = useState(false);
+  const devMenuButtonRef = useRef(null);
+
   return (
     <div className={classes.root}>
       <AppBar position="fixed" elevation={props.elevation ? 4 : 0}>
         <Toolbar>
-          {/* <IconButton edge="start" className={ classes.menuButton } color="inherit" aria-label="menu">
-              <IconMenu />
-            </IconButton> */}
-          {/* <IconButton edge="start" className={ classes.menuBook } color="inherit" aria-label="menu">
-              <IconMenuBook />
-            </IconButton> */}
           <Typography variant="h6" className={classes.title}>
             {props.mainHeader}
           </Typography>
@@ -67,6 +67,28 @@ function TopBar(props) {
           <IconButton color="inherit" onClick={props.onReset}>
             <DeleteIcon />
           </IconButton>
+          {/* Create the dev menu only on development environment (when running on `npm start`) */}
+          {process.env.NODE_ENV && process.env.NODE_ENV === 'development' && (
+            <React.Fragment>
+              <Divider
+                orientation="vertical"
+                flexItem
+                className={classes.divider}
+              />
+              <Tooltip title="Developer Menu">
+                <IconButton color="inherit" onClick={() => { setDevMenuOpen(true); }}>
+                  <CodeIcon />
+                  <div ref={devMenuButtonRef}></div>
+                </IconButton>
+              </Tooltip>
+              <DevMenu
+                open={devMenuOpen}
+                anchorEl={devMenuButtonRef.current}
+                onClose={() => { setDevMenuOpen(false); }}
+              />
+            </React.Fragment>
+          )}
+          {/* </devmenu> */}
           <Divider
             orientation="vertical"
             flexItem
@@ -77,27 +99,9 @@ function TopBar(props) {
             <InsertEmoticonIcon />
           </Typography>
         </Toolbar>
-        {/* {<LinearProgress
-          color="primary"
-          classes={{
-            colorPrimary: classes.colorPrimary,
-            barColorPrimary: classes.barColorPrimary,
-          }}
-          variant="determinate"
-          value={props.progress}
-        />} */}
       </AppBar>
     </div>
   );
 }
 
 export default TopBar;
-
-/*
-  <Button edge="end" className={ classes.menuBook } color="inherit" aria-label="menu" onclick={ window.open('https://webhome.weizmann.ac.il/home/ifigures/ifigure.ifig.html','_blank') } >
-      <Typography edge="end" variant="h6">
-      New Empty IFigure 
-      </Typography>
-    <IconIfigure />
-  </Button>
-  */
