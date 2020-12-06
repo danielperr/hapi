@@ -100,7 +100,7 @@ function App({ structure }) {
     window.addEventListener('scroll', () => {
       setTopBarElevation(window.pageYOffset !== 0);
     }, { passive: true });
-    return () => { window.removeEventListener('scroll'); };
+    return () => { window.removeEventListener('scroll', null); };
   }, []);
 
   /* language */
