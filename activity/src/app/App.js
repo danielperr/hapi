@@ -91,6 +91,7 @@ function App({ structure }) {
   useEffect(() => {
     // update local storage when an answer changes
     localStorage.setItem(structure.serialNumber, JSON.stringify(answers));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answers]);
 
   /* topbar elevation */
