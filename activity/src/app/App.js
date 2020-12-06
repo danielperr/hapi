@@ -241,19 +241,21 @@ function App({ structure }) {
               key={section.id}
             />
           ))}
-          <Box className={classes.checkAllBtnContainer}>
-            <Fab
-              variant="extended"
-              color="secondary"
-              className={classes.checkAllBtn}
-              onClick={handleSubmitActivity}
-            >
-              <CheckIcon />
-              <Typography className={classes.checkTypography}>
-                {strings.actionCheckAll}
-              </Typography>
-            </Fab>
-          </Box>
+          {allFillableElements.length ? (
+            <Box className={classes.checkAllBtnContainer}>
+              <Fab
+                variant="extended"
+                color="secondary"
+                className={classes.checkAllBtn}
+                onClick={handleSubmitActivity}
+              >
+                <CheckIcon />
+                <Typography className={classes.checkTypography}>
+                  {strings.actionCheckAll}
+                </Typography>
+              </Fab>
+            </Box>
+          ) : <></>}
           <SuccessSnackbar
             open={showSuccess}
             onClose={handleSuccessSnackbarClose}
