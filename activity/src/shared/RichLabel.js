@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from "react";
 
-// import ReactMarkdown from 'react-markdown';
-import Markdown from 'markdown-to-jsx';
 import { withStyles } from "@material-ui/core";
-import renderMathInElement from 'katex/dist/contrib/auto-render';
+import ReactMarkdown from 'react-markdown';
+import { InlineMath, BlockMath } from 'react-katex';
+import math from 'remark-math';
+import 'katex/dist/katex.min.css';
 
 const CustomCss = withStyles({
   '@global': {
@@ -30,17 +31,6 @@ const CustomCss = withStyles({
 function RichLabel(props) {
   const labelRef = useRef(null);
 
-  useEffect(() => {
-    if (labelRef.current) {
-      renderMathInElement(labelRef.current, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '$', right: '$', display: false },
-        ],
-      });
-    }
-  }, [labelRef]);
-
   return (
     <React.Fragment>
       <CustomCss />
@@ -49,20 +39,24 @@ function RichLabel(props) {
         htmlFor={props.htmlFor}
         ref={labelRef}
       >
-        {/* <ReactMarkdown
-          source={props.children}
-          renderers={{link: props =>
-            <a
-              href={props.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {props.children}
-            </a>}}
-        /> */}
-        <Markdown>
+        <ReactMarkdown
+          plugins={[math]}
+          renderers={{
+            link: (prohtmlKatexps) => (
+              <a
+                href={props.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {props.children}
+              </a>
+            ),
+            inlineMath: ({value}) => <InlineMath math={value} />,
+            math: ({value}) => <BlockMath math={value} />
+          }}
+        >
           {props.children}
-        </Markdown>
+        </ReactMarkdown>
       </label>
     </React.Fragment>
   );

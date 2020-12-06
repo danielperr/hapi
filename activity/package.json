@@ -18,11 +18,13 @@
     "markdown-to-jsx": "^7.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-katex": "^2.0.2",
     "react-localization": "^1.0.15",
-    "react-markdown": "^4.3.1",
+    "react-markdown": "^5.0.3",
     "react-number-format": "^4.4.1",
     "react-scripts": "^4.0.0",
-    "react-scroll": "^1.8.0"
+    "react-scroll": "^1.8.0",
+    "remark-math": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
