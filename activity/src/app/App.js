@@ -7,6 +7,7 @@ import { CssBaseline, Container, Box, Fab, Toolbar, Typography } from '@material
 import CheckIcon from '@material-ui/icons/Check';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
+import { version } from '../../package.json';
 import RTL from './RTL';
 import ScrollTop from './ScrollTop';
 import AppTableOfContents from './AppTableOfContents';
@@ -53,6 +54,11 @@ const useStyles = makeStyles((theme) => ({
   checkTypography: {
     margin: theme.spacing(0, 1),
     fontWeight: 'bold',
+  },
+  version: {
+    position: 'fixed',
+    bottom: theme.spacing(1),
+    right: theme.spacing(1),
   },
 }));
 
@@ -268,6 +274,7 @@ function App({ structure }) {
           </Fab>
         </ScrollTop>
       </RTL>
+      <p className={classes.version}>{version}</p>
     </ThemeProvider>
   );
 }
