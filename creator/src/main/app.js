@@ -11,6 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
+import { version } from '../../package.json';
 import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
 import LanguageContext from '../shared/language-context';
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   mainContainer: {
     width: '800px',
     padding: '32px',
-    ['@media (max-width: 800px)']: {
+    '@media (max-width: 800px)': {
       width: '100vw',
       padding: '32px 0',
     },
@@ -68,7 +69,12 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     borderRadius: '8px',
     marginBottom: theme.spacing(4),
-  }
+  },
+  version: {
+    position: 'fixed',
+    bottom: theme.spacing(-1),
+    right: theme.spacing(1),
+  },
 }));
 
 /**
@@ -257,7 +263,6 @@ function App({ initial }) {
       <ThemeProvider theme={THEME}>
         {/* <CssBaseline /> */}
         <Box className={classes.mainContainer}>
-          <p style={{position: "fixed", bottom: "0px", right: "14px"}}><span role="img" aria-label="smiling face">😃</span> Prototype Hapi</p>
           <Menu
             language={structure.language}
             onChangeLanguage={handleChangeLanguage}
@@ -298,6 +303,7 @@ function App({ initial }) {
             <AddIcon />
           </Fab>
         </Box>
+        <p className={classes.version}>{version}</p>
       </ThemeProvider>
     </LanguageContext.Provider>
   );
