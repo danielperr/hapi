@@ -7,6 +7,7 @@ import { CssBaseline, Container, Box, Fab, Toolbar, Typography } from '@material
 import CheckIcon from '@material-ui/icons/Check';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
+import { version } from '../../package.json';
 import RTL from './RTL';
 import ScrollTop from './ScrollTop';
 import AppTableOfContents from './AppTableOfContents';
@@ -54,6 +55,11 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 1),
     fontWeight: 'bold',
   },
+  version: {
+    position: 'fixed',
+    bottom: theme.spacing(1),
+    right: theme.spacing(1),
+  },
 }));
 
 const FILLABLE_TYPES = ['multi-choice', 'text-input', 'number-input'];
@@ -91,6 +97,7 @@ function App({ structure }) {
   useEffect(() => {
     // update local storage when an answer changes
     localStorage.setItem(structure.serialNumber, JSON.stringify(answers));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answers]);
 
   /* topbar elevation */
@@ -99,7 +106,7 @@ function App({ structure }) {
     window.addEventListener('scroll', () => {
       setTopBarElevation(window.pageYOffset !== 0);
     }, { passive: true });
-    return () => { window.removeEventListener('scroll'); };
+    return () => { window.removeEventListener('scroll', null); };
   }, []);
 
   /* language */
@@ -240,19 +247,21 @@ function App({ structure }) {
               key={section.id}
             />
           ))}
-          <Box className={classes.checkAllBtnContainer}>
-            <Fab
-              variant="extended"
-              color="secondary"
-              className={classes.checkAllBtn}
-              onClick={handleSubmitActivity}
-            >
-              <CheckIcon />
-              <Typography className={classes.checkTypography}>
-                {strings.actionCheckAll}
-              </Typography>
-            </Fab>
-          </Box>
+          {allFillableElements.length ? (
+            <Box className={classes.checkAllBtnContainer}>
+              <Fab
+                variant="extended"
+                color="secondary"
+                className={classes.checkAllBtn}
+                onClick={handleSubmitActivity}
+              >
+                <CheckIcon />
+                <Typography className={classes.checkTypography}>
+                  {strings.actionCheckAll}
+                </Typography>
+              </Fab>
+            </Box>
+          ) : <></>}
           <SuccessSnackbar
             open={showSuccess}
             onClose={handleSuccessSnackbarClose}
@@ -265,6 +274,7 @@ function App({ structure }) {
           </Fab>
         </ScrollTop>
       </RTL>
+      <p className={classes.version}>{version}</p>
     </ThemeProvider>
   );
 }
