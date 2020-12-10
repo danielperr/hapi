@@ -21,10 +21,6 @@ const CustomCss = withStyles({
       marginRight: '4px',
       marginLeft: '4px',
     },
-    '.katex-html': {
-      display: 'inline-flex',
-      flexDirection: 'row',
-    }
   },
 })(() => null);
 
