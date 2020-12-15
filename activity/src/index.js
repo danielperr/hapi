@@ -30,9 +30,22 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
   }
 }
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App structure={structure} />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+if (Object.keys(structure).length) {
+  renderApp(structure);
+} else {
+  window.addEventListener('message', (event) => {
+    const { message, value } = event.data;
+    if (message === 'getStructure') {
+      renderApp(value);
+    }
+  }, false);
+}
+
+function renderApp(structure) {
+  ReactDOM.render(
+    <React.StrictMode>
+      <App structure={structure} />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+}

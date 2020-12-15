@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>New activity</title>
+	</head>
+	<body>
+		<iframe
+			src="activity/build/index.html"
+			id="container"
+			style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"
+		>
+		</iframe>
+		<script type="text/javascript">
+			var container = document.getElementById('container');
+			container.onload = function() {
+				container.contentWindow.postMessage({ message: 'getStructure', value: {
+  "mainHeader": "פעילות ריקה",
+  "language": "he",
+  "sections": [
+    {
+      "header": "יחידה ריקה",
+      "elements": [
+        {
+          "type": "multi-choice",
+          "id": "DvHMlxh9JD",
+          "options": [
+            {
+              "text": "א",
+              "id": "doMct7jou8"
+            },
+            {
+              "text": "ב",
+              "id": "zbeSGuYD7n"
+            },
+            {
+              "text": "ג",
+              "id": "NEoxeNrOCt"
+            }
+          ],
+          "text": "שאלה בלי תשובה",
+          "dontShuffle": true
+        },
+        {
+          "type": "multi-choice",
+          "id": "jMems73PMI",
+          "options": [
+            {
+              "text": "א",
+              "id": "sBxnIgJlel"
+            },
+            {
+              "text": "ב",
+              "id": "bdBGgqhYS4"
+            },
+            {
+              "text": "ג",
+              "id": "SBoyc6GLKL"
+            }
+          ],
+          "text": "שאלה עם תשובה",
+          "correct": [
+            "SBoyc6GLKL"
+          ],
+          "dontShuffle": true
+        },
+        {
+          "type": "multi-choice",
+          "id": "pILQlZ14ce",
+          "text": "שאלה עם תשובה לא קיימת",
+          "options": [
+            {
+              "text": "א",
+              "id": "92JyQ0Q5AG"
+            },
+            {
+              "text": "ב",
+              "id": "5yodtHdzzg"
+            },
+            {
+              "text": "ג",
+              "id": "LN9Oulhl1m"
+            }
+          ],
+          "correct": [
+            "qlLi7gVBNs"
+          ],
+          "dontShuffle": true
+        }
+      ],
+      "id": "lE7xQ3eZaf"
+    }
+  ],
+  "id": "jVNMKwbBvrqSYMfMiBdr"
+} }, '*');
+			}
+		</script>
+	</body>
+</html>
+
