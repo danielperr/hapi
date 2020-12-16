@@ -69,15 +69,17 @@ const useStyles = makeStyles((theme) => ({
 
 const FILLABLE_TYPES = ['multi-choice', 'text-input', 'number-input'];
 
-function App({ structure }) {
+function App({ structure, savedAnswers }) {
   /* styles */
   const classes = useStyles(theme);
 
   /* answers */
-  let initialAnswers = JSON.parse(document.getElementById('save-input').value || '{}'); // from file save
+  // let initialAnswers = JSON.parse(document.getElementById('save-input').value || '{}'); // from file save
+  let initialAnswers = savedAnswers; // from save file
   if (!Object.keys(initialAnswers).length) {
     initialAnswers = JSON.parse(localStorage.getItem(structure.serialNumber) || '{}'); // from local storage
   }
+
   const [answers, setAnswers] = React.useState(initialAnswers);
   const [showSuccess, setShowSuccess] = React.useState(false);
 

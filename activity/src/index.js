@@ -54,7 +54,7 @@ if (insideIframe) {
 function renderApp(structure, answers) {
   ReactDOM.render(
     <React.StrictMode>
-      <App structure={structure} initialAnswers={answers} />
+      <App structure={structure} savedAnswers={answers} />
     </React.StrictMode>,
     document.getElementById('root')
   );
