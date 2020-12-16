@@ -29,7 +29,7 @@ const CONTAINER_TEMPLATE = (structure, answers, filename, activityUrl) => `
       var container = document.getElementById('container');
       container.onload = function() {
         container.contentWindow.postMessage({
-          message: 'getContents', value: {
+          message: 'getContent', value: {
             structure: ${structure},
             answers: ${answers},
           },
@@ -48,7 +48,8 @@ const CONTAINER_TEMPLATE = (structure, answers, filename, activityUrl) => `
  * @param {Object} filename    Name of the file to be generated
  * @param {string} activityUrl URL of the activity file online
  */
-function makeActivityContainer(structure, answers, filename, activityUrl) {
+export function makeActivityContainer(structure, answers, filename, activityUrl) {
+  console.log({ structure, answers, filename, activityUrl });
   return CONTAINER_TEMPLATE(
     JSON.stringify(structure),
     JSON.stringify(answers || {}),

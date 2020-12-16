@@ -12,20 +12,18 @@ import AddIcon from '@material-ui/icons/Add';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { version } from '../../package.json';
-import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds } from '../utils';
+import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
+import { makeActivityContainer } from '../../../common/make-activity-file';
 import LanguageContext from '../shared/language-context';
 import FocusAwarePaper from '../shared/focus-aware-paper';
 import Editable from '../shared/editable';
 import Section from './section';
 import Menu from './menu';
 
-let EMPTY_ACTIVITY_URL;
-if (process.env.NODE_ENV === 'development') {
-  EMPTY_ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
-} else {
-  EMPTY_ACTIVITY_URL = `${window.location.origin}/empty.html`;
-}
+const ACTIVITY_URL = process.env.NODE_ENV && process.env.NODE_ENV === 'development'
+  ? 'C:\\Users\\Daniel\\source\\repos\\hapi\\activity\\build\\index.html'
+  : 'https://hapi-app.netlify.app/empty.html';
 
 const THEME = createMuiTheme({
   direction: 'rtl',
@@ -121,7 +119,11 @@ function App({ initial }) {
 
   const handleExport = async () => {
     setExportButtonLoading(true);
-    exportToActivity((await (await fetch(EMPTY_ACTIVITY_URL)).text()), JSON.stringify(structure));
+    // exportToActivity((await (await fetch(EMPTY_ACTIVITY_URL)).text()), JSON.stringify(structure));
+    const filename = prompt('Save as:');
+    if (filename && filename !== '') {
+      downloadFileWithContents(`${filename}.hapi.html`, makeActivityContainer(structure, {}, filename, ACTIVITY_URL))
+    }
     setExportButtonLoading(false);
   };
 

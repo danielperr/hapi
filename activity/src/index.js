@@ -30,21 +30,31 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
   }
 }
 
-if (Object.keys(structure).length) {
-  renderApp(structure);
-} else {
+let insideIframe = true;
+try {
+  insideIframe = window.self !== window.top;
+} catch {}
+
+console.log(`inside iframe: ${insideIframe}`);
+
+if (insideIframe) {
+  console.log('waiting for signal...');
   window.addEventListener('message', (event) => {
+    console.log(event.data);
     const { message, value } = event.data;
-    if (message === 'getStructure') {
-      renderApp(value);
+    const { structure, answers } = value;
+    if (message === 'getContent') {
+      renderApp(structure, answers);
     }
   }, false);
+} else {
+  renderApp(structure, {});
 }
 
-function renderApp(structure) {
+function renderApp(structure, answers) {
   ReactDOM.render(
     <React.StrictMode>
-      <App structure={structure} />
+      <App structure={structure} initialAnswers={answers} />
     </React.StrictMode>,
     document.getElementById('root')
   );
