@@ -17,6 +17,11 @@ import SuccessSnackbar from './SuccessSnackbar';
 import { strings } from '../shared/localization';
 import { download, getPhrase } from '../shared/utils';
 import { dropConfetti } from './confetti';
+import { makeActivityContainer } from '../../../common/make-activity-file';
+
+const ACTIVITY_URL = process.env.NODE_ENV && process.env.NODE_ENV === 'development'
+  ? 'C:\\Users\\Daniel\\source\\repos\\hapi\\activity\\build\\index.html'
+  : 'https://hapi-app.netlify.app/empty.html';
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
@@ -64,15 +69,17 @@ const useStyles = makeStyles((theme) => ({
 
 const FILLABLE_TYPES = ['multi-choice', 'text-input', 'number-input'];
 
-function App({ structure }) {
+function App({ structure, savedAnswers }) {
   /* styles */
   const classes = useStyles(theme);
 
   /* answers */
-  let initialAnswers = JSON.parse(document.getElementById('save-input').value || '{}'); // from file save
+  // let initialAnswers = JSON.parse(document.getElementById('save-input').value || '{}'); // from file save
+  let initialAnswers = savedAnswers; // from save file
   if (!Object.keys(initialAnswers).length) {
     initialAnswers = JSON.parse(localStorage.getItem(structure.serialNumber) || '{}'); // from local storage
   }
+
   const [answers, setAnswers] = React.useState(initialAnswers);
   const [showSuccess, setShowSuccess] = React.useState(false);
 
@@ -185,16 +192,20 @@ function App({ structure }) {
 
   /* save activity to a file */
   const handleSaveActivity = () => {
-    const answersString = JSON.stringify(answers);
-    const thisFileCode = thisFileCodeSnapshot.cloneNode(true);
-    thisFileCode.querySelectorAll('#save-input').forEach((element) => {
-      if (element.id === 'save-input') {
-        element.value = answersString;
-      }
-    });
+    // const answersString = JSON.stringify(answers);
+    // const thisFileCode = thisFileCodeSnapshot.cloneNode(true);
+    // thisFileCode.querySelectorAll('#save-input').forEach((element) => {
+    //   if (element.id === 'save-input') {
+    //     element.value = answersString;
+    //   }
+    // });
+    // const filename = prompt('Save as:');
+    // if (filename !== '' && filename !== null) {
+    //   download(`${filename}.hapi.html`, thisFileCode.innerHTML);
+    // }
     const filename = prompt('Save as:');
-    if (filename !== '' && filename !== null) {
-      download(`${filename}.hapi.html`, thisFileCode.innerHTML);
+    if (filename && filename !== '') {
+      download(`${filename}.hapi.html`, makeActivityContainer(structure, answers, filename, ACTIVITY_URL));
     }
   };
 

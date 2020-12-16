@@ -30,9 +30,32 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
   }
 }
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App structure={structure} />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+let insideIframe = true;
+try {
+  insideIframe = window.self !== window.top;
+} catch {}
+
+console.log(`inside iframe: ${insideIframe}`);
+
+if (insideIframe) {
+  console.log('waiting for signal...');
+  window.addEventListener('message', (event) => {
+    console.log(event.data);
+    const { message, value } = event.data;
+    const { structure, answers } = value;
+    if (message === 'getContent') {
+      renderApp(structure, answers);
+    }
+  }, false);
+} else {
+  renderApp(structure, {});
+}
+
+function renderApp(structure, answers) {
+  ReactDOM.render(
+    <React.StrictMode>
+      <App structure={structure} savedAnswers={answers} />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+}
