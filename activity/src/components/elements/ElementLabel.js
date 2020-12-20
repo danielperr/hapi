@@ -1,6 +1,6 @@
 import React from "react";
 
-import RichLabel from "../shared/RichLabel";
+import RichLabel from "../common/RichLabel";
 
 class ElementLabel extends React.Component {
   render() {

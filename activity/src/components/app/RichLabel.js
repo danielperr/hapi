@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 
 import { withStyles } from "@material-ui/core";
 import ReactMarkdown from 'react-markdown';

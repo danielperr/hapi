@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
+import { Events, Link } from 'react-scroll';
 import clsx from 'clsx';
-import { Link, Events } from 'react-scroll';
 
+import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Box } from '@material-ui/core';
-import { strings } from '../shared/localization';
+import { strings } from '../../localization';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * The table of contents of the activity, located at the top left corner
  */
-const AppTableOfContents = ({ structure }) => {
+const TableOfContents = ({ structure }) => {
   const classes = useStyles();
   const [activeState, setActiveState] = React.useState();
 
@@ -167,4 +167,4 @@ const AppTableOfContents = ({ structure }) => {
   );
 };
 
-export default AppTableOfContents;
+export default TableOfContents;

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-import clsx from 'clsx';
 import NumberFormat from 'react-number-format';
+import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { FormControl, TextField, FormHelperText, Divider } from '@material-ui/core';
 
-import RichLabel from '../shared/RichLabel';
+import RichLabel from '../common/RichLabel';
 
 const useStyles = makeStyles((theme) => ({
   textField: {

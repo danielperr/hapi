@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { StylesProvider, ThemeProvider, jssPreset } from '@material-ui/core/styles';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
-import { StylesProvider, jssPreset, ThemeProvider } from '@material-ui/core/styles';
 
 /**
  * Applies RTL styles and flips the page layout horizontally, if active

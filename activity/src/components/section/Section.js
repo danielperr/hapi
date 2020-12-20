@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { Button, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Button } from '@material-ui/core';
 
 import SectionHeader from './SectionHeader';
 import {
@@ -14,7 +14,7 @@ import {
   ElementNumberInput,
   ElementLatex,
 } from '../elements';
-import { strings } from '../shared/localization';
+import { strings } from '../../localization';
 
 const useStyles = makeStyles((theme) => ({
   sectionPaper: {
@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(4),
   },
 }));
-
 
 /*
   Provides an area for placing visuals and interactives.

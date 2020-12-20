@@ -5,14 +5,14 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   AppBar,
   Divider,
+  IconButton,
   Toolbar,
   Typography,
-  IconButton,
   Tooltip,
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CodeIcon from '@material-ui/icons/Code';
 
 import DevMenu from './DevMenu';

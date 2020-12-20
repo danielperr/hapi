@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, FormControl, FormHelperText, Divider } from "@material-ui/core";
 
-import RichLabel from '../shared/RichLabel';
+import RichLabel from '../common/RichLabel';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {

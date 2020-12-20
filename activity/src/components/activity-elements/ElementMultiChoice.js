@@ -3,7 +3,7 @@ import React from 'react';
 import clsx from "clsx";
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Radio, RadioGroup, FormControlLabel, FormControl, FormHelperText, FormLabel, Divider } from '@material-ui/core';
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormHelperText, Divider } from '@material-ui/core';
 
 import RichLabel from '../shared/RichLabel';
 import { shuffle } from '../shared/utils';

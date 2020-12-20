@@ -1,24 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 
-import produce from 'immer';
-import { scroller } from 'react-scroll';
+import { Box, CssBaseline, Container, Fab, Toolbar, Typography } from '@material-ui/core';
 import { ThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core/styles';
-import { CssBaseline, Container, Box, Fab, Toolbar, Typography } from '@material-ui/core';
+import { scroller } from 'react-scroll';
 import CheckIcon from '@material-ui/icons/Check';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import produce from 'immer';
 
-import { version } from '../../package.json';
-import RTL from './RTL';
-import ScrollTop from './ScrollTop';
-import AppTableOfContents from './AppTableOfContents';
-import TopBar from './TopBar';
+import { strings } from '../../localization';
+import { download, getPhrase } from '../../utils';
+import { dropConfetti } from '../../confetti';
+import { makeActivityContainer } from '../../../../common/make-activity-file';
+import { version } from '../../../package.json';
+import TableOfContents from './TableOfContents';
+import RTL from '../common/RTL';
+import ScrollTop from '../common/ScrollTop';
 import Section from '../section/Section';
 import SuccessSnackbar from './SuccessSnackbar';
-import { strings } from '../shared/localization';
-import { download, getPhrase } from '../shared/utils';
-import { dropConfetti } from './confetti';
-import { makeActivityContainer } from '../../../common/make-activity-file';
+import TopBar from './TopBar';
 
 const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
@@ -275,7 +275,7 @@ function App({ structure, savedAnswers }) {
         />
         {/* This empty toolbar provides spacing at the top */}
         <Toolbar />
-        <AppTableOfContents structure={structure} />
+        <TableOfContents structure={structure} />
         <Container maxWidth="md" className={classes.container}>
           {structure.sections.map((section) => (
             <Section

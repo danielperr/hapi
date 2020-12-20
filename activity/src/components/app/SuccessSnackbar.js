@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
 import makeStyles from '@material-ui/styles/makeStyles';
 
-import { strings } from '../shared/localization';
+import { strings } from '../../localization';
 
 const useStyles = makeStyles(() => ({
   root: {
