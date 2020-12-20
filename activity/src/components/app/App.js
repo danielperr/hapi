@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 
 import { Box, CssBaseline, Container, Fab, Toolbar, Typography } from '@material-ui/core';
@@ -10,7 +9,6 @@ import produce from 'immer';
 
 import { strings } from '../../localization';
 import { download, getPhrase } from '../../utils';
-import { dropConfetti } from '../../confetti';
 import { makeActivityContainer } from '../../../../common/make-activity-file';
 import { version } from '../../../package.json';
 import TableOfContents from './TableOfContents';
@@ -19,6 +17,7 @@ import ScrollTop from '../common/ScrollTop';
 import Section from '../section/Section';
 import SuccessSnackbar from './SuccessSnackbar';
 import TopBar from './TopBar';
+import dropConfetti from '../../confetti';
 
 const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
