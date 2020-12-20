@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Zoom, useScrollTrigger } from "@material-ui/core";
@@ -11,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Provides a click-triggered scrolling animation to the top of the page
+ */
 function ScrollTop({ children }) {
   const classes = useStyles();
 
@@ -38,5 +42,10 @@ function ScrollTop({ children }) {
     </Zoom>
   );
 }
+
+ScrollTop.propTypes = {
+  /** Clickable elements that trigger the animated scroll */
+  children: PropTypes.node,
+};
 
 export default ScrollTop;

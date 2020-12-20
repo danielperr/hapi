@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 
 import produce from 'immer';
@@ -19,12 +20,11 @@ import { download, getPhrase } from '../shared/utils';
 import { dropConfetti } from './confetti';
 import { makeActivityContainer } from '../../../common/make-activity-file';
 
-const ACTIVITY_URL = process.env.NODE_ENV && process.env.NODE_ENV === 'development'
-  ? 'C:\\Users\\Daniel\\source\\repos\\hapi\\activity\\build\\index.html'
-  : 'https://hapi-app.netlify.app/empty.html';
+const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
 const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
+// Here we create a global theme to pass it to a ThemeProvider later
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -43,6 +43,9 @@ const theme = createMuiTheme({
   spacing: 8,
 });
 
+// We create style classes to use in the component
+// This approach of styling (instead of CSS) is used througout the whole project
+// `makeStyles` is provided by the design library "Material UI"
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(2),
@@ -70,22 +73,22 @@ const useStyles = makeStyles((theme) => ({
 const FILLABLE_TYPES = ['multi-choice', 'text-input', 'number-input'];
 
 function App({ structure, savedAnswers }) {
-  /* styles */
+  // Get style classes we defined earlier
   const classes = useStyles(theme);
 
-  /* answers */
   // let initialAnswers = JSON.parse(document.getElementById('save-input').value || '{}'); // from file save
   let initialAnswers = savedAnswers; // from save file
   if (!Object.keys(initialAnswers).length) {
     initialAnswers = JSON.parse(localStorage.getItem(structure.serialNumber) || '{}'); // from local storage
   }
 
-  const [answers, setAnswers] = React.useState(initialAnswers);
-  const [showSuccess, setShowSuccess] = React.useState(false);
-
+  // List of elements that can be filled by the user
   const allFillableElements = structure.sections
     .map((s) => s.elements.filter((e) => FILLABLE_TYPES.includes(e.type)))
     .flat(1);
+  /* elementsFeedback will be a state variable, containing feedback information
+    for the user. For example, whether to show red (error) text, and what text
+    to display */
   const initialElementsFeedback = {};
   allFillableElements.forEach((element) => {
     initialElementsFeedback[element.id] = {
@@ -94,42 +97,58 @@ function App({ structure, savedAnswers }) {
       helperText: ' ',
     };
   });
-  // provides the helper text data and the error flag for each fillable element
+
+  // ** STATE VARIABLES **
+  const [answers, setAnswers] = React.useState(initialAnswers);
+  const [showSuccess, setShowSuccess] = React.useState(false);
   const [elementsFeedback, setElementsFeedback] = React.useState(initialElementsFeedback);
-
-  useEffect(() => {
-    document.title = structure.mainHeader;
-  }, []);
-
-  useEffect(() => {
-    // update local storage when an answer changes
-    localStorage.setItem(structure.serialNumber, JSON.stringify(answers));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [answers]);
-
-  /* topbar elevation */
   const [topBarElevation, setTopBarElevation] = React.useState(0);
-  useEffect(() => {
+
+  // Gets called when the component finishes loading for the first time
+  const componentDidMount = () => {
+    // Update document title if it isn't set
+    document.title = structure.mainHeader;
+    // Handle scrolling
     window.addEventListener('scroll', () => {
       setTopBarElevation(window.pageYOffset !== 0);
     }, { passive: true });
-    return () => { window.removeEventListener('scroll', null); };
+  };
+
+  // Method gets called when the component is about to be removed
+  // It's good to disconnect here any event listeners created in componentDidMount
+  const componentWillUnmount = () => {
+    window.removeEventListener('scroll', null);
+  };
+
+  useEffect((...args) => {
+    componentDidMount(...args);
+    return componentWillUnmount;
   }, []);
 
-  /* language */
+  // Listen for when `answers` changes, then update the localStorage
+  useEffect(() => {
+    localStorage.setItem(structure.serialNumber, JSON.stringify(answers));
+  }, [answers]);
+
+  // Setting the language in the localization object (named `strings`)
+  /* If the language is not set in the activity, the browser's default
+    language is selected (this is implemented in the localization library) */
   const lang = structure.language;
   if (lang !== undefined && strings.getLanguage() !== lang) {
     strings.setLanguage(lang);
   }
 
   /**
-   * check the given section
-   * @returns array of incorrect or empty elements' ids (empty array if section is complete)
+   * Checks the given section for unfilled / wrong answers
+   * @returns array of id strings of incorrect or empty elements (empty array if section is ok)
    */
   const checkSection = (section) => {
     const errorElements = [];
+    /* Using the `produce` function from the library "immer" to create a copy
+      of the `elementsFeedback` state variable. We do this to prevent mutating
+      it which would cause react not to re-render. (React should re-render when
+      state changes.) */
     setElementsFeedback(produce(elementsFeedback, (newElementsFeedback) => {
-      // we give the draft state of elementsFeedback to the functions to mutate
       section.elements.forEach((element) => {
         const answer = answers[element.id] || '';
         let correct;
@@ -147,6 +166,7 @@ function App({ structure, savedAnswers }) {
             break;
           default: return;
         }
+        // Update the element's feedback components (color and text)
         newElementsFeedback[element.id].helperText = answer === '' ? strings.answerMissing : getPhrase(correct);
         newElementsFeedback[element.id].showHelperText = true;
         newElementsFeedback[element.id].error = !correct;
@@ -158,20 +178,23 @@ function App({ structure, savedAnswers }) {
     return errorElements;
   };
 
-  /* when a question's value changes */
+  // Gets called from one of the sections when an element's answer is changed
   const handleAnswer = (elementId, answer) => {
-    // reset form feedback text & color
+    // Reset form feedback text & color
     setElementsFeedback(produce(elementsFeedback, (newElementsFeedback) => {
       newElementsFeedback[elementId].helperText = ' ';
       newElementsFeedback[elementId].showHelperText = false;
       newElementsFeedback[elementId].error = false;
     }));
+    // Update the answers state variable
     setAnswers(produce(answers, (newAnswers) => {
       newAnswers[elementId] = answer;
     }));
   };
 
-  /* check the whole activity and display confirmation if complete */
+  // Gets called when the "Check all" button is pressed
+  // Checks all of the activity's sections and drops confetti if all are ok
+  // If not, automatically scrolls to the first problematic element
   const handleSubmitActivity = () => {
     if (structure.sections.every((section) => {
       const errorElementsIds = checkSection(section);
@@ -190,7 +213,7 @@ function App({ structure, savedAnswers }) {
     }
   };
 
-  /* save activity to a file */
+  // Gets called when the "download activity" button is pressed
   const handleSaveActivity = () => {
     // const answersString = JSON.stringify(answers);
     // const thisFileCode = thisFileCodeSnapshot.cloneNode(true);
@@ -209,7 +232,8 @@ function App({ structure, savedAnswers }) {
     }
   };
 
-  /* prompt for confirmation, erase all the answers and reload */
+  // Gets called when the "reset activity" button is pressed
+  // Prompt for confirmation, erase all the answers and reload
   const handleResetActivity = () => {
     if (window.confirm(strings.dialogResetActivity)) {
       setAnswers({});
@@ -220,12 +244,15 @@ function App({ structure, savedAnswers }) {
     }
   };
 
+  // Gets called when the "Check answers" at the end of the section is pressed
   const handleCheckSection = (sectionId) => {
     const section = structure.sections.find((s) => s.id === sectionId);
     return checkSection(section);
   };
 
-  /* success snackbar on close */
+  // Gets called when the x button on the green success snackbar is pressed
+  /* (The "success snackbar" is the green bar that appears at the bottom when
+    the activity is complete) */
   const handleSuccessSnackbarClose = () => {
     setShowSuccess(false);
   };
@@ -233,7 +260,10 @@ function App({ structure, savedAnswers }) {
   const rtl = strings.direction === 'rtl';
 
   return (
+    // Providing the theme we declared earlier
     <ThemeProvider theme={theme}>
+      {/* RTL is a custom element that can apply RTL settings to the design
+        library when the `rtl` variable is set to `true` */}
       <RTL active={rtl}>
         <CssBaseline />
         <div id="back-to-top-anchor" />
@@ -243,6 +273,7 @@ function App({ structure, savedAnswers }) {
           onDownload={handleSaveActivity}
           onReset={handleResetActivity}
         />
+        {/* This empty toolbar provides spacing at the top */}
         <Toolbar />
         <AppTableOfContents structure={structure} />
         <Container maxWidth="md" className={classes.container}>
@@ -258,6 +289,7 @@ function App({ structure, savedAnswers }) {
               key={section.id}
             />
           ))}
+          {/* Rendering the "Check all" button only when there are fillable elements */}
           {allFillableElements.length ? (
             <Box className={classes.checkAllBtnContainer}>
               <Fab
@@ -279,6 +311,7 @@ function App({ structure, savedAnswers }) {
             rtl={rtl}
           />
         </Container>
+        {/* When you click anywhere inside a ScrollTop it scrolls to the top */}
         <ScrollTop>
           <Fab color="secondary" size="small" aria-label="scroll back to top">
             <KeyboardArrowUpIcon />

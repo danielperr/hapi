@@ -1,9 +1,12 @@
-
 import React from 'react';
+import PropTypes from 'prop-types';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset, ThemeProvider } from '@material-ui/core/styles';
 
+/**
+ * Applies RTL styles and flips the page layout horizontally, if active
+ */
 function RTL({ active, children }) {
   if (active) {
     document.body.setAttribute('dir', 'rtl');
@@ -23,5 +26,12 @@ function RTL({ active, children }) {
     </React.Fragment>
   );
 }
+
+RTL.propTypes = {
+  /** Whether to apply RTL styling */
+  active: PropTypes.bool,
+  /** Elements to be affected */
+  children: PropTypes.node,
+};
 
 export default RTL;

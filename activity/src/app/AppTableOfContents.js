@@ -62,12 +62,15 @@ const useStyles = makeStyles((theme) => ({
   active: {},
 }));
 
+/**
+ * The table of contents of the activity, located at the top left corner
+ */
 const AppTableOfContents = ({ structure }) => {
   const classes = useStyles();
   const [activeState, setActiveState] = React.useState();
 
+  // componentDidMount
   useEffect(() => {
-    // componentDidMount
     Events.scrollEvent.register('begin', (to, element) => {
       //console.log('begin', to, element);
     });
@@ -77,8 +80,8 @@ const AppTableOfContents = ({ structure }) => {
       setActiveState(element.id);
     });
 
+    // componentWillUnmount
     return () => {
-      // componentWillUnmount
       Events.scrollEvent.remove('begin');
       Events.scrollEvent.remove('end');
     };

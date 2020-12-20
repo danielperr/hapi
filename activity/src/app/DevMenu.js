@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * The developer menu
+ */
 function DevMenu({ open, anchorEl, onClose }) {
   const classes = useStyles();
 

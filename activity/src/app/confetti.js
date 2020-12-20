@@ -1,6 +1,5 @@
 import $ from "jquery";
 
-
 function create(i) {
   var width = Math.random() * 12;
   var height = width * 0.4;

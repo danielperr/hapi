@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,6 +14,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+/**
+ * Snackbar = A small popup box at the bottom
+ * Success snackbar is a green snackbar with a checkmark symbol
+ */
 function SuccessSnackbar({ open, onClose, rtl }) {
 
   const classes = useStyles();
@@ -55,5 +60,14 @@ function SuccessSnackbar({ open, onClose, rtl }) {
   );
 
 }
+
+SuccessSnackbar.propTypes = {
+  /** Whether the snackbar is shown in the current state */
+  open: PropTypes.bool,
+  /** Function that gets called when the user presses on the x button */
+  onClose: PropTypes.func,
+  /** Whether the app is in RTL styling or not */
+  rtl: PropTypes.bool,
+};
 
 export default SuccessSnackbar;
