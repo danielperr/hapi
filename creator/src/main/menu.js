@@ -1,27 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
-import { makeStyles, IconButton, Button, Box, CircularProgress, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import {
+  makeStyles,
+  IconButton,
+  Button,
+  Box,
+  CircularProgress,
+  Select,
+  FormControl,
+  MenuItem,
+  Slide,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
-import { useSpring, animated, config } from 'react-spring';
-
-import Dropzone from '../shared/dropzone';
 import RotatingIcon from '../shared/rotating-icon';
 
 const useStyles = makeStyles((theme) => ({
-  menuOpenButton: {
+  floatingButtonContainer: {
+    position: 'fixed',
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  floatingButton: {
     backgroundColor: 'white',
     '&:hover': {
       backgroundColor: '#DDDDDD',
     },
     border: 'none',
     outline: 'none',
+    margin: theme.spacing(1),
+  },
+  buttonMenu: {
+    backgroundColor: 'white',
+    position: 'fixed',
+    top: '144px',
+    right: '-20px',
+    padding: theme.spacing(2, 4.5, 2, 2),
+    display: 'flex',
+    borderRadius: theme.spacing(1, 0, 0, 1),
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
   },
   menuButton: {
     marginTop: theme.spacing(1),
+  },
+  dropzone: {
+    border: '1px dashed gray',
+    borderRadius: theme.spacing(0.5),
+    padding: theme.spacing(0.5, 2),
+    lineHeight: '50%',
+    textAlign: 'center',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    cursor: 'pointer !important',
   },
   languageFormControl: {
     marginTop: theme.spacing(1),
@@ -42,10 +79,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLanguage }) {
+function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLanguage, onLaunchPreview }) {
   const classes = useStyles();
   
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleClickPreview = () => {
+    onLaunchPreview();
+  }
   
   const handleClickHamburger = () => {
     setIsOpen(!isOpen);
@@ -67,31 +108,26 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
     onChangeLanguage(e.target.value);
   };
 
-  const { right } = useSpring({ from: { right: '-320px' }, right: isOpen ? '-20px' : '-320px', config: config.stiff });
-
   return (
     <React.Fragment>
-      <StyledHamburgerDiv>
-        <IconButton aria-label="menu" className={classes.menuOpenButton} onClick={handleClickHamburger}>
+      <div className={classes.floatingButtonContainer}>
+        <IconButton aria-label="preview" className={classes.floatingButton} onClick={handleClickPreview}>
+          <VisibilityIcon />
+        </IconButton>
+        <IconButton aria-label="menu" className={classes.floatingButton} onClick={handleClickHamburger}>
           <RotatingIcon
             active={isOpen}
             passiveIcon={<MenuIcon />}
             activeIcon={<ArrowForwardIcon/>}
           />
         </IconButton>
-      </StyledHamburgerDiv>
-      <animated.div
-        style={{
-          position: "fixed",
-          top: '64px',
-          right: right,
-        }}
-      >
-        <StyledButtonMenu>
-            <StyledDropzone onRead={handleDropzoneRead}>
+      </div>
+      <Slide direction="left" in={isOpen} mountOnEnter unmountOnExit>
+        <div className={classes.buttonMenu}>
+            <div className={classes.dropzone} onRead={handleDropzoneRead}>
               <h3>טעינת קובץ</h3>
               <p>ניתן ללחוץ או לגרור הנה</p>
-            </StyledDropzone>
+            </div>
             <Button
               className={classes.menuButton}
               variant="outlined"
@@ -122,47 +158,10 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
                 <MenuItem value="he">עברית</MenuItem>
               </Select>
             </FormControl>
-        </StyledButtonMenu>
-      </animated.div>
+        </div>
+      </Slide>
     </React.Fragment>
   );
 }
-
-const StyledHamburgerDiv = styled.div`
-  position: fixed;
-  top: 8px;
-  right: 8px;
-`
-
-const StyledButtonMenu = styled.div`
-  background-color: white;
-  position: relative;
-  top: 0px;
-  right: 0px;
-  padding: 16px 36px 16px 16px;
-  display: flex;
-  border-radius: 8px 0 0 8px;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-`;
-
-const StyledDropzone = styled(Dropzone)`
-  line-height: 1px;
-  border: 1px dashed gray;
-  border-radius: 4px;
-  padding: 4px 16px;
-  line-height: 50%;
-  text-align: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  cursor: pointer !important;
-`;
-
-const StyledMenuButton = styled.button`
-  font-size: 20px;
-  border-radius: 4px;
-`;
 
 export default Menu;
