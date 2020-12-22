@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { makeStyles, IconButton, Button, Box, CircularProgress, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
+import { makeStyles, IconButton, Button, Box, CircularProgress, Select, FormControl, MenuItem, Slide } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-
-import { useSpring, animated, config } from 'react-spring';
 
 import RotatingIcon from '../shared/rotating-icon';
 
@@ -22,9 +20,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonMenu: {
     backgroundColor: 'white',
-    position: 'relative',
-    top: 0,
-    right: 0,
+    position: 'fixed',
+    top: '64px',
+    right: '-20px',
     padding: theme.spacing(2, 4.5, 2, 2),
     display: 'flex',
     borderRadius: theme.spacing(1, 0, 0, 1),
@@ -90,8 +88,6 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
     onChangeLanguage(e.target.value);
   };
 
-  const { right } = useSpring({ from: { right: '-320px' }, right: isOpen ? '-20px' : '-320px', config: config.stiff });
-
   return (
     <React.Fragment>
       <IconButton aria-label="menu" className={classes.menuOpenButton} onClick={handleClickHamburger}>
@@ -101,13 +97,7 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
           activeIcon={<ArrowForwardIcon/>}
         />
       </IconButton>
-      <animated.div
-        style={{
-          position: "fixed",
-          top: '64px',
-          right: right,
-        }}
-      >
+      <Slide direction="left" in={isOpen} mountOnEnter unmountOnExit>
         <div className={classes.buttonMenu}>
             <div className={classes.dropzone} onRead={handleDropzoneRead}>
               <h3>טעינת קובץ</h3>
@@ -144,7 +134,7 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
               </Select>
             </FormControl>
         </div>
-      </animated.div>
+      </Slide>
     </React.Fragment>
   );
 }
