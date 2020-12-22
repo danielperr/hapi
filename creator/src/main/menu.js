@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
-import styled from 'styled-components';
-
 import { makeStyles, IconButton, Button, Box, CircularProgress, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import { useSpring, animated, config } from 'react-spring';
 
-import Dropzone from '../shared/dropzone';
 import RotatingIcon from '../shared/rotating-icon';
 
 const useStyles = makeStyles((theme) => ({
   menuOpenButton: {
+    position: 'fixed',
+    top: theme.spacing(1),
+    right: theme.spacing(1),
     backgroundColor: 'white',
     '&:hover': {
       backgroundColor: '#DDDDDD',
@@ -20,8 +20,31 @@ const useStyles = makeStyles((theme) => ({
     border: 'none',
     outline: 'none',
   },
+  buttonMenu: {
+    backgroundColor: 'white',
+    position: 'relative',
+    top: 0,
+    right: 0,
+    padding: theme.spacing(2, 4.5, 2, 2),
+    display: 'flex',
+    borderRadius: theme.spacing(1, 0, 0, 1),
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+  },
   menuButton: {
     marginTop: theme.spacing(1),
+  },
+  dropzone: {
+    border: '1px dashed gray',
+    borderRadius: theme.spacing(0.5),
+    padding: theme.spacing(0.5, 2),
+    lineHeight: '50%',
+    textAlign: 'center',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    cursor: 'pointer !important',
   },
   languageFormControl: {
     marginTop: theme.spacing(1),
@@ -71,15 +94,13 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
 
   return (
     <React.Fragment>
-      <StyledHamburgerDiv>
-        <IconButton aria-label="menu" className={classes.menuOpenButton} onClick={handleClickHamburger}>
-          <RotatingIcon
-            active={isOpen}
-            passiveIcon={<MenuIcon />}
-            activeIcon={<ArrowForwardIcon/>}
-          />
-        </IconButton>
-      </StyledHamburgerDiv>
+      <IconButton aria-label="menu" className={classes.menuOpenButton} onClick={handleClickHamburger}>
+        <RotatingIcon
+          active={isOpen}
+          passiveIcon={<MenuIcon />}
+          activeIcon={<ArrowForwardIcon/>}
+        />
+      </IconButton>
       <animated.div
         style={{
           position: "fixed",
@@ -87,11 +108,11 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
           right: right,
         }}
       >
-        <StyledButtonMenu>
-            <StyledDropzone onRead={handleDropzoneRead}>
+        <div className={classes.buttonMenu}>
+            <div className={classes.dropzone} onRead={handleDropzoneRead}>
               <h3>טעינת קובץ</h3>
               <p>ניתן ללחוץ או לגרור הנה</p>
-            </StyledDropzone>
+            </div>
             <Button
               className={classes.menuButton}
               variant="outlined"
@@ -122,47 +143,10 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
                 <MenuItem value="he">עברית</MenuItem>
               </Select>
             </FormControl>
-        </StyledButtonMenu>
+        </div>
       </animated.div>
     </React.Fragment>
   );
 }
-
-const StyledHamburgerDiv = styled.div`
-  position: fixed;
-  top: 8px;
-  right: 8px;
-`
-
-const StyledButtonMenu = styled.div`
-  background-color: white;
-  position: relative;
-  top: 0px;
-  right: 0px;
-  padding: 16px 36px 16px 16px;
-  display: flex;
-  border-radius: 8px 0 0 8px;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-`;
-
-const StyledDropzone = styled(Dropzone)`
-  line-height: 1px;
-  border: 1px dashed gray;
-  border-radius: 4px;
-  padding: 4px 16px;
-  line-height: 50%;
-  text-align: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  cursor: pointer !important;
-`;
-
-const StyledMenuButton = styled.button`
-  font-size: 20px;
-  border-radius: 4px;
-`;
 
 export default Menu;
