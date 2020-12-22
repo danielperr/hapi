@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { lightBlue } from '@material-ui/core/colors';
-import { CssBaseline, Box, Fab } from '@material-ui/core';
+import { CssBaseline, Box, Fab, Modal, Fade, Backdrop } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
@@ -20,10 +20,9 @@ import FocusAwarePaper from '../shared/focus-aware-paper';
 import Editable from '../shared/editable';
 import Section from './section';
 import Menu from './menu';
+import PreviewWindow from '../shared/preview-window';
 
-const ACTIVITY_URL = process.env.NODE_ENV && process.env.NODE_ENV === 'development'
-  ? 'C:\\Users\\Daniel\\source\\repos\\hapi\\activity\\build\\index.html'
-  : 'https://hapi-app.netlify.app/empty.html';
+const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
 const THEME = createMuiTheme({
   direction: 'rtl',
@@ -86,6 +85,7 @@ function App({ initial }) {
   const [structure, setStructure] = useState(initial || initialStructure);
   const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
   const [exportButtonLoading, setExportButtonLoading] = useState(false);
+  const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
 
   const didMount = useRef(false);
   useEffect(() => {
@@ -125,6 +125,14 @@ function App({ initial }) {
       downloadFileWithContents(`${filename}.hapi.html`, makeActivityContainer(structure, {}, filename, ACTIVITY_URL))
     }
     setExportButtonLoading(false);
+  };
+
+  const handleLaunchPreview = () => {
+    setPreviewWindowOpen(true);
+  };
+
+  const handleClosePreview = () => {
+    setPreviewWindowOpen(false);
   };
 
   const handleChangeMainHeader = (text) => {
@@ -261,53 +269,62 @@ function App({ initial }) {
   };
 
   return (
-    <LanguageContext.Provider value={structure.language}>
-      <ThemeProvider theme={THEME}>
-        {/* <CssBaseline /> */}
-        <Box className={classes.mainContainer}>
-          <Menu
-            language={structure.language}
-            onChangeLanguage={handleChangeLanguage}
-            onLoad={handleLoad}
-            onSave={handleSave}
-            onExport={handleExport}
-            exportLoading={exportButtonLoading}
-          />
-          <FocusAwarePaper className={classes.mainHeader}>
-            <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed={true} height='64px'>
-              {structure.mainHeader}
-            </Editable>
-          </FocusAwarePaper>
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="sections" type="SECTION">
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  {structure.sections.map((section, index) => (
-                    <Section
-                      key={section.id}
-                      index={index}
-                      structure={section}
-                      onUpdate={handleUpdateSection}
-                      onDuplicate={handleDuplicateSection}
-                      onDelete={handleDeleteSection}
-                    />
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-          <br />
-          <Fab onClick={handleClickAddSection} color="primary">
-            <AddIcon />
-          </Fab>
-        </Box>
-        <p className={classes.version}>{version}</p>
-      </ThemeProvider>
-    </LanguageContext.Provider>
+    <>
+      <PreviewWindow
+        open={previewWindowOpen}
+        onClose={handleClosePreview}
+        structure={structure}
+        activityUrl={ACTIVITY_URL}
+      />
+      <LanguageContext.Provider value={structure.language}>
+        <ThemeProvider theme={THEME}>
+          {/* <CssBaseline /> */}
+          <Box className={classes.mainContainer}>
+            <Menu
+              language={structure.language}
+              onChangeLanguage={handleChangeLanguage}
+              onLoad={handleLoad}
+              onSave={handleSave}
+              onExport={handleExport}
+              exportLoading={exportButtonLoading}
+              onLaunchPreview={handleLaunchPreview}
+            />
+            <FocusAwarePaper className={classes.mainHeader}>
+              <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed={true} height='64px'>
+                {structure.mainHeader}
+              </Editable>
+            </FocusAwarePaper>
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="sections" type="SECTION">
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {structure.sections.map((section, index) => (
+                      <Section
+                        key={section.id}
+                        index={index}
+                        structure={section}
+                        onUpdate={handleUpdateSection}
+                        onDuplicate={handleDuplicateSection}
+                        onDelete={handleDeleteSection}
+                      />
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+            <br />
+            <Fab onClick={handleClickAddSection} color="primary">
+              <AddIcon />
+            </Fab>
+          </Box>
+          <p className={classes.version}>{version}</p>
+        </ThemeProvider>
+      </LanguageContext.Provider>
+    </>
   );
 }
 

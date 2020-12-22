@@ -1,27 +1,43 @@
 import React, { useState } from 'react';
 
-import { makeStyles, IconButton, Button, Box, CircularProgress, Select, FormControl, MenuItem, Slide } from '@material-ui/core';
+import {
+  makeStyles,
+  IconButton,
+  Button,
+  Box,
+  CircularProgress,
+  Select,
+  FormControl,
+  MenuItem,
+  Slide,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import RotatingIcon from '../shared/rotating-icon';
 
 const useStyles = makeStyles((theme) => ({
-  menuOpenButton: {
+  floatingButtonContainer: {
     position: 'fixed',
     top: theme.spacing(1),
     right: theme.spacing(1),
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  floatingButton: {
     backgroundColor: 'white',
     '&:hover': {
       backgroundColor: '#DDDDDD',
     },
     border: 'none',
     outline: 'none',
+    margin: theme.spacing(1),
   },
   buttonMenu: {
     backgroundColor: 'white',
     position: 'fixed',
-    top: '64px',
+    top: '144px',
     right: '-20px',
     padding: theme.spacing(2, 4.5, 2, 2),
     display: 'flex',
@@ -63,10 +79,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLanguage }) {
+function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLanguage, onLaunchPreview }) {
   const classes = useStyles();
   
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleClickPreview = () => {
+    onLaunchPreview();
+  }
   
   const handleClickHamburger = () => {
     setIsOpen(!isOpen);
@@ -90,13 +110,18 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
 
   return (
     <React.Fragment>
-      <IconButton aria-label="menu" className={classes.menuOpenButton} onClick={handleClickHamburger}>
-        <RotatingIcon
-          active={isOpen}
-          passiveIcon={<MenuIcon />}
-          activeIcon={<ArrowForwardIcon/>}
-        />
-      </IconButton>
+      <div className={classes.floatingButtonContainer}>
+        <IconButton aria-label="preview" className={classes.floatingButton} onClick={handleClickPreview}>
+          <VisibilityIcon />
+        </IconButton>
+        <IconButton aria-label="menu" className={classes.floatingButton} onClick={handleClickHamburger}>
+          <RotatingIcon
+            active={isOpen}
+            passiveIcon={<MenuIcon />}
+            activeIcon={<ArrowForwardIcon/>}
+          />
+        </IconButton>
+      </div>
       <Slide direction="left" in={isOpen} mountOnEnter unmountOnExit>
         <div className={classes.buttonMenu}>
             <div className={classes.dropzone} onRead={handleDropzoneRead}>
