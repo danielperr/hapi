@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { strings } from '../../localization';
+import structureType from '../../../../common/structure-type';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,12 +72,11 @@ const TableOfContents = ({ structure }) => {
 
   // componentDidMount
   useEffect(() => {
-    Events.scrollEvent.register('begin', (to, element) => {
-      //console.log('begin', to, element);
-    });
+    // Events.scrollEvent.register('begin', (to, element) => {
+    //   console.log('begin', to, element);
+    // });
 
-    Events.scrollEvent.register('end', function (to, element) {
-      //console.log('end', to, element);
+    Events.scrollEvent.register('end', (_to, element) => {
       setActiveState(element.id);
     });
 
@@ -97,7 +97,6 @@ const TableOfContents = ({ structure }) => {
     });
   };
 
-  
   const handleClick = (hash) => (event) => {
     // Ignore click for new tab/new window behavior
     if (
@@ -124,35 +123,35 @@ const TableOfContents = ({ structure }) => {
   const itemLink = (item) => (
     <Link
       to={item.hash}
-      spy={true}
-      smooth={true}
+      spy
+      smooth
       offset={item.index === 0 ? -98 : -90}
       duration={500}
-      isDynamic={true}
+      isDynamic
       onSetActive={() => handleSetActive(item.hash)}
-      //onSetInactive={this.handleSetInactive}
+      // onSetInactive={this.handleSetInactive}
       ignoreCancelEvents={false}
       href={`#${item.hash}`}
-      //onClick={handleClick(item.hash)}
+      // onClick={handleClick(item.hash)}
       className={clsx(
         classes.item,
-        activeState === item.hash ? classes.active : undefined
+        activeState === item.hash ? classes.active : undefined,
       )}
     >
-      <span dangerouslySetInnerHTML={{ __html: item.text }} />
+      {/* <span dangerouslySetInnerHTML={{ __html: item.text }} /> */}
+      {item.text}
     </Link>
   );
 
   const items = [];
   structure.sections.forEach((section, index) => {
-    items.push({ text: section.header, hash: section.id, index: index });
+    items.push({ text: section.header, hash: section.id, index });
   });
-  
-  
+
   return (
-    <nav className={classes.root} aria-label={'Page Table Of Contents'}>
+    <nav className={classes.root} aria-label="Page Table Of Contents">
       {items.length > 0 ? (
-        <React.Fragment>
+        <>
           <Typography gutterBottom className={classes.contents}>
             <Box fontWeight="fontWeightBold">{strings.tableOfContents}</Box>
           </Typography>
@@ -161,10 +160,14 @@ const TableOfContents = ({ structure }) => {
               <li key={item.text} className={classes.li}>{itemLink(item)}</li>
             ))}
           </Typography>
-        </React.Fragment>
+        </>
       ) : null}
     </nav>
   );
+};
+
+TableOfContents.propTypes = {
+  structure: structureType.isRequired,
 };
 
 export default TableOfContents;

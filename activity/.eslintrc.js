@@ -15,8 +15,10 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [
+    'only-warn',
     'react',
   ],
   rules: {
+    'linebreak-style': 0,
   },
 };

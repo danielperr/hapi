@@ -1,11 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import NumberFormat from 'react-number-format';
 import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { FormControl, TextField, FormHelperText, Divider } from '@material-ui/core';
+import {
+  FormControl,
+  TextField,
+  FormHelperText,
+  Divider,
+} from '@material-ui/core';
 
 import RichLabel from '../common/RichLabel';
 
@@ -106,19 +112,42 @@ function ElementNumberInput({
   );
 }
 
+ElementNumberInput.propTypes = {
+  text: PropTypes.string,
+  error: PropTypes.bool,
+  helperText: PropTypes.string,
+  showHelperText: PropTypes.bool,
+  answer: PropTypes.string,
+  onAnswer: PropTypes.func,
+  id: PropTypes.string.isRequired,
+};
+
+ElementNumberInput.defaultProps = {
+  text: '',
+  error: false,
+  helperText: '',
+  showHelperText: false,
+  answer: '',
+  onAnswer: () => {},
+};
+
 export default ElementNumberInput;
 
-function NumberFormatCustom(props) {
-  const { inputRef, onChange, ...other } = props;
-
+function NumberFormatCustom({
+  inputRef,
+  onChange,
+  name,
+  ...props
+}) {
   return (
     <NumberFormat
-      {...other}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
       getInputRef={inputRef}
       onValueChange={(values) => {
         onChange({
           target: {
-            name: props.name,
+            name,
             value: values.value,
           },
         });
@@ -128,3 +157,18 @@ function NumberFormatCustom(props) {
     />
   );
 }
+
+NumberFormatCustom.propTypes = {
+  inputRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
+  onChange: PropTypes.func,
+  name: PropTypes.string,
+};
+
+NumberFormatCustom.defaultProps = {
+  inputRef: null,
+  onChange: () => {},
+  name: '',
+};

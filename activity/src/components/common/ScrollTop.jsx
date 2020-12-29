@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Zoom, useScrollTrigger } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Zoom, useScrollTrigger } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: "fixed",
+    position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2),
   },
@@ -26,11 +26,11 @@ function ScrollTop({ children }) {
 
   const handleClick = (event) => {
     const anchor = (event.target.ownerDocument || document).querySelector(
-      "#back-to-top-anchor"
+      '#back-to-top-anchor',
     );
 
     if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 
@@ -45,7 +45,7 @@ function ScrollTop({ children }) {
 
 ScrollTop.propTypes = {
   /** Clickable elements that trigger the animated scroll */
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 };
 
 export default ScrollTop;

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1, 0, 0),
-  }
+  },
 }));
 
 /**
@@ -50,7 +51,7 @@ function DevMenu({ open, anchorEl, onClose }) {
     setStructureText(await window.navigator.clipboard.readText());
   };
 
-  const handleLoadFile = (e) => {
+  const handleLoadFile = () => {
     const reader = new FileReader();
     reader.onload = () => {
       setStructureText(reader.result);
@@ -87,9 +88,9 @@ function DevMenu({ open, anchorEl, onClose }) {
           wrap="soft"
           className={classes.textarea}
           onChange={handleChangeStructureText}
-        ></textarea>
+        />
         <div>
-          <label htmlFor="devmode-structure-file">Or from a file: </label>
+          <span htmlFor="devmode-structure-file">Or from a file: </span>
           <input
             type="file"
             id="devmode-structure-file"
@@ -101,19 +102,30 @@ function DevMenu({ open, anchorEl, onClose }) {
           variant="outlined"
           color="primary"
           onClick={handlePaste}
-          className={classes.button}>
-            Paste from clipboard
+          className={classes.button}
+        >
+          Paste from clipboard
         </Button>
         <Button
           variant="contained"
           color="primary"
           onClick={handleSaveStructure}
-          className={classes.button}>
-            Save structure and refresh
+          className={classes.button}
+        >
+          Save structure and refresh
         </Button>
       </div>
     </Popover>
-  )
+  );
 }
+
+DevMenu.propTypes = {
+  /** Whether the devmenu is open in the current app state */
+  open: PropTypes.bool.isRequired,
+  /** Which HTML element to open from */
+  anchorEl: PropTypes.instanceOf(Element).isRequired,
+  /** Close event */
+  onClose: PropTypes.func.isRequired,
+};
 
 export default DevMenu;

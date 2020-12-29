@@ -73,7 +73,7 @@ function TopBar({ elevation, mainHeader, onDownload, onReset }) {
           </IconButton>
           {/* Create the dev menu only on development environment (when running on `npm start`) */}
           {process.env.NODE_ENV && process.env.NODE_ENV === 'development' && (
-            <React.Fragment>
+            <>
               <Divider
                 orientation="vertical"
                 flexItem
@@ -82,7 +82,7 @@ function TopBar({ elevation, mainHeader, onDownload, onReset }) {
               <Tooltip title="Developer Menu">
                 <IconButton color="inherit" onClick={() => { setDevMenuOpen(true); }}>
                   <CodeIcon />
-                  <div ref={devMenuButtonRef}></div>
+                  <div ref={devMenuButtonRef} />
                 </IconButton>
               </Tooltip>
               <DevMenu
@@ -90,7 +90,7 @@ function TopBar({ elevation, mainHeader, onDownload, onReset }) {
                 anchorEl={devMenuButtonRef.current}
                 onClose={() => { setDevMenuOpen(false); }}
               />
-            </React.Fragment>
+            </>
           )}
           {/* </devmenu> */}
           <Divider
@@ -110,13 +110,17 @@ function TopBar({ elevation, mainHeader, onDownload, onReset }) {
 
 TopBar.propTypes = {
   /** Elevation shadow amount */
-  elevation: PropTypes.number,
+  elevation: PropTypes.bool,
   /** Activity's main header */
-  mainHeader: PropTypes.string,
+  mainHeader: PropTypes.string.isRequired,
   /** Activity download event */
-  onDownload: PropTypes.func,
+  onDownload: PropTypes.func.isRequired,
   /** Activity reset event */
-  onReset: PropTypes.func,
+  onReset: PropTypes.func.isRequired,
+};
+
+TopBar.defaultProps = {
+  elevation: false,
 };
 
 export default TopBar;

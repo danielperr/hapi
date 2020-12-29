@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import { BlockMath, InlineMath } from 'react-katex';
 import { withStyles } from '@material-ui/core';
@@ -8,11 +9,11 @@ import 'katex/dist/katex.min.css';
 
 const CustomCss = withStyles({
   '@global': {
-    'p': {
+    p: {
       marginTop: 0,
       marginBottom: 0,
     },
-    'img': {
+    img: {
       maxWidth: '50%',
     },
     '.katex': {
@@ -24,38 +25,58 @@ const CustomCss = withStyles({
   },
 })(() => null);
 
-function RichLabel(props) {
+function RichLabel({
+  className,
+  htmlFor,
+  href,
+  children,
+}) {
   const labelRef = useRef(null);
 
   return (
-    <React.Fragment>
+    <>
       <CustomCss />
       <label
-        className={props.className}
-        htmlFor={props.htmlFor}
+        className={className}
+        htmlFor={htmlFor}
         ref={labelRef}
       >
         <ReactMarkdown
           plugins={[math]}
           renderers={{
-            link: (prohtmlKatexps) => (
+            link: () => (
               <a
-                href={props.href}
+                href={href}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {props.children}
+                {children}
               </a>
             ),
-            inlineMath: ({value}) => <InlineMath math={value} />,
-            math: ({value}) => <BlockMath math={value} />
+            // eslint-disable-next-line react/prop-types
+            inlineMath: ({ value }) => <InlineMath math={value} />,
+            // eslint-disable-next-line react/prop-types
+            math: ({ value }) => <BlockMath math={value} />,
           }}
         >
-          {props.children}
+          {children}
         </ReactMarkdown>
       </label>
-    </React.Fragment>
+    </>
   );
 }
+
+RichLabel.propTypes = {
+  className: PropTypes.string,
+  htmlFor: PropTypes.string,
+  href: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
+RichLabel.defaultProps = {
+  className: '',
+  htmlFor: '',
+  href: '',
+};
 
 export default RichLabel;

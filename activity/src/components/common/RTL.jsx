@@ -22,9 +22,9 @@ function RTL({ active, children }) {
       </StylesProvider>
     </ThemeProvider>
   ) : (
-    <React.Fragment>
+    <>
       {children}
-    </React.Fragment>
+    </>
   );
 }
 
@@ -32,7 +32,11 @@ RTL.propTypes = {
   /** Whether to apply RTL styling */
   active: PropTypes.bool,
   /** Elements to be affected */
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
+};
+
+RTL.defaultProps = {
+  active: true,
 };
 
 export default RTL;

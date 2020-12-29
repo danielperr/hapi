@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
-import katex from 'katex'
+import katex from 'katex';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,7 +24,15 @@ function ElementLatex({ latex }) {
     katex.render(latex, latexFieldRef.current, { throwOnError: false, displayMode: true });
   }, []);
 
-  return <div ref={latexFieldRef} className={classes.latexField}></div>;
+  return <div ref={latexFieldRef} className={classes.latexField} />;
 }
+
+ElementLatex.propTypes = {
+  latex: PropTypes.string,
+};
+
+ElementLatex.defaultProps = {
+  latex: '',
+};
 
 export default ElementLatex;

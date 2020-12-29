@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { makeStyles } from "@material-ui/core/styles";
-import { TextField, FormControl, FormHelperText, Divider } from "@material-ui/core";
+import {
+  Divider,
+  FormControl,
+  FormHelperText,
+  TextField,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import RichLabel from '../common/RichLabel';
 
@@ -25,10 +31,10 @@ const useStyles = makeStyles((theme) => ({
   },
   questionLabel: {
     color: theme.palette.text.secondary,
-    "&$errorState,&:active": {
+    '&$errorState,&:active': {
       color: theme.palette.error.main,
     },
-    "&$successState,&:active": {
+    '&$successState,&:active': {
       color: theme.palette.success.main,
     },
   },
@@ -36,25 +42,32 @@ const useStyles = makeStyles((theme) => ({
   successState: {},
 }));
 
-
 /*
  <ElementTextInput
     text (string): question / title
     multiline (string): is multiline or not if not undefined
     error (boolean): whether the answer is incorrect
-    showHelperText (boolean): whether the question has been validated (f.e using a 'check answers' button)
+    showHelperText (boolean): whether the question has been validated ('check answers' button)
     answer (string): filled text
     onAnswer (function): callback fcn when an answer is filled
     id (string): question id
   />
 */
-function ElementTextInput(props) {
+function ElementTextInput({
+  id,
+  text,
+  answer,
+  onAnswer,
+  multiline,
+  error,
+  showHelperText,
+  helperText,
+}) {
   const classes = useStyles();
 
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  let [value, setValue] = React.useState(props.answer);
-  const [isChanged, setIsChanged] = React.useState(false);
+  const [value, setValue] = React.useState(answer);
 
   const reset = () => {
     setSeconds(0);
@@ -62,7 +75,6 @@ function ElementTextInput(props) {
   };
 
   const handleChange = (e) => {
-    setIsChanged(true);
     setValue(e.target.value);
     setSeconds(0);
     setIsActive(true);
@@ -72,11 +84,11 @@ function ElementTextInput(props) {
     let interval = null;
     if (isActive) {
       if (seconds >= 2) {
-        props.onAnswer(props.id, value);
+        onAnswer(id, value);
         reset();
       } else {
         interval = setInterval(() => {
-          setSeconds((seconds) => seconds + 1);
+          setSeconds(seconds + 1);
         }, 100);
       }
     } else if (!isActive && seconds !== 0) {
@@ -85,39 +97,59 @@ function ElementTextInput(props) {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-
   return (
-    <FormControl 
-      error={props.showHelperText && props.error} 
-      noValidate 
-      autoComplete="off" 
-      fullWidth={true} 
-      className={props.formControl}
+    <FormControl
+      error={showHelperText && error}
+      noValidate
+      autoComplete="off"
+      fullWidth
+      className={classes.formControl}
     >
       <RichLabel
         className={clsx(
           classes.questionLabel,
-          (props.showHelperText && props.error) ? classes.errorState : undefined,
+          (showHelperText && error) ? classes.errorState : undefined,
         )}
       >
-        {props.text}
+        {text}
       </RichLabel>
       <br />
-        <TextField
-            onChange={handleChange}
-            defaultValue={props.answer}
-            multiline={!!props.multiline}
-            inputProps={{maxLength: 85}}
-            rows={6}
-            fullWidth={true}
-            variant="outlined"
-        />
+      <TextField
+        onChange={handleChange}
+        defaultValue={answer}
+        multiline={!!multiline}
+        inputProps={{ maxLength: 85 }}
+        rows={6}
+        fullWidth
+        variant="outlined"
+      />
       <FormHelperText className={classes.formHelperText}>
-        {props.helperText}
+        {helperText}
       </FormHelperText>
       <Divider className={classes.divider} />
     </FormControl>
   );
 }
+
+ElementTextInput.propTypes = {
+  id: PropTypes.string.isRequired,
+  text: PropTypes.string,
+  answer: PropTypes.string,
+  onAnswer: PropTypes.func,
+  multiline: PropTypes.bool,
+  error: PropTypes.bool,
+  showHelperText: PropTypes.bool,
+  helperText: PropTypes.string,
+};
+
+ElementTextInput.defaultProps = {
+  text: '',
+  answer: '',
+  onAnswer: () => {},
+  multiline: false,
+  error: false,
+  showHelperText: false,
+  helperText: '',
+};
 
 export default ElementTextInput;

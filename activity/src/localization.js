@@ -1,13 +1,12 @@
-
+/* eslint-disable import/prefer-default-export */
 import LocalizedStrings from 'react-localization';
 
 export const strings = new LocalizedStrings({
-
   en: {
     direction: 'ltr',
 
     tableOfContents: 'Contents',
-    
+
     actionResetActivity: 'Reset activity',
     actionSaveAsFile: 'Save activity as file',
     actionCheckAnswer: 'Check answers',
@@ -41,7 +40,7 @@ export const strings = new LocalizedStrings({
     direction: 'rtl',
 
     tableOfContents: 'תוכן עניינים',
-    
+
     actionResetActivity: 'מחיקת הכל',
     actionSaveAsFile: 'שמירה כקובץ',
     actionCheckAnswer: 'בדוק תשובות',
@@ -66,9 +65,9 @@ export const strings = new LocalizedStrings({
 
     dialogResetActivity: 'כל התשובות בפעילות זו יימחקו לצמיתות.\nלהמשיך?',
     dialogSaveAs: 'שמור בשם:',
-    
+
     unknownElement: 'אלמנט לא מזוהה',
-    
-  }
+
+  },
 
 });
