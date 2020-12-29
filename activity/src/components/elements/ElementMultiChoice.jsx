@@ -17,9 +17,6 @@ import { shuffle } from '../../utils';
 import RichLabel from '../common/RichLabel';
 
 const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(3),
-  },
   formControlLabel: {
     margin: -theme.spacing(0.25),
   },
@@ -102,7 +99,6 @@ function ElementMultiChoice({
       fullWidth
       component="fieldset"
       error={showHelperText && error}
-      className={classes.formControl}
     >
       <RichLabel
         className={clsx(

@@ -14,9 +14,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import RichLabel from '../common/RichLabel';
 
 const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(3),
-  },
   formControlLabel: {
     margin: -theme.spacing(0.25),
   },
@@ -103,7 +100,6 @@ function ElementTextInput({
       noValidate
       autoComplete="off"
       fullWidth
-      className={classes.formControl}
     >
       <RichLabel
         className={clsx(
