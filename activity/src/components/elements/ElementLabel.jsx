@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 
 import RichLabel from '../common/RichLabel';
 
-// class ElementLabel extends React.Component {
-function ElementLabel({ text }) {
+/**
+ * An element that displays a piece of text. Supports markdown and LaTeX syntax.
+ */
+function ElementLabel({ structure }) {
+  const { text } = structure;
   return <RichLabel className="label-element">{text}</RichLabel>;
 }
 
 ElementLabel.propTypes = {
-  text: PropTypes.string,
-};
-
-ElementLabel.defaultProps = {
-  text: '',
+  structure: PropTypes.shape({
+    text: PropTypes.string,
+  }).isRequired,
 };
 
 export default ElementLabel;

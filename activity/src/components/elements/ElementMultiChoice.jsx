@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { feedbackType } from '../../../../common/types';
 import { shuffle } from '../../utils';
 import RichLabel from '../common/RichLabel';
 
@@ -48,35 +49,30 @@ const useStyles = makeStyles((theme) => ({
   successState: {},
 }));
 
-/*
- <ElementMultiChoice
-    text (string): question text / title
-    correct (list): correct answers
-    incorrect (list): incorrect answers
-    error (boolean): whether the answer is incorrect
-    showHelperText (boolean): whether the question has been validated (with 'check answers' button)
-    answer (string): predefined answer (from loading a saved file)
-    onAnswer (function): callback fcn when an answer is selected
-    id (string): question id
-  />
-*/
+/**
+ * A question element with selectable options from a list
+ */
 function ElementMultiChoice({
-  id,
-  text,
+  structure,
+  feedback,
   answer,
-  dontShuffle,
-  error,
-  showHelperText,
-  helperText,
   onAnswer,
-  // options
-  ...props
 }) {
+  const {
+    text,
+    dontShuffle,
+  } = structure;
+  const {
+    error,
+    showHelperText,
+    helperText,
+  } = feedback;
+
   const classes = useStyles();
 
   // We're using react state to preserve our shuffled options between rerenders
   // eslint-disable-next-line react/destructuring-assignment
-  const [options, setOptions] = React.useState(props.options);
+  const [options, setOptions] = React.useState(structure.options);
   const [isShuffled, setIsShuffled] = React.useState(false);
 
   const [value, setValue] = React.useState(answer);
@@ -90,7 +86,7 @@ function ElementMultiChoice({
 
   const handleRadioChange = (event) => {
     const selectedOptionId = event.target.value;
-    onAnswer(id, selectedOptionId);
+    onAnswer(selectedOptionId);
     setValue(selectedOptionId);
   };
 
@@ -147,44 +143,22 @@ function ElementMultiChoice({
 }
 
 ElementMultiChoice.propTypes = {
-  /** id of the question element */
-  id: PropTypes.string.isRequired,
-  /** Question text */
-  text: PropTypes.string,
-  /** List of the choosable options of the question */
-  options: PropTypes.arrayOf(PropTypes.shape({
+  structure: PropTypes.shape({
+    /** id of the question element */
     id: PropTypes.string.isRequired,
+    /** Question text */
     text: PropTypes.string,
-  })),
-  /** Preselected answer (from the last save for example),
-    this is a string with the id of the selected option. */
-  answer: PropTypes.string,
-  /** Whether to NOT shuffle the options (given from the structure) in random order */
-  dontShuffle: PropTypes.bool,
-  /** Whether to mark this question as problematic (i.e. mark it in red) */
-  error: PropTypes.bool,
-  /** Whether to show the feedback text beneath the question */
-  showHelperText: PropTypes.bool,
-  /** The feedback text to display beneath the question */
-  helperText: PropTypes.string,
-  /** Callback event for when the user selects an answer.
-   * Function args: onAnswer(
-   *   id of the question (str),
-   *   id of the selected answer (str)
-   * )
-  */
-  onAnswer: PropTypes.func,
-};
-
-ElementMultiChoice.defaultProps = {
-  text: '',
-  options: [],
-  answer: '',
-  dontShuffle: false,
-  error: false,
-  showHelperText: false,
-  helperText: ' ',
-  onAnswer: () => {},
+    /** List of the choosable options of the question */
+    options: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      text: PropTypes.string,
+    })),
+    /** Whether to NOT shuffle the options (given from the structure) in random order */
+    dontShuffle: PropTypes.bool,
+  }).isRequired,
+  feedback: feedbackType.isRequired,
+  answer: PropTypes.string.isRequired,
+  onAnswer: PropTypes.func.isRequired,
 };
 
 export default ElementMultiChoice;

@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { feedbackType } from '../../../../common/types';
 import RichLabel from '../common/RichLabel';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,27 +40,26 @@ const useStyles = makeStyles((theme) => ({
   successState: {},
 }));
 
-/*
- <ElementTextInput
-    text (string): question / title
-    multiline (string): is multiline or not if not undefined
-    error (boolean): whether the answer is incorrect
-    showHelperText (boolean): whether the question has been validated ('check answers' button)
-    answer (string): filled text
-    onAnswer (function): callback fcn when an answer is filled
-    id (string): question id
-  />
-*/
+/**
+ * A question element that accepts text as an answer.
+ */
 function ElementTextInput({
-  id,
-  text,
+  structure,
+  feedback,
   answer,
   onAnswer,
-  multiline,
-  error,
-  showHelperText,
-  helperText,
 }) {
+  const {
+    id,
+    text,
+    multiline,
+  } = structure;
+  const {
+    error,
+    showHelperText,
+    helperText,
+  } = feedback;
+
   const classes = useStyles();
 
   const [seconds, setSeconds] = useState(0);
@@ -81,7 +81,7 @@ function ElementTextInput({
     let interval = null;
     if (isActive) {
       if (seconds >= 2) {
-        onAnswer(id, value);
+        onAnswer(value);
         reset();
       } else {
         interval = setInterval(() => {
@@ -128,24 +128,14 @@ function ElementTextInput({
 }
 
 ElementTextInput.propTypes = {
-  id: PropTypes.string.isRequired,
-  text: PropTypes.string,
-  answer: PropTypes.string,
-  onAnswer: PropTypes.func,
-  multiline: PropTypes.bool,
-  error: PropTypes.bool,
-  showHelperText: PropTypes.bool,
-  helperText: PropTypes.string,
-};
-
-ElementTextInput.defaultProps = {
-  text: '',
-  answer: '',
-  onAnswer: () => {},
-  multiline: false,
-  error: false,
-  showHelperText: false,
-  helperText: '',
+  structure: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    text: PropTypes.string,
+    multiline: PropTypes.bool,
+  }).isRequired,
+  feedback: feedbackType.isRequired,
+  answer: PropTypes.string.isRequired,
+  onAnswer: PropTypes.func.isRequired,
 };
 
 export default ElementTextInput;

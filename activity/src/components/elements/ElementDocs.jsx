@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// <ElementDocs id="" src="" />
-function ElementDocs({ id, src }) {
+/**
+ * An element that displays a google docs embed.
+ */
+function ElementDocs({ structure }) {
+  const { id, src } = structure;
   return (
     <div
       style={{
@@ -29,12 +32,10 @@ function ElementDocs({ id, src }) {
 }
 
 ElementDocs.propTypes = {
-  id: PropTypes.string.isRequired,
-  src: PropTypes.string,
-};
-
-ElementDocs.defaultProps = {
-  src: '',
+  structure: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    src: PropTypes.string,
+  }).isRequired,
 };
 
 export default ElementDocs;

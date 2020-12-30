@@ -1,7 +1,21 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-param-reassign */
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-import { Box, CssBaseline, Container, Fab, Toolbar, Typography } from '@material-ui/core';
-import { ThemeProvider, createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import {
+  Box,
+  CssBaseline,
+  Container,
+  Fab,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
+import {
+  ThemeProvider,
+  unstable_createMuiStrictModeTheme as createMuiTheme,
+  makeStyles,
+} from '@material-ui/core/styles';
 import { scroller } from 'react-scroll';
 import CheckIcon from '@material-ui/icons/Check';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -18,10 +32,11 @@ import Section from '../section/Section';
 import SuccessSnackbar from './SuccessSnackbar';
 import TopBar from './TopBar';
 import dropConfetti from '../../confetti';
+import { activityStructureType } from '../../../../common/types';
 
 const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
-const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
+// const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
 // Here we create a global theme to pass it to a ThemeProvider later
 const theme = createMuiTheme({
@@ -45,7 +60,7 @@ const theme = createMuiTheme({
 // We create style classes to use in the component
 // This approach of styling (instead of CSS) is used througout the whole project
 // `makeStyles` is provided by the design library "Material UI"
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
     marginTop: theme.spacing(2),
   },
@@ -75,21 +90,21 @@ function App({ structure, savedAnswers }) {
   // Get style classes we defined earlier
   const classes = useStyles(theme);
 
-  // let initialAnswers = JSON.parse(document.getElementById('save-input').value || '{}'); // from file save
+  // let initialAnswers = JSON.parse(document.getElementById('save-input').value || '{}');
   let initialAnswers = savedAnswers; // from save file
   if (!Object.keys(initialAnswers).length) {
     initialAnswers = JSON.parse(localStorage.getItem(structure.serialNumber) || '{}'); // from local storage
   }
 
   // List of elements that can be filled by the user
-  const allFillableElements = structure.sections
+  const fillableElements = structure.sections
     .map((s) => s.elements.filter((e) => FILLABLE_TYPES.includes(e.type)))
     .flat(1);
-  /* elementsFeedback will be a state variable, containing feedback information
+  /* elementsFeedback will be a state variable containing feedback information
     for the user. For example, whether to show red (error) text, and what text
     to display */
   const initialElementsFeedback = {};
-  allFillableElements.forEach((element) => {
+  fillableElements.forEach((element) => {
     initialElementsFeedback[element.id] = {
       error: false,
       showHelperText: false,
@@ -101,7 +116,7 @@ function App({ structure, savedAnswers }) {
   const [answers, setAnswers] = React.useState(initialAnswers);
   const [showSuccess, setShowSuccess] = React.useState(false);
   const [elementsFeedback, setElementsFeedback] = React.useState(initialElementsFeedback);
-  const [topBarElevation, setTopBarElevation] = React.useState(0);
+  const [topBarElevation, setTopBarElevation] = React.useState(false);
 
   // Gets called when the component finishes loading for the first time
   const componentDidMount = () => {
@@ -278,10 +293,9 @@ function App({ structure, savedAnswers }) {
         <Container maxWidth="md" className={classes.container}>
           {structure.sections.map((section) => (
             <Section
-              header={section.header}
-              elements={section.elements}
+              structure={section}
               answers={answers}
-              feedback={elementsFeedback}
+              elementsFeedback={elementsFeedback}
               onAnswer={handleAnswer}
               onCheck={handleCheckSection}
               id={section.id}
@@ -289,7 +303,7 @@ function App({ structure, savedAnswers }) {
             />
           ))}
           {/* Rendering the "Check all" button only when there are fillable elements */}
-          {allFillableElements.length ? (
+          {fillableElements.length ? (
             <Box className={classes.checkAllBtnContainer}>
               <Fab
                 variant="extended"
@@ -321,5 +335,15 @@ function App({ structure, savedAnswers }) {
     </ThemeProvider>
   );
 }
+
+App.propTypes = {
+  structure: activityStructureType,
+  savedAnswers: PropTypes.shape(),
+};
+
+App.defaultProps = {
+  structure: {},
+  savedAnswers: {},
+};
 
 export default App;

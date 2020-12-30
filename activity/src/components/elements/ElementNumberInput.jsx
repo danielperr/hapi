@@ -13,6 +13,7 @@ import {
   Divider,
 } from '@material-ui/core';
 
+import { feedbackType } from '../../../../common/types';
 import RichLabel from '../common/RichLabel';
 
 const useStyles = makeStyles((theme) => ({
@@ -47,31 +48,26 @@ const useStyles = makeStyles((theme) => ({
   successState: {},
 }));
 
-/*
- * ElementNumberInput
- * Input that accepts numbers, can be checked with variable precision
- *
- * text (String): question title
- * error (Boolean): whether the answer is incorrect
- * helperText (String): form helper text (status text)
- * showHelperText (Boolean): whether to show the helper text
- * answer (Number): current answer for this question
- * onAnswer (Function): callback fcn for when the user changes the answer
- * suffix (String)
- */
 function ElementNumberInput({
-  text,
-  error,
-  helperText,
-  showHelperText,
+  structure,
+  feedback,
   answer,
   onAnswer,
-  id,
 }) {
+  const {
+    text,
+    id,
+  } = structure;
+  const {
+    error,
+    helperText,
+    showHelperText,
+  } = feedback;
+
   const classes = useStyles();
 
   const handleChange = (e) => {
-    onAnswer(id, e.target.value);
+    onAnswer(e.target.value);
   };
 
   return (
@@ -96,6 +92,7 @@ function ElementNumberInput({
         onChange={handleChange}
         defaultValue={answer}
         variant="outlined"
+        // eslint-disable-next-line no-use-before-define
         inputProps={{ min: 0, style: { textAlign: 'left' }, inputComponent: NumberFormatCustom }}
         className={classes.textField}
       />
@@ -113,22 +110,13 @@ function ElementNumberInput({
 }
 
 ElementNumberInput.propTypes = {
-  text: PropTypes.string,
-  error: PropTypes.bool,
-  helperText: PropTypes.string,
-  showHelperText: PropTypes.bool,
-  answer: PropTypes.string,
-  onAnswer: PropTypes.func,
-  id: PropTypes.string.isRequired,
-};
-
-ElementNumberInput.defaultProps = {
-  text: '',
-  error: false,
-  helperText: '',
-  showHelperText: false,
-  answer: '',
-  onAnswer: () => {},
+  structure: PropTypes.shape({
+    text: PropTypes.string,
+    id: PropTypes.string.isRequired,
+  }).isRequired,
+  feedback: feedbackType.isRequired,
+  answer: PropTypes.string.isRequired,
+  onAnswer: PropTypes.func.isRequired,
 };
 
 export default ElementNumberInput;

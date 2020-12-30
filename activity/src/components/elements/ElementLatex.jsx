@@ -15,11 +15,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ElementLatex({ latex }) {
+function ElementLatex({ structure }) {
+  const { latex } = structure;
+
   const classes = useStyles();
 
   const latexFieldRef = useRef();
-
   useEffect(() => {
     katex.render(latex, latexFieldRef.current, { throwOnError: false, displayMode: true });
   }, []);
@@ -28,11 +29,9 @@ function ElementLatex({ latex }) {
 }
 
 ElementLatex.propTypes = {
-  latex: PropTypes.string,
-};
-
-ElementLatex.defaultProps = {
-  latex: '',
+  structure: PropTypes.shape({
+    latex: PropTypes.string,
+  }).isRequired,
 };
 
 export default ElementLatex;

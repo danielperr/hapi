@@ -123,9 +123,13 @@ DevMenu.propTypes = {
   /** Whether the devmenu is open in the current app state */
   open: PropTypes.bool.isRequired,
   /** Which HTML element to open from */
-  anchorEl: PropTypes.instanceOf(Element).isRequired,
+  anchorEl: PropTypes.instanceOf(Element),
   /** Close event */
   onClose: PropTypes.func.isRequired,
+};
+
+DevMenu.defaultProps = {
+  anchorEl: null,
 };
 
 export default DevMenu;

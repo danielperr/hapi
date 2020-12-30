@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { strings } from '../../localization';
-import structureType from '../../../../common/structure-type';
+import { activityStructureType } from '../../../../common/types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -167,7 +167,7 @@ const TableOfContents = ({ structure }) => {
 };
 
 TableOfContents.propTypes = {
-  structure: structureType.isRequired,
+  structure: activityStructureType.isRequired,
 };
 
 export default TableOfContents;

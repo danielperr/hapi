@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 // <ElementYoutube id="" youtubeId="" />
 // class ElementYoutube extends React.Component {
-function ElementYoutube({ id, youtubeId }) {
-  // When creating this element pass the yotube Id only
+function ElementYoutube({ structure }) {
+  const { youtubeId } = structure;
   return (
     <div
       style={{
@@ -13,7 +13,6 @@ function ElementYoutube({ id, youtubeId }) {
         paddingTop: 25,
         height: 0,
       }}
-      key={`${id}-div`}
     >
       <iframe
         style={{
@@ -35,12 +34,9 @@ function ElementYoutube({ id, youtubeId }) {
 }
 
 ElementYoutube.propTypes = {
-  id: PropTypes.string.isRequired,
-  youtubeId: PropTypes.string,
-};
-
-ElementYoutube.defaultProps = {
-  youtubeId: '',
+  structure: PropTypes.shape({
+    youtubeId: PropTypes.string,
+  }).isRequired,
 };
 
 export default ElementYoutube;

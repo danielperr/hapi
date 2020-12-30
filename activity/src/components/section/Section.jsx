@@ -1,20 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Button, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import SectionHeader from './SectionHeader';
-import {
-  ElementLabel,
-  ElementImage,
-  ElementYoutube,
-  ElementDocs,
-  ElementTextInput,
-  ElementMultiChoice,
-  ElementNumberInput,
-  ElementLatex,
-} from '../elements';
+import { sectionStructureType, feedbackType } from '../../../../common/types';
 import { strings } from '../../localization';
+import GenericElement from '../elements/GenericElement';
+import SectionHeader from './SectionHeader';
 
 const useStyles = makeStyles((theme) => ({
   sectionPaper: {
@@ -27,154 +20,61 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/*
-  Provides an area for placing visuals and interactives.
-  Each section is like a page
-  <Section
-    header (string): section title
-    elements (list): list of elements of this section
-    answers (object): answers for questions (provided from a save)
-    onAnswer (function): callback fcn for when an answer changes - accepts (an element Id & the answer)
-    id (string): id of the section
-  />
-*/
-function Section(props) {
+/**
+ * Provides an area for placing visuals and interactives.
+ * Each section is like a page and divides the activity into pieces.
+ */
+function Section({
+  structure,
+  answers,
+  elementsFeedback,
+  onAnswer,
+  onCheck,
+}) {
   const classes = useStyles();
 
+  const { id } = structure;
+
   const checkablesTypes = ['multi-choice', 'number-input'];
-  const checkablesAmount = props.elements.filter(element => checkablesTypes.includes(element.type)).length;
+  const checkablesAmount = structure.elements.filter(
+    (element) => checkablesTypes.includes(element.type),
+  ).length;
 
   /* When the user answers on a question (changes its 'answer' state) */
   const handleAnswer = (questionId, answer) => {
-    props.onAnswer(questionId, answer);
+    onAnswer(questionId, answer);
   };
 
   /* When the user attempts to check this section */
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.onCheck(props.id);
-  }
-
-  const elements = [];
-  props.elements.forEach((element) => {
-    let obj;
-
-    const feedback = props.feedback[element.id] || "";
-    const answer = props.answers[element.id] || "";
-
-    switch (element.type) {
-      case 'label':
-        obj = <ElementLabel 
-          text={element.text}
-          id={element.id}
-          key={element.id} 
-        />;
-        break;
-
-      case 'image':
-        obj = <ElementImage 
-          src={element.src}
-          id={element.id}
-          key={element.id} 
-        />;
-        break;
-
-      case 'docs':
-        obj = <ElementDocs 
-          src={element.src}
-          id={element.id}
-          key={element.id}
-        />
-        break;
-
-      case 'youtube':
-        obj = <ElementYoutube 
-          youtubeId={element.youtubeId}
-          id={element.id}
-          key={element.id} 
-        />;
-        break;
-      
-      case 'latex':
-        obj = <ElementLatex
-          latex={element.latex}
-          id={element.id}
-          key={element.id}
-        />;
-        break;
-        
-      case 'text-input':
-        obj = <ElementTextInput
-          text={element.text}
-          multiline={element.multiline}
-          error={feedback.error}
-          showHelperText={feedback.showHelperText}
-          helperText={feedback.helperText}
-          answer={answer}
-          onAnswer={handleAnswer}
-          id={element.id}
-          key={element.id}
-        />;
-        break;
-
-      case 'multi-choice':
-        obj = <ElementMultiChoice
-          text={element.text}
-          correct={element.correct}
-          options={element.options}
-          dontShuffle={element.dontShuffle}
-          error={feedback.error}
-          showHelperText={feedback.showHelperText}
-          helperText={feedback.helperText}
-          answer={answer}
-          onAnswer={handleAnswer}
-          id={element.id}
-          key={element.id}
-        />;
-        break;
-      
-      case 'number-input':
-        obj = <ElementNumberInput
-          text={element.text}
-          error={feedback.error}
-          helperText={feedback.helperText}
-          showHelperText={feedback.showHelperText}
-          answer={answer}
-          onAnswer={handleAnswer}
-          id={element.id}
-          key={element.id}
-        />;
-        break;
-      
-      default:
-        obj = <label>{strings.unknownElement}</label>;
-    }
-    elements.push(<div className="element"
-      id={element.id}
-      key={element.id + "-D"}>
-      {obj}
-      <br />
-    </div>);
-  });
-
+    onCheck(id);
+  };
 
   return (
     <Paper
-      id={props.id}
-      // elevation={5}
+      id={id}
       className={classes.sectionPaper}
     >
       <SectionHeader
-        text={props.header}
-        name={props.id + "-H"}
+        text={structure.header}
+        name={`${id}-H`}
       />
       <form
         onSubmit={handleSubmit}
         className="section-elements"
-        key={props.id + "-D"}
+        key={`${id}-D`}
       >
-        {elements}
-        {checkablesAmount > 0 &&
+        {structure.elements.map((element) => (
+          <GenericElement
+            structure={element}
+            feedback={elementsFeedback[element.id] || undefined}
+            answer={answers[element.id] || undefined}
+            onAnswer={handleAnswer}
+            key={element.id}
+          />
+        ))}
+        {checkablesAmount > 0 && (
           <Button
             type="submit"
             variant="contained"
@@ -183,10 +83,28 @@ function Section(props) {
           >
             {strings.actionCheckAnswer}
           </Button>
-        }
+        )}
       </form>
     </Paper>
   );
 }
+
+Section.propTypes = {
+  structure: sectionStructureType,
+  answers: PropTypes.shape(),
+  elementsFeedback: PropTypes.shape({
+    x: feedbackType,
+  }),
+  onAnswer: PropTypes.func,
+  onCheck: PropTypes.func,
+};
+
+Section.defaultProps = {
+  structure: {},
+  answers: {},
+  elementsFeedback: {},
+  onAnswer: () => {},
+  onCheck: () => {},
+};
 
 export default Section;
