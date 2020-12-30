@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import DeleteIcon from '@material-ui/icons/Delete';
+import WarningIcon from '@material-ui/icons/Warning';
 
 import ElementLabel from "../elements/element-label";
 import ElementYoutube from "../elements/element-youtube";
@@ -50,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
     height: '24px',
     zIndex: '1',
   },
+  warningIcon: {
+    color: '#f9a825',
+    // marginRight: 'auto',
+  },
   duplicateButton: {
     marginRight: 'auto',
   },
@@ -59,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Element({ index, structure, onUpdate, onDuplicate, onDelete }) {
+export default function Element({ index, structure, notices, onUpdate, onDuplicate, onDelete }) {
   const classes = useStyles();
   const { type } = structure;
 
@@ -158,6 +163,13 @@ export default function Element({ index, structure, onUpdate, onDuplicate, onDel
                 <option value="number-input">שאלת מספר</option>
               </optgroup>
             </select>
+            {notices && notices.notices && notices.notices.length ? (
+              <Tooltip title={notices.notices.map(({ title }) => title).join(', ')}>
+                <IconButton className={classes.warningIcon}>
+                  <WarningIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            ) : <></>}
             <Tooltip title="שכפל">
               <IconButton className={classes.duplicateButton} onClick={handleDuplicateSelf}>
                 <FileCopyIcon fontSize="small" />

@@ -10,6 +10,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import AddIcon from '@material-ui/icons/Add';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import WarningIcon from '@material-ui/icons/Warning';
 
 import Element from './element';
 import Editable from '../shared/editable';
@@ -39,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
   },
+  warningIcon: {
+    marginRight: theme.spacing(2),
+    color: '#f9a825',
+  },
   collapseButton: {
     marginRight: theme.spacing(2),
   },
@@ -61,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
+function Section({ index, structure, notices, onUpdate, onDuplicate, onDelete }) {
   
   const classes = useStyles();
 
@@ -146,6 +151,10 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
     }
   };
 
+  console.log({ notices })
+
+  const elementNotices = (notices || {}).elements || [];
+
   return (
     <Draggable draggableId={structure.id} index={index}>
       {(provided, snapshot) => (
@@ -164,6 +173,13 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
                 </Box>
                 <Box className={classes.topBar}>
                   <Editable size={2} onChange={handleChangeHeader} isHeightFixed={true} height="50px">{structure.header}</Editable>
+                  {notices && notices.notices && notices.notices.length ? (
+                    <Tooltip title={notices.notices.map(({ title }) => title).join(', ')}>
+                      <IconButton className={classes.warningIcon}>
+                        <WarningIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ) : <></>}
                   <IconButton className={classes.collapseButton} onClick={handleCollapseClick}>
                     <RotatingIcon
                       active={isOpen}
@@ -193,6 +209,7 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
                               key={element.id}
                               index={index}
                               structure={element}
+                              notices={elementNotices.find(({ id }) => id === element.id)}
                               onUpdate={handleUpdateElement}
                               onDuplicate={handleDuplicateElement}
                               onDelete={handleDeleteElement}

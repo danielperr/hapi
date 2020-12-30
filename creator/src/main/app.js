@@ -15,6 +15,7 @@ import { version } from '../../package.json';
 import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
 import { makeActivityContainer } from '../../../common/make-activity-file';
+import { computeNotices } from '../utils/notices';
 import LanguageContext from '../shared/language-context';
 import FocusAwarePaper from '../shared/focus-aware-paper';
 import Editable from '../shared/editable';
@@ -86,6 +87,9 @@ function App({ initial }) {
   const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
   const [exportButtonLoading, setExportButtonLoading] = useState(false);
   const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
+  // Notices provide info, warning, and error messages throughout the activity structure
+  // { notices: [], sections: [{ id: '', notices: [], elements: [{ id: '', notices: [] }] }] }
+  const [notices, setNotices] = useState({});
 
   const didMount = useRef(false);
   useEffect(() => {
@@ -96,6 +100,7 @@ function App({ initial }) {
       }
     }
     else didMount.current = true;
+    setNotices(computeNotices(structure));
   }, [structure]);
 
   useEffect(() => {
@@ -306,6 +311,7 @@ function App({ initial }) {
                         key={section.id}
                         index={index}
                         structure={section}
+                        notices={notices.sections.find(({ id }) => id === section.id)}
                         onUpdate={handleUpdateSection}
                         onDuplicate={handleDuplicateSection}
                         onDelete={handleDeleteSection}
