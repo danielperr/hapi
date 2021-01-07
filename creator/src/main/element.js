@@ -64,9 +64,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Element({ index, structure, notices, onUpdate, onDuplicate, onDelete }) {
+export default function Element({
+  index,
+  structure,
+  noticeObject,
+  onUpdate,
+  onUpdateNoticeObject,
+  onDuplicate,
+  onDelete,
+}) {
   const classes = useStyles();
   const { type } = structure;
+  const { notices } = noticeObject || { notices: [] };
 
   const handleChangeType = (e) => {
     onUpdate(
@@ -86,6 +95,13 @@ export default function Element({ index, structure, notices, onUpdate, onDuplica
     onUpdate(updatedElement);
   };
 
+  const handleUpdateNotices = (updatedNotices) => {
+    onUpdateNoticeObject({
+      id: structure.id,
+      notices: updatedNotices,
+    });
+  }
+
   const handleDuplicateSelf = () => {
     onDuplicate(structure.id);
   };
@@ -97,6 +113,7 @@ export default function Element({ index, structure, notices, onUpdate, onDuplica
   const elementProps = {
     structure: structure,
     onUpdate: handleUpdateElement,
+    onUpdateNotices: handleUpdateNotices,
   };
 
   let obj;
@@ -132,7 +149,8 @@ export default function Element({ index, structure, notices, onUpdate, onDuplica
   return (
     <Draggable draggableId={structure.id} index={index}>
       {(provided, snapshot) => (
-        <Box
+        <div
+          id={structure.id}
           ref={provided.innerRef}
           {...provided.draggableProps}
           className={`${classes.container} ${provided.draggableProps.className}`}
@@ -163,8 +181,8 @@ export default function Element({ index, structure, notices, onUpdate, onDuplica
                 <option value="number-input">שאלת מספר</option>
               </optgroup>
             </select>
-            {notices && notices.notices && notices.notices.length ? (
-              <Tooltip title={notices.notices.map(({ title }) => title).join(', ')}>
+            {notices && notices.length ? (
+              <Tooltip title={notices.map(({ title }) => title).join(', ')}>
                 <IconButton className={classes.warningIcon}>
                   <WarningIcon fontSize="small" />
                 </IconButton>
@@ -180,7 +198,7 @@ export default function Element({ index, structure, notices, onUpdate, onDuplica
             </IconButton>
           </Box>
           {obj}
-        </Box>
+        </div>
       )}
     </Draggable>
   );

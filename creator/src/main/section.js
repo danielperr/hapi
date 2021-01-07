@@ -3,14 +3,21 @@ import React, { useState } from 'react';
 import produce from 'immer';
 import styled from 'styled-components';
 
-import { Box, makeStyles, Button, IconButton, Collapse, Grow, Tooltip } from '@material-ui/core';
+import {
+  Box,
+  makeStyles,
+  Button,
+  IconButton,
+  Collapse,
+  Grow,
+  Tooltip,
+} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import AddIcon from '@material-ui/icons/Add';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import WarningIcon from '@material-ui/icons/Warning';
 
 import Element from './element';
 import Editable from '../shared/editable';
@@ -40,18 +47,30 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
   },
-  warningIcon: {
-    marginRight: theme.spacing(2),
-    color: '#f9a825',
-  },
-  collapseButton: {
+  topBarSpacer: {
     marginRight: theme.spacing(2),
   },
-  duplicateButton: {
-
+  noticesButton: {
+    width: '48px',
+    height: '50px',
+    // borderRadius: '50%',
+  },
+  noticesIcon: {
+    width: '24px',
+    height: '24px',
+    backgroundColor: theme.palette.warning.main,
+    borderRadius: '50%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  noticesNumber: {
+    fontSize: '0.8rem',
+    color: 'white',
+    position: 'relative',
+    fontWeight: 'bold',
   },
   deleteButton: {
-    marginRight: theme.spacing(1),
     color: theme.palette.negative.main,
   },
   center: {
@@ -66,9 +85,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Section({ index, structure, notices, onUpdate, onDuplicate, onDelete }) {
+function Section({
+  index,
+  structure,
+  noticeObjects,
+  onUpdate,
+  onUpdateNoticeObject,
+  onDuplicate,
+  onDelete,
+}) {
   
   const classes = useStyles();
+
+  const myNoticeObject = noticeObjects.find(({ id }) => id === structure.id);
+  const myNotices = myNoticeObject ? myNoticeObject.notices : [];
+  // All the notice objects of the elements that I (this section) contain
+  const myElementsNoticeObjects = [];
+  structure.elements.forEach((element) => {
+    const noticeObject = noticeObjects.find((noticeObject) => noticeObject.id === element.id);
+    if (noticeObject) { myElementsNoticeObjects.push(noticeObject); }
+  });
+  const totalNoticeCount = myNotices.length + myElementsNoticeObjects.length;
 
   const [isOpen, setIsOpen] = useState(true);  // Whether if open or collapsed
   const [isVisible, setIsVisible] = useState(true);
@@ -90,8 +127,12 @@ function Section({ index, structure, notices, onUpdate, onDuplicate, onDelete })
         if (element.id === updatedElement.id) {
           newStructure.elements[i] = updatedElement;
         }
-      })
+      });
     }));
+  };
+
+  const handleUpdateNoticeObject = (updatedNoticeObject) => {
+    onUpdateNoticeObject(updatedNoticeObject);
   };
 
   const handleClickAddElement = () => {
@@ -151,14 +192,11 @@ function Section({ index, structure, notices, onUpdate, onDuplicate, onDelete })
     }
   };
 
-  console.log({ notices })
-
-  const elementNotices = (notices || {}).elements || [];
-
   return (
     <Draggable draggableId={structure.id} index={index}>
       {(provided, snapshot) => (
         <div
+          id={structure.id}
           ref={provided.innerRef}
           {...provided.draggableProps}
           style={{...provided.draggableProps.style, opacity: (snapshot.isDragging && !snapshot.isDropAnimating) ? 0.8 : 1}}
@@ -173,14 +211,15 @@ function Section({ index, structure, notices, onUpdate, onDuplicate, onDelete })
                 </Box>
                 <Box className={classes.topBar}>
                   <Editable size={2} onChange={handleChangeHeader} isHeightFixed={true} height="50px">{structure.header}</Editable>
-                  {notices && notices.notices && notices.notices.length ? (
-                    <Tooltip title={notices.notices.map(({ title }) => title).join(', ')}>
-                      <IconButton className={classes.warningIcon}>
-                        <WarningIcon />
-                      </IconButton>
-                    </Tooltip>
+                  <div className={classes.topBarSpacer} />
+                  {totalNoticeCount ? (
+                    <IconButton className={classes.noticesButton}>
+                      <div className={classes.noticesIcon}>
+                        <span className={classes.noticesNumber}>{totalNoticeCount}</span>
+                      </div>
+                    </IconButton>
                   ) : <></>}
-                  <IconButton className={classes.collapseButton} onClick={handleCollapseClick}>
+                  <IconButton onClick={handleCollapseClick}>
                     <RotatingIcon
                       active={isOpen}
                       passiveIcon={<ArrowDownwardIcon />}
@@ -188,7 +227,7 @@ function Section({ index, structure, notices, onUpdate, onDuplicate, onDelete })
                     />
                   </IconButton>
                   <Tooltip title="שכפל">
-                    <IconButton className={classes.duplicateButton} onClick={handleDuplicateSelf}>
+                    <IconButton onClick={handleDuplicateSelf}>
                       <FileCopyIcon />
                     </IconButton>
                   </Tooltip>
@@ -209,8 +248,9 @@ function Section({ index, structure, notices, onUpdate, onDuplicate, onDelete })
                               key={element.id}
                               index={index}
                               structure={element}
-                              notices={elementNotices.find(({ id }) => id === element.id)}
+                              noticeObject={myElementsNoticeObjects.find(({ id }) => id === element.id)}
                               onUpdate={handleUpdateElement}
+                              onUpdateNoticeObject={handleUpdateNoticeObject}
                               onDuplicate={handleDuplicateElement}
                               onDelete={handleDeleteElement}
                               onMoveUp={handleMoveUpElement}
