@@ -161,28 +161,6 @@ function App({ initial }) {
     }));
   };
 
-  const handleUpdateNoticeObject = (updatedNoticeObject) => {
-    setNoticeObjects(produce(noticeObjects, (newNoticeObjects) => {
-      const noticeObject = newNoticeObjects.find(({ id }) => id === updatedNoticeObject.id);
-      if (updatedNoticeObject.notices.length) {
-        if (noticeObject) {
-          noticeObject.notices = updatedNoticeObject.notices;
-        } else {
-          newNoticeObjects.push(updatedNoticeObject);
-        }
-      } else {
-        if (noticeObject) {
-          // Notices array is empty, delete it from the notice objects
-          newNoticeObjects.forEach(({ id }, i) => {
-            if (id === updatedNoticeObject.id) {
-              newNoticeObjects.splice(i, 1);
-            }
-          });
-        }
-      }
-    }));
-  };
-
   const handleClickAddSection = () => {
     setStructure(
       produce(structure, (newStructure) => {
@@ -336,7 +314,6 @@ function App({ initial }) {
                         structure={section}
                         noticeObjects={noticeObjects}
                         onUpdate={handleUpdateSection}
-                        onUpdateNoticeObject={handleUpdateNoticeObject}
                         onDuplicate={handleDuplicateSection}
                         onDelete={handleDeleteSection}
                       />

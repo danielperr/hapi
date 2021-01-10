@@ -19,6 +19,7 @@ import ElementImage from "../elements/element-image";
 import ElementNumberInput from "../elements/element-number-input";
 import ElementDocs from "../elements/element-docs";
 import ElementLatex from "../elements/element-latex";
+import NoticePopup from '../shared/notice-popup';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -53,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
   },
   warningIcon: {
     color: '#f9a825',
-    // marginRight: 'auto',
   },
   duplicateButton: {
     marginRight: 'auto',
@@ -69,7 +69,6 @@ export default function Element({
   structure,
   noticeObject,
   onUpdate,
-  onUpdateNoticeObject,
   onDuplicate,
   onDelete,
 }) {
@@ -95,13 +94,6 @@ export default function Element({
     onUpdate(updatedElement);
   };
 
-  const handleUpdateNotices = (updatedNotices) => {
-    onUpdateNoticeObject({
-      id: structure.id,
-      notices: updatedNotices,
-    });
-  }
-
   const handleDuplicateSelf = () => {
     onDuplicate(structure.id);
   };
@@ -113,7 +105,6 @@ export default function Element({
   const elementProps = {
     structure: structure,
     onUpdate: handleUpdateElement,
-    onUpdateNotices: handleUpdateNotices,
   };
 
   let obj;
@@ -182,11 +173,11 @@ export default function Element({
               </optgroup>
             </select>
             {notices && notices.length ? (
-              <Tooltip title={notices.map(({ title }) => title).join(', ')}>
+              <NoticePopup noticeObjects={[noticeObject]}>
                 <IconButton className={classes.warningIcon}>
                   <WarningIcon fontSize="small" />
                 </IconButton>
-              </Tooltip>
+              </NoticePopup>
             ) : <></>}
             <Tooltip title="שכפל">
               <IconButton className={classes.duplicateButton} onClick={handleDuplicateSelf}>
