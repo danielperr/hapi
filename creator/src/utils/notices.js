@@ -1,10 +1,12 @@
+import katex from 'katex';
+
 export const noticeMessages = {
   emptyActivityHeader: {
     title: 'כותרת ריקה לפעילות',
     description: 'חייבת להיות כותרת לפעילות.'
   },
   emptySection: {
-    title: 'יחידה ריקה',
+    title: 'היחידה ריקה',
     description: 'יחידה חייבת להכיל לפחות רכיב אחד.'
   },
   emptySectionHeader: {
@@ -25,6 +27,9 @@ export const noticeMessages = {
   emptyLatex: {
     title: 'ביטוי מתמטי ריק',
     description: 'יש למלא ביטוי מתמטי כלשהו.',
+  },
+  invalidLatex: {
+    title: 'ביטוי מתמטי לא תקין',
   },
   noMultichoiceOptions: {
     title: 'חסרות תשובות בשאלה',
@@ -91,6 +96,12 @@ export function calculateNoticeObjects(structure) {
         case 'latex':
           if (!element.latex) {
             elementNotices.push(noticeMessages.emptyLatex);
+          } else {
+            try {
+              katex.renderToString(element.latex);
+            } catch {
+              elementNotices.push(noticeMessages.invalidLatex);
+            }
           }
           break;
         case 'multi-choice':
