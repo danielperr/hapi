@@ -13,6 +13,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const useStyles = makeStyles((theme) => ({
+  menu: {
+    marginTop: theme.spacing(-4),
+  },
   listItemText: {
     textAlign: 'right',
     direction: 'rtl',
@@ -29,42 +32,61 @@ const useStyles = makeStyles((theme) => ({
  * If there's 2 or more, it shows it on a menu (click activated)
  * Children contains the notice button / icon to assign the event to
  */
-function NoticePopup({ noticeObjects, sectionId, children }) {
+function NoticePopup({ mainNoticeObject, childrenNoticeObjects, children }) {
   const classes = useStyles();
 
   const clickListenerRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const singleNotice = noticeObjects.length === 1 && noticeObjects[0].notices.length === 1
-    ? noticeObjects[0].notices[0]
-    : null;
+  const totalNoticeObjects = [...childrenNoticeObjects];
+  if (mainNoticeObject) { totalNoticeObjects.unshift(mainNoticeObject); }
 
-  let totalNotices = [];
-  noticeObjects.forEach(({ id, notices }) => {
-    totalNotices = [...totalNotices, ...notices];
-    // if (id === sectionId) {
-    //   // If this notice object belongs to the section, put it first in the list
-    //   totalNotices = [...notices, ...totalNotices];
-    // } else {
-    //   // Just add to the end
-    //   totalNotices = [...totalNotices, ...notices];
-    // }
-  });
-
-  console.log(totalNotices);
+  const singleNotice = totalNoticeObjects.length === 1 && totalNoticeObjects[0].notices.length === 1
+    ? totalNoticeObjects[0].notices[0]
+    : false;
 
   const handleClickNotice = () => {
-    if (singleNotice) {
-      // Scroll to item
-    } else {
-      // Open menu
+    if (!singleNotice) {
       setMenuOpen(true);
     }
   };
 
   const handleCloseMenu = () => {
     setMenuOpen(false);
+  };
+
+  const handleClickItem = (itemId) => () => {
+    handleCloseMenu();
+    window.setTimeout(() => {
+      const docElement = document.getElementById(itemId);
+      if (docElement) {
+        docElement.scrollIntoView({ behavior: 'smooth', block: 'center', });
+      }
+    }, 200);
+  };
+
+  const menuContent = [];
+  if (mainNoticeObject) {
+    mainNoticeObject.notices.forEach(({ title, description }, i) => {
+      menuContent.push(
+        <MenuItem onClick={handleCloseMenu} key={i}>
+          <ListItemText className={classes.listItemText} primary={title} secondary={description} />
+        </MenuItem>
+      );
+    });
   }
+  childrenNoticeObjects.forEach(({ id, notices }) => {
+    notices.forEach(({ title, description }) => {
+      menuContent.push(
+        <MenuItem onClick={handleClickItem(id)} key={id}>
+          <ListItemText className={classes.listItemText} primary={title} secondary={description} />
+          <ListItemIcon className={classes.listItemIcon}>
+            <ArrowBackIosIcon fontSize="small" />
+          </ListItemIcon>
+        </MenuItem>
+      );
+    });
+  })
 
   return (
     <>
@@ -73,7 +95,7 @@ function NoticePopup({ noticeObjects, sectionId, children }) {
           singleNotice
           ? (<>
               <Typography color="inherit"><b>{singleNotice.title}</b></Typography>
-              <Typography style={{ fontSize: '12px' }} variant="body">
+              <Typography style={{ fontSize: '12px' }} variant="body1">
                 {singleNotice.description ? singleNotice.description : ''}
               </Typography>
             </>)
@@ -84,37 +106,46 @@ function NoticePopup({ noticeObjects, sectionId, children }) {
       </div>
       <Menu
         id="notices-menu"
+        getContentAnchorEl={null}
         anchorEl={clickListenerRef.current}
         keepMounted
         open={menuOpen}
         onClose={handleCloseMenu}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'left',
+        }}
+        className={classes.menu}
+        PaperProps={{
+          style: {
+            maxHeight: '512px',
+          },
+        }}
       >
-        {totalNotices.map(({ title, description }) => (
-          <MenuItem onClick={handleCloseMenu}>
-            <ListItemText className={classes.listItemText} primary={title} secondary={description} />
-            <ListItemIcon className={classes.listItemIcon}>
-              <ArrowBackIosIcon fontSize="small" />
-            </ListItemIcon>
-          </MenuItem>
-        ))}
+        {menuContent}
       </Menu>
     </>
   );
 }
 
+const noticeObjectType = PropTypes.shape({
+  title: PropTypes.string,
+  description: PropTypes.string,
+});
+
 NoticePopup.propTypes = {
-  noticeObjects: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
-  }).isRequired,
-  /** If using in a section, provide the section's id to
-   * separate its notices from its elements' notices. */
-  sectionId: PropTypes.string,
-  children: PropTypes.oneOfType([ Element ]).isRequired,
+  /** The notice object of the main component (the one using this notice popup) */
+  mainNoticeObject: noticeObjectType,
+  /** The notice objects of the main component's children,
+   * it is used to separate them from the main notice object. */
+  childrenNoticeObjects: PropTypes.arrayOf(noticeObjectType),
+  /** This will contain the notice button / clickable icon from where the popup will show */
+  children: PropTypes.node.isRequired,
 };
 
 NoticePopup.defaultProps = {
-  sectionId: '',
+  mainNoticeObject: null,
+  childrenNoticeObjects: [],
 };
 
 export default NoticePopup;

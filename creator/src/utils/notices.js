@@ -31,3 +31,42 @@ export const noticeMessages = {
     description: 'תחום התשובה הנכונה לא הגיוני (אולי התבלבלת בין המינימום למקסימום?)'
   },
 }
+
+export function calculateNoticeObjects(structure) {
+  const noticeObjects = [];
+  structure.sections.forEach((section) => {
+    const sectionNotices = [];
+    if (!section.elements || !section.elements.length) {
+      sectionNotices.push(noticeMessages.emptySection);
+    }
+    if (!section.header) {
+      sectionNotices.push(noticeMessages.emptySectionHeader);
+    }
+    if (sectionNotices.length) {
+      noticeObjects.push({
+        id: section.id,
+        notices: sectionNotices,
+      });
+    }
+
+    section.elements.forEach((element) => {
+      const elementNotices = [];
+      switch (element.type) {
+        case 'youtube':
+          if (!element.youtubId) {
+            elementNotices.push(noticeMessages.emptyYoutubeId);
+          }
+          break;
+        default:
+          break;
+      }
+      if (elementNotices.length) {
+        noticeObjects.push({
+          id: element.id,
+          notices: elementNotices,
+        });
+      }
+    });
+  });
+  return noticeObjects;
+}

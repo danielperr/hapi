@@ -12,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
+import { calculateNoticeObjects } from '../utils/notices';
 import { version } from '../../package.json';
 import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
@@ -109,6 +110,10 @@ function App({ initial }) {
   useEffect(() => {
     handleClickAddSection();
   }, [])
+
+  useEffect(() => {
+    setNoticeObjects(calculateNoticeObjects(structure));
+  }, [structure]);
 
   const handleChangeLanguage = (language) => {
     setStructure(produce(structure, (newStructure) => {

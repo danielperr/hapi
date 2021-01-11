@@ -173,7 +173,7 @@ export default function Element({
               </optgroup>
             </select>
             {notices && notices.length ? (
-              <NoticePopup noticeObjects={[noticeObject]}>
+              <NoticePopup mainNoticeObject={noticeObject}>
                 <IconButton className={classes.warningIcon}>
                   <WarningIcon fontSize="small" />
                 </IconButton>

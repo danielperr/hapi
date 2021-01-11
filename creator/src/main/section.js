@@ -93,21 +93,20 @@ function Section({
   onDuplicate,
   onDelete,
 }) {
-
   const classes = useStyles();
-
-  const myNoticeObject = noticeObjects.find(({ id }) => id === structure.id);
-  const myNotices = myNoticeObject ? myNoticeObject.notices : [];
-  // All the notice objects of the elements that this section contains
-  const myElementsNoticeObjects = [];
-  structure.elements.forEach((element) => {
-    const noticeObject = noticeObjects.find((noticeObject) => noticeObject.id === element.id);
-    if (noticeObject) { myElementsNoticeObjects.push(noticeObject); }
-  });
-  const totalNoticeCount = myNotices.length + myElementsNoticeObjects.length;
 
   const [isOpen, setIsOpen] = useState(true);  // Whether if open or collapsed
   const [isVisible, setIsVisible] = useState(true);
+
+  // Notice object of this section
+  const sectionNoticeObject = noticeObjects.find(({ id }) => id === structure.id);
+  // Notice objects of elements that belong to this section
+  const elementsNoticeObjects = noticeObjects.filter(({ id }) => (
+    structure.elements.find((element) => id === element.id)
+  ));
+  const sectionNoticeCount = sectionNoticeObject ? sectionNoticeObject.notices.length : 0;
+  const elementsNoticeCount = elementsNoticeObjects.flatMap(({ notices }) => notices).length;
+  const totalNoticeCount = sectionNoticeCount + elementsNoticeCount;
 
   const handleChangeHeader = (text) => {
     onUpdate(produce(structure, newStructure => {
@@ -207,16 +206,16 @@ function Section({
                 <Box className={classes.topBar}>
                   <Editable size={2} onChange={handleChangeHeader} isHeightFixed={true} height="50px">{structure.header}</Editable>
                   <div className={classes.topBarSpacer} />
-                  {totalNoticeCount ? (
-                    <NoticePopup noticeObjects={myElementsNoticeObjects}>
-                      <IconButton className={classes.noticesButton}>
-                        <div className={classes.noticesIcon}>
-                          <span className={classes.noticesNumber}>{totalNoticeCount}</span>
-                        </div>
-                      </IconButton>
-                    </NoticePopup>
-                  ) : <></>}
-                  <IconButton onClick={handleCollapseClick}>
+                    {totalNoticeCount ? (
+                      <NoticePopup mainNoticeObject={sectionNoticeObject} childrenNoticeObjects={elementsNoticeObjects}>
+                        <IconButton className={classes.noticesButton}>
+                          <div className={classes.noticesIcon}>
+                            <span className={classes.noticesNumber}>{totalNoticeCount}</span>
+                          </div>
+                        </IconButton>
+                      </NoticePopup>
+                    ) : <></>}
+                  <IconButton onClick={handleCollapseClick} id={`${structure.id}`}>
                     <RotatingIcon
                       active={isOpen}
                       passiveIcon={<ArrowDownwardIcon />}
@@ -245,7 +244,7 @@ function Section({
                               key={element.id}
                               index={index}
                               structure={element}
-                              noticeObject={myElementsNoticeObjects.find(({ id }) => id === element.id)}
+                              noticeObject={elementsNoticeObjects.find(({ id }) => id === element.id)}
                               onUpdate={handleUpdateElement}
                               onDuplicate={handleDuplicateElement}
                               onDelete={handleDeleteElement}
