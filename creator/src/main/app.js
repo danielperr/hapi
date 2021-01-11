@@ -92,21 +92,9 @@ function App({ initial }) {
   const initialStructure = DEFAULT_STRUCTURE;
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initial || initialStructure);
-  const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
   const [exportButtonLoading, setExportButtonLoading] = useState(false);
   const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
   const [noticeObjects, setNoticeObjects] = useState([]);
-
-  const didMount = useRef(false);
-  useEffect(() => {
-    if (didMount.current) {
-      setSavedFlag(false);
-      if (process.env.NODE_ENV !== 'development') {
-        window.onbeforeunload = function(){ if (!savedFlag) { return true } };
-      }
-    }
-    else didMount.current = true;
-  }, [structure]);
 
   // <AutoSave>
   const saveToLocalStorage = () => {
@@ -145,7 +133,6 @@ function App({ initial }) {
   
   const handleSave = () => {
     saveWorkFile(JSON.stringify(structure, null, 2));
-    setSavedFlag(true);
   };
 
   const handleExport = async () => {
