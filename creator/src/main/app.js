@@ -135,6 +135,13 @@ function App({ initial }) {
   const handleLoad = (contents) => {
     setStructure(JSON.parse(contents));
   };
+
+  const handleNewActivity = () => {
+    if (window.confirm('This will erase the current activity.\nPlease save it to a file before continuing.\nClick OK to confirm creating an activity.')) {
+      setStructure(DEFAULT_STRUCTURE);
+      saveToLocalStorage();
+    }
+  }
   
   const handleSave = () => {
     saveWorkFile(JSON.stringify(structure, null, 2));
@@ -311,6 +318,7 @@ function App({ initial }) {
               language={structure.language}
               onChangeLanguage={handleChangeLanguage}
               onLoad={handleLoad}
+              onNewActivity={handleNewActivity}
               onSave={handleSave}
               onExport={handleExport}
               exportLoading={exportButtonLoading}
