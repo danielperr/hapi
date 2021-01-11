@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
@@ -11,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
+import { calculateNoticeObjects } from '../utils/notices';
 import { version } from '../../package.json';
 import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
@@ -34,6 +36,12 @@ const THEME = createMuiTheme({
     secondary: lightBlue,
     negative: {
       main: '#cf5959',
+    },
+    warning: {
+      main: '#f9a825',
+    },
+    error: {
+      main: '#f92525',
     },
   },
   overrides: {
@@ -86,6 +94,7 @@ function App({ initial }) {
   const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
   const [exportButtonLoading, setExportButtonLoading] = useState(false);
   const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
+  const [noticeObjects, setNoticeObjects] = useState([]);
 
   const didMount = useRef(false);
   useEffect(() => {
@@ -101,6 +110,10 @@ function App({ initial }) {
   useEffect(() => {
     handleClickAddSection();
   }, [])
+
+  useEffect(() => {
+    setNoticeObjects(calculateNoticeObjects(structure));
+  }, [structure]);
 
   const handleChangeLanguage = (language) => {
     setStructure(produce(structure, (newStructure) => {
@@ -118,6 +131,11 @@ function App({ initial }) {
   };
 
   const handleExport = async () => {
+    if (noticeObjects.length) {
+      if (!window.confirm('You have warnings in your activity, export anyway?')) {
+        return;
+      }
+    }
     setExportButtonLoading(true);
     // exportToActivity((await (await fetch(EMPTY_ACTIVITY_URL)).text()), JSON.stringify(structure));
     const filename = prompt('Save as:');
@@ -144,15 +162,13 @@ function App({ initial }) {
   };
 
   const handleUpdateSection = (updatedSection) => {
-    setStructure(
-      produce(structure, (newStructure) => {
-        newStructure.sections.forEach((section, i) => {
-          if (section.id === updatedSection.id) {
-            newStructure.sections[i] = updatedSection;
-          }
-        });
-      })
-    );
+    setStructure(produce(structure, (newStructure) => {
+      newStructure.sections.forEach((section, i) => {
+        if (section.id === updatedSection.id) {
+          newStructure.sections[i] = updatedSection;
+        }
+      });
+    }));
   };
 
   const handleClickAddSection = () => {
@@ -306,6 +322,7 @@ function App({ initial }) {
                         key={section.id}
                         index={index}
                         structure={section}
+                        noticeObjects={noticeObjects}
                         onUpdate={handleUpdateSection}
                         onDuplicate={handleDuplicateSection}
                         onDelete={handleDeleteSection}

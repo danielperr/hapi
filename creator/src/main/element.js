@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import DeleteIcon from '@material-ui/icons/Delete';
+import WarningIcon from '@material-ui/icons/Warning';
 
 import ElementLabel from "../elements/element-label";
 import ElementYoutube from "../elements/element-youtube";
@@ -18,6 +19,7 @@ import ElementImage from "../elements/element-image";
 import ElementNumberInput from "../elements/element-number-input";
 import ElementDocs from "../elements/element-docs";
 import ElementLatex from "../elements/element-latex";
+import NoticePopup from '../shared/notice-popup';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -50,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
     height: '24px',
     zIndex: '1',
   },
+  warningIcon: {
+    color: '#f9a825',
+  },
   duplicateButton: {
     marginRight: 'auto',
   },
@@ -59,9 +64,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Element({ index, structure, onUpdate, onDuplicate, onDelete }) {
+export default function Element({
+  index,
+  structure,
+  noticeObject,
+  onUpdate,
+  onDuplicate,
+  onDelete,
+}) {
   const classes = useStyles();
   const { type } = structure;
+  const { notices } = noticeObject || { notices: [] };
 
   const handleChangeType = (e) => {
     onUpdate(
@@ -127,7 +140,8 @@ export default function Element({ index, structure, onUpdate, onDuplicate, onDel
   return (
     <Draggable draggableId={structure.id} index={index}>
       {(provided, snapshot) => (
-        <Box
+        <div
+          id={structure.id}
           ref={provided.innerRef}
           {...provided.draggableProps}
           className={`${classes.container} ${provided.draggableProps.className}`}
@@ -158,6 +172,13 @@ export default function Element({ index, structure, onUpdate, onDuplicate, onDel
                 <option value="number-input">שאלת מספר</option>
               </optgroup>
             </select>
+            {notices && notices.length ? (
+              <NoticePopup mainNoticeObject={noticeObject}>
+                <IconButton className={classes.warningIcon}>
+                  <WarningIcon fontSize="small" />
+                </IconButton>
+              </NoticePopup>
+            ) : <></>}
             <Tooltip title="שכפל">
               <IconButton className={classes.duplicateButton} onClick={handleDuplicateSelf}>
                 <FileCopyIcon fontSize="small" />
@@ -168,7 +189,7 @@ export default function Element({ index, structure, onUpdate, onDuplicate, onDel
             </IconButton>
           </Box>
           {obj}
-        </Box>
+        </div>
       )}
     </Draggable>
   );
