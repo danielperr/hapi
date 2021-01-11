@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { lightBlue } from '@material-ui/core/colors';
 import { CssBaseline, Box, Fab, Modal, Fade, Backdrop } from '@material-ui/core';
+import { useBeforeunload } from 'react-beforeunload';
 import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
@@ -107,9 +108,19 @@ function App({ initial }) {
     else didMount.current = true;
   }, [structure]);
 
+  // <AutoSave>
+  const saveToLocalStorage = () => {
+    localStorage.setItem('creator-last-save', JSON.stringify(structure));
+  };
+
   useEffect(() => {
-    handleClickAddSection();
-  }, [])
+    const interval = setInterval(() => { saveToLocalStorage(); }, 60 * 1000);
+    return () => { clearInterval(interval); }
+  });
+
+  // Right before getting closed in the browser
+  useBeforeunload(() => { saveToLocalStorage(); });
+  // </AutoSave>
 
   useEffect(() => {
     setNoticeObjects(calculateNoticeObjects(structure));
