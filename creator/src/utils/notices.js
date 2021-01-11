@@ -14,9 +14,25 @@ export const noticeMessages = {
   emptyElementText: {
     title: 'חסר כיתוב לרכיב'
   },
+  emptyImageSrc: {
+    title: 'חסר קישור לתמונה',
+    description: 'אנא ספקו קישור או ודאו שהקישור הנוכחי תקין.',
+  },
   emptyYoutubeId: {
     title: 'לא סופק סרטון יוטיוב',
     description: 'אנא ודאו שהקישור מועתק נכונה.',
+  },
+  emptyLatex: {
+    title: 'ביטוי מתמטי ריק',
+    description: 'יש למלא ביטוי מתמטי כלשהו.',
+  },
+  noMultichoiceOptions: {
+    title: 'חסרות תשובות בשאלה',
+    description: 'בשאלת בחירה חייבות להיות שתי תשובות לפחות.',
+  },
+  oneMultichoiceOptions: {
+    title: 'ישנה רק תשובה אחת בשאלה',
+    description: 'בשאלת בחירה חייבות להיות שתי תשובות לפחות.',
   },
   emptyMultichoiceOption: {
     title: 'ישנה תשובה ריקה',
@@ -25,6 +41,10 @@ export const noticeMessages = {
   emptyMultichoiceCorrect: {
     title: 'אף תשובה לא נכונה בשאלה',
     description: 'חייבת להיות תשובה נכונה בשאלה.'
+  },
+  emptyNumberInputRange: {
+    title: 'חסרים ערכים נכונים בשאלה',
+    description: 'יש לציין תחום המוגדר כתשובה נכונה בשאלה מספרית',
   },
   invalidNumberInputRange: {
     title: 'התחום שצוין לא הגיוני',
@@ -52,9 +72,57 @@ export function calculateNoticeObjects(structure) {
     section.elements.forEach((element) => {
       const elementNotices = [];
       switch (element.type) {
+        case 'label':
+        case 'text-input':
+          if (!element.text) {
+            elementNotices.push(noticeMessages.emptyElementText);
+          }
+          break;
+        case 'image':
+          if (!element.src) {
+            elementNotices.push(noticeMessages.emptyImageSrc);
+          }
+          break;
         case 'youtube':
           if (!element.youtubId) {
             elementNotices.push(noticeMessages.emptyYoutubeId);
+          }
+          break;
+        case 'latex':
+          if (!element.latex) {
+            elementNotices.push(noticeMessages.emptyLatex);
+          }
+          break;
+        case 'multi-choice':
+          if (!element.text) {
+            elementNotices.push(noticeMessages.emptyElementText);
+          }
+          if (element.options && element.options.length) {
+            if (element.options.length === 1) {
+              elementNotices.push(noticeMessages.oneMultichoiceOptions);
+            }
+            element.options.forEach((option) => {
+              if (!option.text) {
+                elementNotices.push(noticeMessages.emptyMultichoiceOption);
+              }
+            });
+            if (!element.correct || !element.correct.length) {
+              elementNotices.push(noticeMessages.emptyMultichoiceCorrect);
+            }
+          } else {
+            elementNotices.push(noticeMessages.noMultichoiceOptions);
+          }
+          break;
+        case 'number-input':
+          if (!element.text) {
+            elementNotices.push(noticeMessages.emptyElementText);
+          }
+          if (element.min && element.max) {
+            if (element.min > element.max) {
+              elementNotices.push(noticeMessages.invalidNumberInputRange);
+            }
+          } else {
+            elementNotices.push(noticeMessages.emptyNumberInputRange);
           }
           break;
         default:
