@@ -18,8 +18,6 @@ if (lastSaveStr) {
   } catch {}
 }
 
-console.log({ lastSaveStr, lastSave });
-
 ReactDOM.render(
   <React.StrictMode>
     <App initial={lastSave} />

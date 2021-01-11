@@ -228,7 +228,6 @@ function Editable({ children, size, onChange, isRich, isHeightFixed, height, dir
 
   const handleChange = (e) => {
     if (isRich) {
-      console.log(e.getCurrentContent().getPlainText());
       onChange(e.getCurrentContent().getPlainText());
     } else {
       onChange(e.target.value);
