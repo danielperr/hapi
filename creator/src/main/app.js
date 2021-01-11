@@ -131,6 +131,11 @@ function App({ initial }) {
   };
 
   const handleExport = async () => {
+    if (noticeObjects.length) {
+      if (!window.confirm('You have warnings in your activity, export anyway?')) {
+        return;
+      }
+    }
     setExportButtonLoading(true);
     // exportToActivity((await (await fetch(EMPTY_ACTIVITY_URL)).text()), JSON.stringify(structure));
     const filename = prompt('Save as:');
