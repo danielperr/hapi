@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,10 +8,12 @@ import styled from 'styled-components';
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { lightBlue } from '@material-ui/core/colors';
 import { CssBaseline, Box, Fab, Modal, Fade, Backdrop } from '@material-ui/core';
+import { useBeforeunload } from 'react-beforeunload';
 import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
+import { calculateNoticeObjects } from '../utils/notices';
 import { version } from '../../package.json';
 import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
@@ -34,6 +37,12 @@ const THEME = createMuiTheme({
     secondary: lightBlue,
     negative: {
       main: '#cf5959',
+    },
+    warning: {
+      main: '#f9a825',
+    },
+    error: {
+      main: '#f92525',
     },
   },
   overrides: {
@@ -83,24 +92,27 @@ function App({ initial }) {
   const initialStructure = DEFAULT_STRUCTURE;
   initialStructure.id = makeid(20);
   const [structure, setStructure] = useState(initial || initialStructure);
-  const [savedFlag, setSavedFlag] = useState(true);  // Whether the file is saved and safe to exit
   const [exportButtonLoading, setExportButtonLoading] = useState(false);
   const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
+  const [noticeObjects, setNoticeObjects] = useState([]);
 
-  const didMount = useRef(false);
+  // <AutoSave>
+  const saveToLocalStorage = () => {
+    localStorage.setItem('creator-last-save', JSON.stringify(structure));
+  };
+
   useEffect(() => {
-    if (didMount.current) {
-      setSavedFlag(false);
-      if (process.env.NODE_ENV !== 'development') {
-        window.onbeforeunload = function(){ if (!savedFlag) { return true } };
-      }
-    }
-    else didMount.current = true;
+    const interval = setInterval(() => { saveToLocalStorage(); }, 60 * 1000);
+    return () => { clearInterval(interval); }
+  });
+
+  // Right before getting closed in the browser
+  useBeforeunload(() => { saveToLocalStorage(); });
+  // </AutoSave>
+
+  useEffect(() => {
+    setNoticeObjects(calculateNoticeObjects(structure));
   }, [structure]);
-
-  useEffect(() => {
-    handleClickAddSection();
-  }, [])
 
   const handleChangeLanguage = (language) => {
     setStructure(produce(structure, (newStructure) => {
@@ -111,13 +123,24 @@ function App({ initial }) {
   const handleLoad = (contents) => {
     setStructure(JSON.parse(contents));
   };
+
+  const handleNewActivity = () => {
+    if (window.confirm('This will erase the current activity.\nPlease save it to a file before continuing.\nClick OK to confirm creating an activity.')) {
+      setStructure(DEFAULT_STRUCTURE);
+      saveToLocalStorage();
+    }
+  }
   
   const handleSave = () => {
     saveWorkFile(JSON.stringify(structure, null, 2));
-    setSavedFlag(true);
   };
 
   const handleExport = async () => {
+    if (noticeObjects.length) {
+      if (!window.confirm('You have warnings in your activity, export anyway?')) {
+        return;
+      }
+    }
     setExportButtonLoading(true);
     // exportToActivity((await (await fetch(EMPTY_ACTIVITY_URL)).text()), JSON.stringify(structure));
     const filename = prompt('Save as:');
@@ -144,15 +167,13 @@ function App({ initial }) {
   };
 
   const handleUpdateSection = (updatedSection) => {
-    setStructure(
-      produce(structure, (newStructure) => {
-        newStructure.sections.forEach((section, i) => {
-          if (section.id === updatedSection.id) {
-            newStructure.sections[i] = updatedSection;
-          }
-        });
-      })
-    );
+    setStructure(produce(structure, (newStructure) => {
+      newStructure.sections.forEach((section, i) => {
+        if (section.id === updatedSection.id) {
+          newStructure.sections[i] = updatedSection;
+        }
+      });
+    }));
   };
 
   const handleClickAddSection = () => {
@@ -284,6 +305,7 @@ function App({ initial }) {
               language={structure.language}
               onChangeLanguage={handleChangeLanguage}
               onLoad={handleLoad}
+              onNewActivity={handleNewActivity}
               onSave={handleSave}
               onExport={handleExport}
               exportLoading={exportButtonLoading}
@@ -306,6 +328,7 @@ function App({ initial }) {
                         key={section.id}
                         index={index}
                         structure={section}
+                        noticeObjects={noticeObjects}
                         onUpdate={handleUpdateSection}
                         onDuplicate={handleDuplicateSection}
                         onDelete={handleDeleteSection}

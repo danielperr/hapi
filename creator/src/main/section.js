@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 
 import produce from 'immer';
-import styled from 'styled-components';
 
-import { Box, makeStyles, Button, IconButton, Collapse, Grow, Tooltip } from '@material-ui/core';
+import {
+  Box,
+  makeStyles,
+  Button,
+  IconButton,
+  Collapse,
+  Grow,
+  Tooltip,
+} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
@@ -15,6 +22,7 @@ import Element from './element';
 import Editable from '../shared/editable';
 import FocusAwarePaper from '../shared/focus-aware-paper';
 import RotatingIcon from '../shared/rotating-icon';
+import NoticePopup from '../shared/notice-popup';
 import { DEFAULT_ELEMENT } from '../shared/constants';
 import { makeid, replaceIds } from '../utils';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
@@ -39,14 +47,30 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
   },
-  collapseButton: {
+  topBarSpacer: {
     marginRight: theme.spacing(2),
   },
-  duplicateButton: {
-
+  noticesButton: {
+    width: '48px',
+    height: '50px',
+    // borderRadius: '50%',
+  },
+  noticesIcon: {
+    width: '24px',
+    height: '24px',
+    backgroundColor: theme.palette.warning.main,
+    borderRadius: '50%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  noticesNumber: {
+    fontSize: '0.8rem',
+    color: 'white',
+    position: 'relative',
+    fontWeight: 'bold',
   },
   deleteButton: {
-    marginRight: theme.spacing(1),
     color: theme.palette.negative.main,
   },
   center: {
@@ -61,12 +85,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
-  
+function Section({
+  index,
+  structure,
+  noticeObjects,
+  onUpdate,
+  onDuplicate,
+  onDelete,
+}) {
   const classes = useStyles();
 
   const [isOpen, setIsOpen] = useState(true);  // Whether if open or collapsed
   const [isVisible, setIsVisible] = useState(true);
+
+  // Notice object of this section
+  const sectionNoticeObject = noticeObjects.find(({ id }) => id === structure.id);
+  // Notice objects of elements that belong to this section
+  const elementsNoticeObjects = noticeObjects.filter(({ id }) => (
+    structure.elements.find((element) => id === element.id)
+  ));
+  const sectionNoticeCount = sectionNoticeObject ? sectionNoticeObject.notices.length : 0;
+  const elementsNoticeCount = elementsNoticeObjects.flatMap(({ notices }) => notices).length;
+  const totalNoticeCount = sectionNoticeCount + elementsNoticeCount;
 
   const handleChangeHeader = (text) => {
     onUpdate(produce(structure, newStructure => {
@@ -85,7 +125,7 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
         if (element.id === updatedElement.id) {
           newStructure.elements[i] = updatedElement;
         }
-      })
+      });
     }));
   };
 
@@ -150,6 +190,7 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
     <Draggable draggableId={structure.id} index={index}>
       {(provided, snapshot) => (
         <div
+          id={structure.id}
           ref={provided.innerRef}
           {...provided.draggableProps}
           style={{...provided.draggableProps.style, opacity: (snapshot.isDragging && !snapshot.isDropAnimating) ? 0.8 : 1}}
@@ -164,7 +205,17 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
                 </Box>
                 <Box className={classes.topBar}>
                   <Editable size={2} onChange={handleChangeHeader} isHeightFixed={true} height="50px">{structure.header}</Editable>
-                  <IconButton className={classes.collapseButton} onClick={handleCollapseClick}>
+                  <div className={classes.topBarSpacer} />
+                    {totalNoticeCount ? (
+                      <NoticePopup mainNoticeObject={sectionNoticeObject} childrenNoticeObjects={elementsNoticeObjects}>
+                        <IconButton className={classes.noticesButton}>
+                          <div className={classes.noticesIcon}>
+                            <span className={classes.noticesNumber}>{totalNoticeCount}</span>
+                          </div>
+                        </IconButton>
+                      </NoticePopup>
+                    ) : <></>}
+                  <IconButton onClick={handleCollapseClick} id={`${structure.id}`}>
                     <RotatingIcon
                       active={isOpen}
                       passiveIcon={<ArrowDownwardIcon />}
@@ -172,7 +223,7 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
                     />
                   </IconButton>
                   <Tooltip title="שכפל">
-                    <IconButton className={classes.duplicateButton} onClick={handleDuplicateSelf}>
+                    <IconButton onClick={handleDuplicateSelf}>
                       <FileCopyIcon />
                     </IconButton>
                   </Tooltip>
@@ -193,6 +244,7 @@ function Section({ index, structure, onUpdate, onDuplicate, onDelete }) {
                               key={element.id}
                               index={index}
                               structure={element}
+                              noticeObject={elementsNoticeObjects.find(({ id }) => id === element.id)}
                               onUpdate={handleUpdateElement}
                               onDuplicate={handleDuplicateElement}
                               onDelete={handleDeleteElement}

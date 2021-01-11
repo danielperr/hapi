@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginTop: theme.spacing(1),
   },
+  newActivityButton: {
+    marginBottom: theme.spacing(1),
+  },
   dropzone: {
     border: '1px dashed gray',
     borderRadius: theme.spacing(0.5),
@@ -79,7 +82,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLanguage, onLaunchPreview }) {
+function Menu({
+  onLoad,
+  onNewActivity,
+  onSave,
+  onExport,
+  exportLoading,
+  language,
+  onChangeLanguage,
+  onLaunchPreview,
+}) {
   const classes = useStyles();
   
   const [isOpen, setIsOpen] = useState(false);
@@ -91,6 +103,10 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
   const handleClickHamburger = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleClickNewActivity = () => {
+    onNewActivity();
+  }
 
   const handleDropzoneRead = (contents) => {
     onLoad(contents);
@@ -124,6 +140,13 @@ function Menu({ onLoad, onSave, onExport, exportLoading, language, onChangeLangu
       </div>
       <Slide direction="left" in={isOpen} mountOnEnter unmountOnExit>
         <div className={classes.buttonMenu}>
+            <Button
+              className={`${classes.menuButton} ${classes.newActivityButton}`}
+              variant="outlined"
+              onClick={handleClickNewActivity}
+            >
+              צור פעילות חדשה
+            </Button>
             <div className={classes.dropzone} onRead={handleDropzoneRead}>
               <h3>טעינת קובץ</h3>
               <p>ניתן ללחוץ או לגרור הנה</p>
