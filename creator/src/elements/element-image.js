@@ -1,37 +1,45 @@
-import React from "react";
+import React from 'react';
 
-import produce from "immer";
-import styled from 'styled-components';
+import produce from 'immer';
+import { makeStyles } from '@material-ui/core/styles';
 
-import Editable from "../shared/editable";
+import Editable from '../shared/editable';
+
+const useStyles = makeStyles((theme) => ({
+  image: {
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    maxWidth: '70%',
+  },
+}));
 
 function ElementImage({ structure, onUpdate }) {
+  const classes = useStyles();
+
   const handleChange = (text) => {
-    onUpdate(
-      produce(structure, (newStructure) => {
-        newStructure.src = text;
-      })
-    );
+    onUpdate(produce(structure, (newStructure) => {
+      newStructure.src = text;
+    }));
   };
+
+  const handleError = (e) => {
+    e.target.src = `${process.env.PUBLIC_URL}/image-not-found.png`;
+  }
 
   return (
     <React.Fragment>
       <Editable onChange={handleChange}>{structure.src}</Editable>
       <br />
       <br />
-      <StyledImage
+      <img
         src={structure.src}
-        onError="this.onerror=null; this.src='https://www.0404.co.il/wp-content/uploads/2019/10/valley-3916972__480.jpg';" 
+        className={classes.image}
+        onError={handleError}
+        alt=""
       />
     </React.Fragment>
   );
 }
-
-const StyledImage = styled.img`
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 70%;
-`;
 
 export default ElementImage;
