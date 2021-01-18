@@ -129,7 +129,7 @@ function App({ initial }) {
   };
 
   const handleNewActivity = () => {
-    if (window.confirm('This will erase the current activity.\nPlease save it to a file before continuing.\nClick OK to confirm creating an activity.')) {
+    if (window.confirm('WARNING: This will erase the current activity!')) {
       setStructure(DEFAULT_STRUCTURE);
       saveToLocalStorage();
     }
