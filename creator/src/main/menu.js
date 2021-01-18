@@ -14,6 +14,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import CreateIcon from '@material-ui/icons/Create';
 
 import RotatingIcon from '../shared/rotating-icon';
 
@@ -51,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
   },
   newActivityButton: {
     marginBottom: theme.spacing(1),
+  },
+  newActivityStartIcon: {
+    marginLeft: theme.spacing(1.5),
+    marginRight: theme.spacing(-1.5),
   },
   dropzone: {
     border: '1px dashed gray',
@@ -144,6 +149,7 @@ function Menu({
               className={`${classes.menuButton} ${classes.newActivityButton}`}
               variant="outlined"
               onClick={handleClickNewActivity}
+              startIcon={<CreateIcon className={classes.newActivityStartIcon} />}
             >
               צור פעילות חדשה
             </Button>
