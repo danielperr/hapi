@@ -76,9 +76,9 @@ function NoticePopup({ mainNoticeObject, childrenNoticeObjects, children }) {
     });
   }
   childrenNoticeObjects.forEach(({ id, notices }) => {
-    notices.forEach(({ title, description }) => {
+    notices.forEach(({ title, description }, index) => {
       menuContent.push(
-        <MenuItem onClick={handleClickItem(id)} key={id}>
+        <MenuItem onClick={handleClickItem(id)} key={`${id}-${index}`}>
           <ListItemText className={classes.listItemText} primary={title} secondary={description} />
           <ListItemIcon className={classes.listItemIcon}>
             <ArrowBackIosIcon fontSize="small" />
