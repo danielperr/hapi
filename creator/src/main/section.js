@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import produce from 'immer';
 
+import { v1 as uuid } from 'uuid';
 import {
   Box,
   makeStyles,
@@ -24,7 +25,7 @@ import FocusAwarePaper from '../shared/focus-aware-paper';
 import RotatingIcon from '../shared/rotating-icon';
 import NoticePopup from '../shared/notice-popup';
 import { DEFAULT_ELEMENT } from '../shared/constants';
-import { makeid, replaceIds } from '../utils';
+import { replaceIds } from '../utils';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme) => ({
@@ -131,7 +132,7 @@ function Section({
 
   const handleClickAddElement = () => {
     onUpdate(produce(structure, newStructure => {
-      newStructure.elements.push(produce(DEFAULT_ELEMENT, newElement => { newElement.id = makeid(10); }))
+      newStructure.elements.push(produce(DEFAULT_ELEMENT, newElement => { newElement.id = uuid(10); }))
     }));
   };
 

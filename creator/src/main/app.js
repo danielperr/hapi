@@ -9,13 +9,14 @@ import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/sty
 import { lightBlue } from '@material-ui/core/colors';
 import { CssBaseline, Box, Fab, Modal, Fade, Backdrop } from '@material-ui/core';
 import { useBeforeunload } from 'react-beforeunload';
+import { v1 as uuid } from 'uuid';
 import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { calculateNoticeObjects } from '../utils/notices';
 import { version } from '../../package.json';
-import { makeid, reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../utils';
+import { reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../utils';
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
 import { makeActivityContainer } from '../../../common/make-activity-file';
 import LanguageContext from '../shared/language-context';
@@ -90,7 +91,7 @@ function App({ initial }) {
   const classes = useStyles();
 
   const initialStructure = DEFAULT_STRUCTURE;
-  initialStructure.id = makeid(20);
+  initialStructure.id = uuid(20);
   const [structure, setStructure] = useState(initial || initialStructure);
   const [exportButtonLoading, setExportButtonLoading] = useState(false);
   const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
@@ -181,7 +182,7 @@ function App({ initial }) {
       produce(structure, (newStructure) => {
         newStructure.sections.push(
           produce(DEFAULT_SECTION, (newSection) => {
-            newSection.id = makeid(10);
+            newSection.id = uuid(10);
           })
         );
       })
