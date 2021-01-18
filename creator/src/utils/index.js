@@ -6,7 +6,6 @@ export {
 } from './file-utils';
 
 export {
-  makeid,
   findById,
   replaceIds,
 } from './id';
