@@ -107,9 +107,12 @@ function App({ initial }) {
     return () => { clearInterval(interval); }
   });
 
-  // Right before getting closed in the browser
-  useBeforeunload(() => { saveToLocalStorage(); });
-  // </AutoSave>
+  useEffect(() => {
+    window.onbeforeunload = () => {
+      saveToLocalStorage();
+      return true;
+    }
+  }, []);
 
   useEffect(() => {
     setNoticeObjects(calculateNoticeObjects(structure));
