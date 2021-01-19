@@ -10,11 +10,17 @@ import {
   FormControl,
   MenuItem,
   Slide,
+  Typography,
+  Divider,
+  InputLabel,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CreateIcon from '@material-ui/icons/Create';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import SaveIcon from '@material-ui/icons/Save';
+import LaunchIcon from '@material-ui/icons/Launch';
 
 import RotatingIcon from '../shared/rotating-icon';
 
@@ -50,15 +56,22 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginTop: theme.spacing(1),
   },
-  newActivityButton: {
-    marginBottom: theme.spacing(1),
-  },
-  newActivityStartIcon: {
+  startIcon: {
     marginLeft: theme.spacing(1.5),
     marginRight: theme.spacing(-1.5),
   },
+  textIcon: {
+    position: 'relative',
+    top: theme.spacing(0.6),
+    left: theme.spacing(0.8),
+    marginTop: theme.spacing(-2),
+    fontSize: '20px',
+  },
+  newActivityButton: {
+    marginBottom: theme.spacing(1),
+  },
   dropzone: {
-    border: '1px dashed gray',
+    border: '1px dashed rgba(0,0,0,0.23)',
     borderRadius: theme.spacing(0.5),
     padding: theme.spacing(0.5, 2),
     lineHeight: '50%',
@@ -83,6 +96,21 @@ const useStyles = makeStyles((theme) => ({
     left: '50%',
     marginTop: -8,
     marginLeft: -12,
+  },
+  divider: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+  },
+  languageSelectLabel: {
+    top: theme.spacing(-0.75),
+    left: 'auto',
+    right: theme.spacing(-1),
+  },
+  languageSelect: {
+    height: '42px',
+    '& legend': {
+      textAlign: 'right',
+    }
   },
 }));
 
@@ -149,18 +177,19 @@ function Menu({
               className={`${classes.menuButton} ${classes.newActivityButton}`}
               variant="outlined"
               onClick={handleClickNewActivity}
-              startIcon={<CreateIcon className={classes.newActivityStartIcon} />}
+              startIcon={<CreateIcon className={classes.startIcon} />}
             >
-              צור פעילות חדשה
+              פעילות חדשה
             </Button>
             <div className={classes.dropzone} onRead={handleDropzoneRead}>
-              <h3>טעינת קובץ</h3>
-              <p>ניתן ללחוץ או לגרור הנה</p>
+              <Typography variant="subtitle1"><FolderOpenIcon className={classes.textIcon} />טעינת קובץ</Typography>
+              <Typography variant="caption">ניתן ללחוץ או לגרור הנה</Typography>
             </div>
             <Button
               className={classes.menuButton}
               variant="outlined"
               onClick={handleClickSave}
+              startIcon={<SaveIcon className={classes.startIcon} />}
             >
               שמירת קובץ
             </Button>
@@ -170,18 +199,30 @@ function Menu({
                 variant="outlined"
                 onClick={handleClickExport}
                 disabled={exportLoading}
+                startIcon={<LaunchIcon className={classes.startIcon} />}
               >
                 ייצוא פעילות
               </Button>
               {exportLoading && <CircularProgress size={24} className={classes.exportProgress} />}
             </Box>
+            <Divider className={classes.divider} />
             <FormControl
-              variant="outlined"
               className={classes.languageFormControl}
+              variant="outlined"
             >
+              <InputLabel
+                variant="subtitle2"
+                id="language-input-label"
+                className={classes.languageSelectLabel}
+              >
+                שפת הפעילות
+              </InputLabel>
               <Select
                 value={language}
                 onChange={handleChangeLanguage}
+                labelId="language-input-label"
+                label="שפת הפעילות"
+                className={classes.languageSelect}
               >
                 <MenuItem value="en">אנגלית</MenuItem>
                 <MenuItem value="he">עברית</MenuItem>
