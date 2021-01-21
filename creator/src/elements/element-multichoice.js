@@ -6,12 +6,12 @@ import { Droppable } from 'react-beautiful-dnd';
 
 import { FormControl, RadioGroup, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { v1 as uuid } from 'uuid';
 import AddIcon from '@material-ui/icons/Add';
 
 import Checkbox from '../shared/checkbox';
 import MultiChoiceOption from './multichoice-option';
 import Editable from '../shared/editable';
-import { makeid } from '../utils';
 import { DEFAULT_MULTICHOICE_OPTION } from '../shared/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +35,7 @@ function ElementMultiChoice({ structure, onUpdate }) {
   const handleNewOption = () => {
     onUpdate(produce(structure, newStructure => {
       newStructure.options.push(produce(DEFAULT_MULTICHOICE_OPTION, newOption => {
-        newOption.id = makeid(10);
+        newOption.id = uuid(10);
       }));
     }));
   };
