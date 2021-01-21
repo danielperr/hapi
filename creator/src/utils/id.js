@@ -1,18 +1,5 @@
 import produce from 'immer';
-
-/**
- * Generate a random string of letters (upper & lowercase) and numbers of the given length
- * @param {Number} length
- */
-export function makeid(length) {
-  var result = "";
-  var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+import { v1 as uuid } from 'uuid';
 
 /**
  * Find object in array by its id property
@@ -43,7 +30,7 @@ export function replaceIds(object) {
     do {
       match = re.exec(json);
       if (match) {
-        json = json.replaceAll(match[1], makeid(10));
+        json = json.replaceAll(match[1], uuid(10));
       }
     } while (match);
     Object.assign(draftObject, JSON.parse(json));

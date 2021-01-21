@@ -1,6 +1,6 @@
 {
   "name": "hapi-creator",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "private": true,
   "homepage": ".",
   "dependencies": {
@@ -11,15 +11,17 @@
     "@testing-library/user-event": "^7.2.1",
     "clsx": "^1.1.1",
     "draft-js": "^0.11.7",
-    "immer": "^7.0.7",
+    "immer": "^8.0.1",
     "katex": "^0.12.0",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
+    "react-beforeunload": "^2.4.0",
     "react-dom": "^16.13.1",
     "react-markdown-editor-lite": "^1.2.2",
     "react-scripts": "^4.0.0",
     "serialize-javascript": "^4.0.0",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-app-rewired start",

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeid } from '../utils';
+import { v1 as uuid } from 'uuid';
 
 export default function Checkbox({ children, id, checked, onCheck }) {
 
@@ -21,7 +21,7 @@ export default function Checkbox({ children, id, checked, onCheck }) {
         id={id}
         checked={checked}
         onChange={handleChange}
-        key={makeid(4)}  // checkbox won't uncheck otherwise, this is a dumb workaround.
+        key={uuid(4)}  // checkbox won't uncheck otherwise, this is a dumb workaround.
       />
       <label htmlFor={id}>{children}</label>
     </div>
