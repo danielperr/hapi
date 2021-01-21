@@ -1,7 +1,9 @@
-import React, { createRef } from "react";
+import React, { createRef, useState } from "react";
 
 function Dropzone(props) {
-  const { children, onRead } = props;
+  const { children, onRead, ...divProps } = props;
+
+  const [dragHovering, setDragHovering] = useState(false);
 
   const containerRef = createRef();
   const fileInputRef = createRef();
@@ -10,13 +12,17 @@ function Dropzone(props) {
     fileInputRef.current.click();
   };
 
-  const handleDragEnter = () => {
-    containerRef.current.style.backgroundColor = '#FFFFDD';
+  const handleDragEnter = (e) => {
+    if (e.target !== containerRef.current) {
+      setDragHovering(true);
+    }
   };
 
-  const handleDragLeave = () => {
-    containerRef.current.style.backgroundColor = 'inherit';
-  };
+  const handleDragLeave = (e) => {
+    if (e.target !== containerRef.current) {
+      setDragHovering(false);
+    }
+  }
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -26,7 +32,7 @@ function Dropzone(props) {
     e.preventDefault();
     fileInputRef.current.files = e.dataTransfer.files;
     readFile();
-    containerRef.current.style.backgroundColor = 'inherit';
+    setDragHovering(false);
   };
 
   const handleFileChange = (e) => {
@@ -34,12 +40,16 @@ function Dropzone(props) {
   };
 
   const readFile = () => {
-    const file = fileInputRef.current.files[0];
-    const fr = new FileReader();
-    fr.onload = function() {
-      onRead(fr.result);
-    };
-    fr.readAsText(file);
+    try {
+      const file = fileInputRef.current.files[0];
+      const fr = new FileReader();
+      fr.onload = function() {
+        onRead(fr.result);
+      };
+      fr.readAsText(file);
+    } catch {
+      // No file supplied
+    }
   };
 
   return (
@@ -51,7 +61,8 @@ function Dropzone(props) {
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        {...props}
+        style={{ backgroundColor: dragHovering ? '#FFFFDD' : 'inherit' }}
+        {...divProps}
         id="container"
       >
         {children}

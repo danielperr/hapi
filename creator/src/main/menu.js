@@ -22,6 +22,7 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import SaveIcon from '@material-ui/icons/Save';
 import LaunchIcon from '@material-ui/icons/Launch';
 
+import Dropzone from '../shared/dropzone';
 import RotatingIcon from '../shared/rotating-icon';
 
 const useStyles = makeStyles((theme) => ({
@@ -181,10 +182,10 @@ function Menu({
             >
               פעילות חדשה
             </Button>
-            <div className={classes.dropzone} onRead={handleDropzoneRead}>
+            <Dropzone className={classes.dropzone} onRead={handleDropzoneRead}>
               <Typography variant="subtitle1"><FolderOpenIcon className={classes.textIcon} />טעינת קובץ</Typography>
               <Typography variant="caption">ניתן ללחוץ או לגרור הנה</Typography>
-            </div>
+            </Dropzone>
             <Button
               className={classes.menuButton}
               variant="outlined"
