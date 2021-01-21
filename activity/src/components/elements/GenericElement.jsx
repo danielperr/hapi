@@ -37,26 +37,42 @@ function GenericElement({
     onAnswer: handleAnswer,
   };
 
+  let elementToRender;
   switch (structure.type) {
     case 'label':
-      return <ElementLabel structure={structure} />;
+      elementToRender = <ElementLabel structure={structure} />;
+      break;
     case 'image':
-      return <ElementImage structure={structure} />;
+      elementToRender = <ElementImage structure={structure} />;
+      break;
     case 'docs':
-      return <ElementDocs structure={structure} />;
+      elementToRender = <ElementDocs structure={structure} />;
+      break;
     case 'youtube':
-      return <ElementYoutube structure={structure} />;
+      elementToRender = <ElementYoutube structure={structure} />;
+      break;
     case 'latex':
-      return <ElementLatex structure={structure} />;
+      elementToRender = <ElementLatex structure={structure} />;
+      break;
     case 'text-input':
-      return <ElementTextInput {...questionProps} />;
+      elementToRender = <ElementTextInput {...questionProps} />;
+      break;
     case 'multi-choice':
-      return <ElementMultiChoice {...questionProps} />;
+      elementToRender = <ElementMultiChoice {...questionProps} />;
+      break;
     case 'number-input':
-      return <ElementNumberInput {...questionProps} />;
+      elementToRender = <ElementNumberInput {...questionProps} />;
+      break;
     default:
-      return <span>{strings.unknownElement}</span>;
+      elementToRender = <span>{strings.unknownElement}</span>;
+      break;
   }
+
+  return (
+    <div id={structure.id}>
+      {elementToRender}
+    </div>
+  );
 }
 
 GenericElement.propTypes = {

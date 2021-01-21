@@ -16,7 +16,6 @@ import {
   unstable_createMuiStrictModeTheme as createMuiTheme,
   makeStyles,
 } from '@material-ui/core/styles';
-import { scroller } from 'react-scroll';
 import CheckIcon from '@material-ui/icons/Check';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import produce from 'immer';
@@ -213,12 +212,7 @@ function App({ structure, savedAnswers }) {
     if (structure.sections.every((section) => {
       const errorElementsIds = checkSection(section);
       if (errorElementsIds.length) {
-        scroller.scrollTo(errorElementsIds[0], {
-          duration: 1000,
-          delay: 100,
-          smooth: 'easeInOutQuint',
-          offset: -100,
-        });
+        document.getElementById(errorElementsIds[0]).scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       return !errorElementsIds.length;
     })) {
