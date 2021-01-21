@@ -56,7 +56,6 @@ function ElementNumberInput({
 }) {
   const {
     text,
-    id,
   } = structure;
   const {
     error,

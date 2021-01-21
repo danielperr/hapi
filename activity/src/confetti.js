@@ -45,9 +45,9 @@ function create(i) {
 }
 
 function dropConfetti() {
-  for (let i = 0; i < 150; i++) {
+  [...Array(150).keys()].forEach((i) => {
     create(i);
-  }
+  });
 }
 
 export default dropConfetti;

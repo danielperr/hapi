@@ -14,8 +14,7 @@ function RTL({ active, children }) {
     document.body.style.textAlign = 'right';
   }
 
-  if (active === undefined) { active = true; }
-  return (active ) ? (
+  return (active) ? (
     <ThemeProvider theme={(outerTheme) => ({ ...outerTheme, direction: 'rtl' })}>
       <StylesProvider jss={create({ plugins: [...jssPreset().plugins, rtl()] })}>
         {children}

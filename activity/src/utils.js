@@ -1,21 +1,23 @@
-
 import { strings } from './localization';
 
-export function shuffle(a) {
-    var j, x, i;
+export function shuffle(array) {
+  const a = [...array];
+  let j;
+  let x;
+  let i;
 
-    for (i = a.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * (i + 1));
-      x = a[i];
-      a[i] = a[j];
-      a[j] = x;
-    }
+  for (i = a.length - 1; i > 0; i -= 1) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = a[i];
+    a[i] = a[j];
+    a[j] = x;
+  }
 
-    return a;
+  return a;
 }
 
 export function getPhrase(boolean) {
-  const good_words = [
+  const goodWords = [
     strings.answerCorrect1,
     strings.answerCorrect2,
     strings.answerCorrect3,
@@ -25,31 +27,28 @@ export function getPhrase(boolean) {
     strings.answerCorrect7,
     strings.answerCorrect8,
   ];
-  const bad_words = [
+  const badWords = [
     strings.answerIncorrect1,
     strings.answerIncorrect2,
     strings.answerIncorrect3,
     strings.answerIncorrect4,
-  ]
+  ];
 
   // Choose a word set according to the given bollean
-  const word_set = (boolean)?good_words:bad_words;
+  const wordSet = (boolean) ? goodWords : badWords;
   // Return a random word out of the set
-  return word_set[Math.floor(Math.random() * word_set.length)];
+  return wordSet[Math.floor(Math.random() * wordSet.length)];
 }
 
 export function download(filename, text) {
-  var element = document.createElement("a");
+  const element = document.createElement('a');
   element.setAttribute(
-    "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+    'href',
+    `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`,
   );
-  element.setAttribute("download", filename);
-
-  element.style.display = "none";
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
   document.body.appendChild(element);
-
   element.click();
-
   document.body.removeChild(element);
 }

@@ -50,7 +50,6 @@ function ElementTextInput({
   onAnswer,
 }) {
   const {
-    id,
     text,
     multiline,
   } = structure;

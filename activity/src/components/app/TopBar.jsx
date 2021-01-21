@@ -46,7 +46,12 @@ const useStyles = makeStyles((theme) => ({
 /**
  * Main top bar of the app, contains the activity's title and actions
  */
-function TopBar({ elevation, mainHeader, onDownload, onReset }) {
+function TopBar({
+  elevation,
+  mainHeader,
+  onDownload,
+  onReset,
+}) {
   const theme = useTheme();
   const classes = useStyles(theme);
 
