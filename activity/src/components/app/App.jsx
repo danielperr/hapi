@@ -57,7 +57,7 @@ const theme = createMuiTheme({
 });
 
 // We create style classes to use in the component
-// This approach of styling (instead of CSS) is used througout the whole project
+// This approach of styling (instead of CSS) is used throughout the whole project
 // `makeStyles` is provided by the design library "Material UI"
 const useStyles = makeStyles(() => ({
   container: {
