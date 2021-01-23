@@ -3,7 +3,7 @@ import React from 'react';
 import { Fab } from '@material-ui/core';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-import ScrollTop from '../common/ScrollTop';
+import ScrollTop from './ScrollTop';
 
 function ScrollToTopButton() {
   return (

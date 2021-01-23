@@ -14,7 +14,7 @@ import { makeActivityContainer } from '../../../../common/make-activity-file';
 import { strings } from '../../localization';
 import { version } from '../../../package.json';
 import CheckAllButton from './CheckAllButton';
-import RTL from '../common/RTL';
+import RTL from './RTL';
 import ScrollToTopButton from './ScrollToTopButton';
 import Section from '../section/Section';
 import SuccessSnackbar from './SuccessSnackbar';
