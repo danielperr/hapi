@@ -20,12 +20,12 @@ import AddIcon from '@material-ui/icons/Add';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 import Element from './element';
-import Editable from '../shared/editable';
-import FocusAwarePaper from '../shared/focus-aware-paper';
-import RotatingIcon from '../shared/rotating-icon';
-import NoticePopup from '../shared/notice-popup';
-import { DEFAULT_ELEMENT } from '../shared/constants';
-import { replaceIds } from '../utils';
+import Editable from '../common/editable';
+import FocusAwarePaper from '../common/focus-aware-paper';
+import RotatingIcon from '../common/rotating-icon';
+import NoticePopup from '../common/notice-popup';
+import { DEFAULT_ELEMENT } from '../../constants';
+import { replaceIds } from '../../utils';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles((theme) => ({

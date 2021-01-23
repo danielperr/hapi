@@ -4,7 +4,7 @@ import produce from 'immer';
 import katex from 'katex';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Editable from '../shared/editable';
+import Editable from '../common/editable';
 
 const useStyles = makeStyles(() => ({
   latexField: {

@@ -14,17 +14,17 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { calculateNoticeObjects } from '../utils/notices';
-import { version } from '../../package.json';
-import { reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../utils';
-import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../shared/constants';
-import { makeActivityContainer } from '../../../common/make-activity-file';
-import LanguageContext from '../shared/language-context';
-import FocusAwarePaper from '../shared/focus-aware-paper';
-import Editable from '../shared/editable';
+import { calculateNoticeObjects } from '../../utils/notices';
+import { version } from '../../../package.json';
+import { reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../../utils';
+import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../../constants';
+import { makeActivityContainer } from '../../../../common/make-activity-file';
+import LanguageContext from '../../language-context';
+import FocusAwarePaper from '../common/focus-aware-paper';
+import Editable from '../common/editable';
 import Section from './section';
 import Menu from './menu';
-import PreviewWindow from '../shared/preview-window';
+import PreviewWindow from './preview-window';
 
 const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import produce from "immer";
 
-import Editable from '../shared/editable';
+import Editable from '../common/editable';
 
 function extractYoutubeId(input) {
   let youtubeId = '';

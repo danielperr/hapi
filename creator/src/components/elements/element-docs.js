@@ -3,7 +3,7 @@ import React from 'react';
 import produce from "immer";
 import styled from 'styled-components';
 
-import Editable from '../shared/editable';
+import Editable from '../common/editable';
 
 function ElementDocs({ structure, onUpdate }) {
 

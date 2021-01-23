@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import produce from 'immer';
 
-import Editable from '../shared/editable';
+import Editable from '../common/editable';
 
 function ElementNumberInput({ structure, onUpdate }) {
   

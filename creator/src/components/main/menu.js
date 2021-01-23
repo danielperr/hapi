@@ -22,8 +22,8 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import SaveIcon from '@material-ui/icons/Save';
 import LaunchIcon from '@material-ui/icons/Launch';
 
-import Dropzone from '../shared/dropzone';
-import RotatingIcon from '../shared/rotating-icon';
+import Dropzone from './dropzone';
+import RotatingIcon from '../common/rotating-icon';
 
 const useStyles = makeStyles((theme) => ({
   floatingButtonContainer: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './main/app';
+import App from './components/main/app';
 import './index.css';
 
 console.log(`Copyright (c) 2020 Amir Kedem, Daniel Peretz and Boaz Katz

@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import CloseIcon from '@material-ui/icons/Close';
 import { Draggable } from 'react-beautiful-dnd';
-import LanguageContext from '../shared/language-context';
+import LanguageContext from '../../language-context';
 
 const useStyles = makeStyles((theme) => ({
   container: {

@@ -9,10 +9,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { v1 as uuid } from 'uuid';
 import AddIcon from '@material-ui/icons/Add';
 
-import Checkbox from '../shared/checkbox';
+import Checkbox from '../common/checkbox';
 import MultiChoiceOption from './multichoice-option';
-import Editable from '../shared/editable';
-import { DEFAULT_MULTICHOICE_OPTION } from '../shared/constants';
+import Editable from '../common/editable';
+import { DEFAULT_MULTICHOICE_OPTION } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   addIcon: {

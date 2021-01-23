@@ -19,7 +19,7 @@ import ElementImage from "../elements/element-image";
 import ElementNumberInput from "../elements/element-number-input";
 import ElementDocs from "../elements/element-docs";
 import ElementLatex from "../elements/element-latex";
-import NoticePopup from '../shared/notice-popup';
+import NoticePopup from '../common/notice-popup';
 
 const useStyles = makeStyles((theme) => ({
   container: {
