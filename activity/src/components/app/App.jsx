@@ -24,6 +24,7 @@ import { strings } from '../../localization';
 import { download, getPhrase } from '../../utils';
 import { makeActivityContainer } from '../../../../common/make-activity-file';
 import { version } from '../../../package.json';
+import { checkActivity, checkSection } from '../../checking';
 import TableOfContents from './TableOfContents';
 import RTL from '../common/RTL';
 import ScrollTop from '../common/ScrollTop';
@@ -152,43 +153,27 @@ function App({ structure, savedAnswers }) {
   }
 
   /**
-   * Checks the given section for unfilled / wrong answers
-   * @returns array of id strings of incorrect or empty elements (empty array if section is ok)
+   * Given the current status of the section after checking, update its elements' feedback
+   * properties (whether to display text, what text to display, whether to mark it in red)
+   * @param sectionAnswerStatus {Object} See definition in `../../checking.js`
    */
-  const checkSection = (section) => {
-    const errorElements = [];
-    /* Using the `produce` function from the library "immer" to create a copy
-      of the `elementsFeedback` state variable. We do this to prevent mutating
-      it which would cause react not to re-render. (React should re-render when
-      state changes.) */
+  const updateElementsFeedback = (sectionAnswerStatus) => {
     setElementsFeedback(produce(elementsFeedback, (newElementsFeedback) => {
-      section.elements.forEach((element) => {
-        const answer = answers[element.id] || '';
-        let correct;
-        switch (element.type) {
-          case 'multi-choice':
-            if (element.correct === undefined) { return; }
-            if (!element.options.map((o) => o.id).includes(element.correct[0])) { return; }
-            correct = answer !== '' && element.correct.includes(answer);
-            break;
-          case 'text-input':
-            correct = answer.replace(/[ (\r\n|\r|\n)]/gi, '') !== '';
-            break;
-          case 'number-input':
-            correct = answer !== '' && element.min <= answer && answer <= element.max;
-            break;
-          default: return;
-        }
-        // Update the element's feedback components (color and text)
-        newElementsFeedback[element.id].helperText = answer === '' ? strings.answerMissing : getPhrase(correct);
-        newElementsFeedback[element.id].showHelperText = true;
-        newElementsFeedback[element.id].error = !correct;
-        if (!correct) {
-          errorElements.push(element.id);
+      sectionAnswerStatus.elementStatuses.forEach((elementAnswerStatus) => {
+        if (elementAnswerStatus.fillable) {
+          const newElementFeedback = newElementsFeedback[elementAnswerStatus.elementId];
+          newElementFeedback.showHelperText = elementAnswerStatus.fillable;
+          newElementFeedback.error = !elementAnswerStatus.elementComplete;
+          if (elementAnswerStatus.elementComplete) {
+            newElementFeedback.helperText = getPhrase(true); // Good text
+          } else if (elementAnswerStatus.hasCorrectAnswer && !elementAnswerStatus.answerCorrect) {
+            newElementFeedback.helperText = getPhrase(false); // Wrong answer, bad text
+          } else {
+            newElementFeedback.helperText = strings.answerMissing;
+          }
         }
       });
     }));
-    return errorElements;
   };
 
   // Gets called from one of the sections when an element's answer is changed
@@ -205,35 +190,8 @@ function App({ structure, savedAnswers }) {
     }));
   };
 
-  // Gets called when the "Check all" button is pressed
-  // Checks all of the activity's sections and drops confetti if all are ok
-  // If not, automatically scrolls to the first problematic element
-  const handleSubmitActivity = () => {
-    if (structure.sections.every((section) => {
-      const errorElementsIds = checkSection(section);
-      if (errorElementsIds.length) {
-        document.getElementById(errorElementsIds[0]).scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      return !errorElementsIds.length;
-    })) {
-      dropConfetti();
-      setShowSuccess(true);
-    }
-  };
-
   // Gets called when the "download activity" button is pressed
   const handleSaveActivity = () => {
-    // const answersString = JSON.stringify(answers);
-    // const thisFileCode = thisFileCodeSnapshot.cloneNode(true);
-    // thisFileCode.querySelectorAll('#save-input').forEach((element) => {
-    //   if (element.id === 'save-input') {
-    //     element.value = answersString;
-    //   }
-    // });
-    // const filename = prompt('Save as:');
-    // if (filename !== '' && filename !== null) {
-    //   download(`${filename}.hapi.html`, thisFileCode.innerHTML);
-    // }
     const filename = prompt('Save as:');
     if (filename && filename !== '') {
       download(`${filename}.hapi.html`, makeActivityContainer(structure, answers, filename, ACTIVITY_URL));
@@ -252,10 +210,33 @@ function App({ structure, savedAnswers }) {
     }
   };
 
-  // Gets called when the "Check answers" at the end of the section is pressed
+  /**
+   * Gets called when the "Check answers" at the end of the section is pressed
+   * @param sectionId The ID of the section that the student wishes to check
+   */
   const handleCheckSection = (sectionId) => {
-    const section = structure.sections.find((s) => s.id === sectionId);
-    return checkSection(section);
+    const sectionStructure = structure.sections.find((s) => s.id === sectionId);
+    updateElementsFeedback(checkSection(sectionStructure, answers));
+  };
+
+  /*
+   * Gets called when the "Check all" button is pressed.
+   * Checks all of the activity's sections and drops confetti if everything is complete.
+   * If not, automatically scrolls to the first problematic element.
+  */
+  const handleSubmitActivity = () => {
+    const activityAnswerStatus = checkActivity(structure, answers);
+    activityAnswerStatus.sectionStatuses.forEach((sectionAnswerStatus) => {
+      updateElementsFeedback(sectionAnswerStatus);
+    });
+    if (activityAnswerStatus.activityComplete) {
+      dropConfetti();
+      setShowSuccess(true); // Display the "Activity complete" green snackbar
+    } else {
+      document
+        .getElementById(activityAnswerStatus.firstIncompleteElementId)
+        .scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
   // Gets called when the x button on the green success snackbar is pressed
@@ -270,8 +251,6 @@ function App({ structure, savedAnswers }) {
   return (
     // Providing the theme we declared earlier
     <ThemeProvider theme={theme}>
-      {/* RTL is a custom element that can apply RTL settings to the design
-        library when the `rtl` variable is set to `true` */}
       <RTL active={rtl}>
         <CssBaseline />
         <div id="back-to-top-anchor" />
@@ -281,7 +260,7 @@ function App({ structure, savedAnswers }) {
           onDownload={handleSaveActivity}
           onReset={handleResetActivity}
         />
-        {/* This empty toolbar provides spacing at the top */}
+       {/* This empty toolbar provides spacing at the top */}
         <Toolbar />
         <TableOfContents structure={structure} />
         <Container maxWidth="md" className={classes.container}>
