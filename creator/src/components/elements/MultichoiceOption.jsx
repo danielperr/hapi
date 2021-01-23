@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MultiChoiceOption({ index, structure, name, checked, onUpdate, onSelectCorrect, onNew, onDestroy }) {
+function MultichoiceOption({ index, structure, name, checked, onUpdate, onSelectCorrect, onNew, onDestroy }) {
   const classes = useStyles();
 
   const language = useContext(LanguageContext);
@@ -126,4 +126,4 @@ function MultiChoiceOption({ index, structure, name, checked, onUpdate, onSelect
   );
 }
 
-export default MultiChoiceOption;
+export default MultichoiceOption;

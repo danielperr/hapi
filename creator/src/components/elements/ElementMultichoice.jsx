@@ -9,9 +9,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { v1 as uuid } from 'uuid';
 import AddIcon from '@material-ui/icons/Add';
 
-import Checkbox from '../common/checkbox';
-import MultiChoiceOption from './multichoice-option';
-import Editable from '../common/editable';
+import Checkbox from '../common/Checkbox';
+import MultichoiceOption from './MultichoiceOption';
+import Editable from '../common/Editable';
 import { DEFAULT_MULTICHOICE_OPTION } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ElementMultiChoice({ structure, onUpdate }) {
+function ElementMultichoice({ structure, onUpdate }) {
   const classes = useStyles();
 
   const options = structure.options || [];
@@ -85,7 +85,7 @@ function ElementMultiChoice({ structure, onUpdate }) {
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {options.map((option, index) => (
-                  <MultiChoiceOption
+                  <MultichoiceOption
                     key={option.id}
                     index={index}
                     structure={option}
@@ -118,4 +118,4 @@ function ElementMultiChoice({ structure, onUpdate }) {
   );
 }
 
-export default ElementMultiChoice;
+export default ElementMultichoice;

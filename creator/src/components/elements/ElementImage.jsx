@@ -3,7 +3,7 @@ import React from 'react';
 import produce from 'immer';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Editable from '../common/editable';
+import Editable from '../common/Editable';
 
 const useStyles = makeStyles((theme) => ({
   image: {

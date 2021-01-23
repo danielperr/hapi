@@ -20,11 +20,11 @@ import { reorder, saveWorkFile, exportToActivity, reorderStructure, findById, re
 import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../../constants';
 import { makeActivityContainer } from '../../../../common/make-activity-file';
 import LanguageContext from '../../language-context';
-import FocusAwarePaper from '../common/focus-aware-paper';
-import Editable from '../common/editable';
-import Section from './section';
-import Menu from './menu';
-import PreviewWindow from './preview-window';
+import FocusAwarePaper from '../common/FocusAwarePaper';
+import Editable from '../common/Editable';
+import Section from './Section';
+import Menu from './Menu';
+import PreviewWindow from './PreviewWindow';
 
 const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 

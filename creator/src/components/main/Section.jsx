@@ -19,11 +19,11 @@ import DragHandleIcon from '@material-ui/icons/DragHandle';
 import AddIcon from '@material-ui/icons/Add';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 
-import Element from './element';
-import Editable from '../common/editable';
-import FocusAwarePaper from '../common/focus-aware-paper';
-import RotatingIcon from '../common/rotating-icon';
-import NoticePopup from '../common/notice-popup';
+import Element from './Element';
+import Editable from '../common/Editable';
+import FocusAwarePaper from '../common/FocusAwarePaper';
+import RotatingIcon from '../common/RotatingIcon';
+import NoticePopup from '../common/NoticePopup';
 import { DEFAULT_ELEMENT } from '../../constants';
 import { replaceIds } from '../../utils';
 import { Draggable, Droppable } from 'react-beautiful-dnd';

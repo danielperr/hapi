@@ -2,7 +2,7 @@ import React from 'react';
 
 import produce from 'immer';
 
-import Editable from '../common/editable';
+import Editable from '../common/Editable';
 
 function ElementLabel({ structure, onUpdate }) {
 

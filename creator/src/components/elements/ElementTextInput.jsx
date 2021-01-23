@@ -2,8 +2,8 @@ import React from 'react';
 
 import produce from 'immer';
 
-import Checkbox from '../common/checkbox';
-import Editable from '../common/editable';
+import Checkbox from '../common/Checkbox';
+import Editable from '../common/Editable';
 
 function ElementTextInput({ structure, onUpdate }) {
 

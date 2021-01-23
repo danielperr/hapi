@@ -11,15 +11,15 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import DeleteIcon from '@material-ui/icons/Delete';
 import WarningIcon from '@material-ui/icons/Warning';
 
-import ElementLabel from "../elements/element-label";
-import ElementYoutube from "../elements/element-youtube";
-import ElementMultiChoice from "../elements/element-multichoice";
-import ElementTextInput from "../elements/element-text-input";
-import ElementImage from "../elements/element-image";
-import ElementNumberInput from "../elements/element-number-input";
-import ElementDocs from "../elements/element-docs";
-import ElementLatex from "../elements/element-latex";
-import NoticePopup from '../common/notice-popup';
+import ElementLabel from "../elements/ElementLabel";
+import ElementYoutube from "../elements/ElementYoutube";
+import ElementMultichoice from "../elements/ElementMultichoice";
+import ElementTextInput from "../elements/ElementTextInput";
+import ElementImage from "../elements/ElementImage";
+import ElementNumberInput from "../elements/ElementNumberInput";
+import ElementDocs from "../elements/ElementDocs";
+import ElementLatex from "../elements/ElementLatex";
+import NoticePopup from '../common/NoticePopup';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -125,7 +125,7 @@ export default function Element({
       obj = <ElementDocs {...elementProps} />;
       break;
     case "multi-choice":
-      obj = <ElementMultiChoice {...elementProps} />;
+      obj = <ElementMultichoice {...elementProps} />;
       break;
     case "text-input":
       obj = <ElementTextInput {...elementProps} />;
