@@ -45,12 +45,14 @@ const useStyles = makeStyles(() => ({
 
 const FILLABLE_TYPES = ['multi-choice', 'text-input', 'number-input'];
 
+/**
+ * HAPI Activity App
+ */
 function App({ structure, savedAnswers }) {
   // Get style classes we defined earlier
-  const classes = useStyles(theme);
+  const classes = useStyles();
 
-  // let initialAnswers = JSON.parse(document.getElementById('save-input').value || '{}');
-  let initialAnswers = savedAnswers; // from save file
+  let initialAnswers = savedAnswers;
   if (!Object.keys(initialAnswers).length) {
     initialAnswers = JSON.parse(localStorage.getItem(structure.serialNumber) || '{}'); // from local storage
   }

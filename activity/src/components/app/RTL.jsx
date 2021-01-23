@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { StylesProvider, ThemeProvider, jssPreset } from '@material-ui/core/styles';
 import { create } from 'jss';
+import PropTypes from 'prop-types';
 import rtl from 'jss-rtl';
 
 /**

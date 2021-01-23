@@ -70,57 +70,22 @@ const TableOfContents = ({ structure }) => {
   const classes = useStyles();
   const [activeState, setActiveState] = React.useState();
 
-  // componentDidMount
   useEffect(() => {
-    // Events.scrollEvent.register('begin', (to, element) => {
-    //   console.log('begin', to, element);
-    // });
-
     Events.scrollEvent.register('end', (_to, element) => {
       setActiveState(element.id);
     });
 
-    // componentWillUnmount
     return () => {
       Events.scrollEvent.remove('begin');
       Events.scrollEvent.remove('end');
     };
   }, []);
 
-  /*
-  const scrollTo = (eId, offset) => {
-    scroller.scrollTo(eId, {
-      duration: 1000,
-      delay: 0,
-      smooth: "easeOutQuint",
-      offset: offset,
-    });
-  };
-
-  const handleClick = (hash) => (event) => {
-    // Ignore click for new tab/new window behavior
-    if (
-      event.defaultPrevented ||
-      event.button !== 0 || // ignore everything but left-click
-      event.metaKey ||
-      event.ctrlKey ||
-      event.altKey ||
-      event.shiftKey
-    ) {
-      return;
-    }
-
-    scrollTo(hash, -98);
-
-    setActiveState(hash);
-  };
-  */
-
   const handleSetActive = (hash) => {
     setActiveState(hash);
   };
 
-  const itemLink = (item) => (
+  const createItemLink = (item) => (
     <Link
       to={item.hash}
       spy
@@ -129,39 +94,35 @@ const TableOfContents = ({ structure }) => {
       duration={500}
       isDynamic
       onSetActive={() => handleSetActive(item.hash)}
-      // onSetInactive={this.handleSetInactive}
       ignoreCancelEvents={false}
       href={`#${item.hash}`}
-      // onClick={handleClick(item.hash)}
       className={clsx(
         classes.item,
         activeState === item.hash ? classes.active : undefined,
       )}
     >
-      {/* <span dangerouslySetInnerHTML={{ __html: item.text }} /> */}
       {item.text}
     </Link>
   );
 
-  const items = [];
-  structure.sections.forEach((section, index) => {
-    items.push({ text: section.header, hash: section.id, index });
-  });
+  const items = structure.sections.map((section, index) => (
+    { text: section.header, hash: section.id, index }
+  ));
 
   return (
     <nav className={classes.root} aria-label="Page Table Of Contents">
-      {items.length > 0 ? (
+      {items.length > 0 && (
         <>
           <Typography gutterBottom className={classes.contents}>
             <Box fontWeight="fontWeightBold">{strings.tableOfContents}</Box>
           </Typography>
           <Typography component="ul" className={classes.ul}>
             {items.map((item) => (
-              <li key={item.text} className={classes.li}>{itemLink(item)}</li>
+              <li key={item.text} className={classes.li}>{createItemLink(item)}</li>
             ))}
           </Typography>
         </>
-      ) : null}
+      )}
     </nav>
   );
 };

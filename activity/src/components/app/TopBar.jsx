@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -12,6 +11,7 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import PropTypes from 'prop-types';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import CodeIcon from '@material-ui/icons/Code';
 
@@ -57,6 +57,27 @@ function TopBar({
 
   const [devMenuOpen, setDevMenuOpen] = useState(false);
   const devMenuButtonRef = useRef(null);
+  // Render the devmenu if we're in dev environment (running from `npm start`)
+  const devMenu = process.env.NODE_ENV && process.env.NODE_ENV === 'development' && (
+    <>
+      <Divider
+        orientation="vertical"
+        flexItem
+        className={classes.divider}
+      />
+      <Tooltip title="Developer Menu">
+        <IconButton color="inherit" onClick={() => { setDevMenuOpen(true); }}>
+          <CodeIcon />
+          <div ref={devMenuButtonRef} />
+        </IconButton>
+      </Tooltip>
+      <DevMenu
+        open={devMenuOpen}
+        anchorEl={devMenuButtonRef.current}
+        onClose={() => { setDevMenuOpen(false); }}
+      />
+    </>
+  );
 
   return (
     <div className={classes.root}>
@@ -76,28 +97,7 @@ function TopBar({
           <IconButton color="inherit" onClick={onReset}>
             <DeleteIcon />
           </IconButton>
-          {/* Create the dev menu only on development environment (when running on `npm start`) */}
-          {process.env.NODE_ENV && process.env.NODE_ENV === 'development' && (
-            <>
-              <Divider
-                orientation="vertical"
-                flexItem
-                className={classes.divider}
-              />
-              <Tooltip title="Developer Menu">
-                <IconButton color="inherit" onClick={() => { setDevMenuOpen(true); }}>
-                  <CodeIcon />
-                  <div ref={devMenuButtonRef} />
-                </IconButton>
-              </Tooltip>
-              <DevMenu
-                open={devMenuOpen}
-                anchorEl={devMenuButtonRef.current}
-                onClose={() => { setDevMenuOpen(false); }}
-              />
-            </>
-          )}
-          {/* </devmenu> */}
+          {devMenu}
           <Divider
             orientation="vertical"
             flexItem

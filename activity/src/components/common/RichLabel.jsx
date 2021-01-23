@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 
 import { BlockMath, InlineMath } from 'react-katex';
 import { withStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import math from 'remark-math';
 import 'katex/dist/katex.min.css';

@@ -120,7 +120,7 @@ function DevMenu({ open, anchorEl, onClose }) {
 }
 
 DevMenu.propTypes = {
-  /** Whether the devmenu is open in the current app state */
+  /** Whether the developer menu is open in the current app state */
   open: PropTypes.bool.isRequired,
   /** Which HTML element to open from */
   anchorEl: PropTypes.instanceOf(Element),

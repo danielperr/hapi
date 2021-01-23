@@ -13,7 +13,6 @@ function ElementDocs({ structure }) {
         paddingTop: 25,
         height: '600px',
       }}
-      key={`${id} -div`}
     >
       <iframe
         style={{

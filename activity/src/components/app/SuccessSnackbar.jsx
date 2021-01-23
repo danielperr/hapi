@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
+import PropTypes from 'prop-types';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 
 import { strings } from '../../localization';
 

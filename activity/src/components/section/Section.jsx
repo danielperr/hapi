@@ -40,14 +40,20 @@ function Section({
     (element) => checkablesTypes.includes(element.type),
   ).length;
 
-  /* When the user answers on a question (changes its 'answer' state) */
+  /**
+   * When the student answers on a question (changes its 'answer' state)
+   * @param questionId {String}
+   * @param answer {Any}
+   */
   const handleAnswer = (questionId, answer) => {
     onAnswer(questionId, answer);
   };
 
-  /* When the user attempts to check this section */
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  /**
+   * When the student wishes to check this section
+   */
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevents the page from refreshing
     onCheck(id);
   };
 
@@ -56,14 +62,10 @@ function Section({
       id={id}
       className={classes.sectionPaper}
     >
-      <SectionHeader
-        text={structure.header}
-        name={`${id}-H`}
-      />
+      <SectionHeader>{structure.header}</SectionHeader>
       <form
         onSubmit={handleSubmit}
         className="section-elements"
-        key={`${id}-D`}
       >
         {structure.elements.map((element) => (
           <GenericElement
@@ -91,7 +93,7 @@ function Section({
 
 Section.propTypes = {
   structure: sectionStructureType,
-  answers: PropTypes.shape(),
+  answers: PropTypes.objectOf(PropTypes.any),
   elementsFeedback: PropTypes.shape({
     x: feedbackType,
   }),
