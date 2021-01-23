@@ -1,81 +1,40 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-param-reassign */
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
-import {
-  Box,
-  CssBaseline,
-  Container,
-  Fab,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
-import {
-  ThemeProvider,
-  unstable_createMuiStrictModeTheme as createMuiTheme,
-  makeStyles,
-} from '@material-ui/core/styles';
-import CheckIcon from '@material-ui/icons/Check';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { Container, CssBaseline, Toolbar } from '@material-ui/core';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import produce from 'immer';
 
-import { strings } from '../../localization';
+import { activityStructureType } from '../../../../common/types';
+import { checkActivity, checkSection } from '../../checking';
 import { download, getPhrase } from '../../utils';
 import { makeActivityContainer } from '../../../../common/make-activity-file';
+import { strings } from '../../localization';
 import { version } from '../../../package.json';
-import { checkActivity, checkSection } from '../../checking';
-import TableOfContents from './TableOfContents';
+import CheckAllButton from './CheckAllButton';
 import RTL from '../common/RTL';
-import ScrollTop from '../common/ScrollTop';
+import ScrollToTopButton from './ScrollToTopButton';
 import Section from '../section/Section';
 import SuccessSnackbar from './SuccessSnackbar';
+import TableOfContents from './TableOfContents';
 import TopBar from './TopBar';
 import dropConfetti from '../../confetti';
-import { activityStructureType } from '../../../../common/types';
+import theme from '../../theme';
 
 const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
 // const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
-// Here we create a global theme to pass it to a ThemeProvider later
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#3f51b5',
-    },
-    secondary: {
-      main: '#ff8f00',
-      contrastText: '#ffffff',
-    },
-    background: {
-      default: '#E8EAF6',
-    },
-    contrastThreshold: 3,
-    tonalOffset: 0.2,
-  },
-  spacing: 8,
-});
-
-// We create style classes to use in the component
-// This approach of styling (instead of CSS) is used throughout the whole project
-// `makeStyles` is provided by the design library "Material UI"
+/**
+ * `makeStyles` is a function provided by the Material UI library. It's a method to specify styling
+ * for out react component instead of CSS. This approach is used throughout the whole project.
+ * Later we will reference this `useStyles` hook in the component to extract these style classes.
+ */
 const useStyles = makeStyles(() => ({
   container: {
     marginTop: theme.spacing(2),
-  },
-  checkAllBtnContainer: {
-    marginBottom: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  checkAllBtn: {
-    fontWeight: 'bold',
-  },
-  checkTypography: {
-    margin: theme.spacing(0, 1),
-    fontWeight: 'bold',
   },
   version: {
     position: 'fixed',
@@ -118,39 +77,31 @@ function App({ structure, savedAnswers }) {
   const [elementsFeedback, setElementsFeedback] = React.useState(initialElementsFeedback);
   const [topBarElevation, setTopBarElevation] = React.useState(false);
 
-  // Gets called when the component finishes loading for the first time
-  const componentDidMount = () => {
-    // Update document title if it isn't set
-    document.title = structure.mainHeader;
-    // Handle scrolling
-    window.addEventListener('scroll', () => {
-      setTopBarElevation(window.pageYOffset !== 0);
-    }, { passive: true });
-  };
-
-  // Method gets called when the component is about to be removed
-  // It's good to disconnect here any event listeners created in componentDidMount
-  const componentWillUnmount = () => {
-    window.removeEventListener('scroll', null);
-  };
-
-  useEffect((...args) => {
-    componentDidMount(...args);
-    return componentWillUnmount;
-  }, []);
-
-  // Listen for when `answers` changes, then update the localStorage
-  useEffect(() => {
-    localStorage.setItem(structure.serialNumber, JSON.stringify(answers));
-  }, [answers]);
-
-  // Setting the language in the localization object (named `strings`)
-  /* If the language is not set in the activity, the browser's default
+  /* Setting the language in the localization object (named `strings`).
+    If the language is not set in the activity, the browser's default
     language is selected (this is implemented in the localization library) */
   const lang = structure.language;
   if (lang !== undefined && strings.getLanguage() !== lang) {
     strings.setLanguage(lang);
   }
+
+  useEffect(() => {
+    // This is getting called only once when the component finishes loading.
+    document.title = structure.mainHeader;
+    window.addEventListener('scroll', () => {
+      setTopBarElevation(window.pageYOffset !== 0);
+    }, { passive: true });
+
+    return () => {
+      // This is getting called when the component is about to be removed
+      window.removeEventListener('scroll', null);
+    };
+  }, []);
+
+  useEffect(() => {
+    // `useEffect` listens for when the `answers` prop changes and calls this line
+    localStorage.setItem(structure.serialNumber, JSON.stringify(answers));
+  }, [answers]);
 
   /**
    * Given the current status of the section after checking, update its elements' feedback
@@ -176,7 +127,12 @@ function App({ structure, savedAnswers }) {
     }));
   };
 
-  // Gets called from one of the sections when an element's answer is changed
+  /**
+   * Gets called whenever the student changes the answer to an element.
+   * For example, when clicking on a multi choice option or when typing into a text input.
+   * @param elementId {String} The ID of the element of which the student updated his answer
+   * @param answer {Any} The answer to the element
+   */
   const handleAnswer = (elementId, answer) => {
     // Reset form feedback text & color
     setElementsFeedback(produce(elementsFeedback, (newElementsFeedback) => {
@@ -190,7 +146,9 @@ function App({ structure, savedAnswers }) {
     }));
   };
 
-  // Gets called when the "download activity" button is pressed
+  /**
+   * Gets called when the "download activity" button is pressed
+   */
   const handleSaveActivity = () => {
     const filename = prompt('Save as:');
     if (filename && filename !== '') {
@@ -198,8 +156,10 @@ function App({ structure, savedAnswers }) {
     }
   };
 
-  // Gets called when the "reset activity" button is pressed
-  // Prompt for confirmation, erase all the answers and reload
+  /**
+   * Gets called when the "Reset activity" button is pressed
+   * Prompts for confirmation, erases all the answers and reloads
+   */
   const handleResetActivity = () => {
     if (window.confirm(strings.dialogResetActivity)) {
       setAnswers({});
@@ -211,7 +171,7 @@ function App({ structure, savedAnswers }) {
   };
 
   /**
-   * Gets called when the "Check answers" at the end of the section is pressed
+   * Gets called when the "Check answers" button at the end of the section is pressed
    * @param sectionId The ID of the section that the student wishes to check
    */
   const handleCheckSection = (sectionId) => {
@@ -239,9 +199,11 @@ function App({ structure, savedAnswers }) {
     }
   };
 
-  // Gets called when the x button on the green success snackbar is pressed
-  /* (The "success snackbar" is the green bar that appears at the bottom when
-    the activity is complete) */
+  /**
+   * Gets called when the x button on the green success snackbar is pressed
+   * (The "success snackbar" is the green bar that appears at the bottom when the activity is
+   * complete)
+   */
   const handleSuccessSnackbarClose = () => {
     setShowSuccess(false);
   };
@@ -260,7 +222,7 @@ function App({ structure, savedAnswers }) {
           onDownload={handleSaveActivity}
           onReset={handleResetActivity}
         />
-       {/* This empty toolbar provides spacing at the top */}
+        {/* This empty toolbar provides spacing at the top */}
         <Toolbar />
         <TableOfContents structure={structure} />
         <Container maxWidth="md" className={classes.container}>
@@ -275,34 +237,14 @@ function App({ structure, savedAnswers }) {
               key={section.id}
             />
           ))}
-          {/* Rendering the "Check all" button only when there are fillable elements */}
-          {fillableElements.length ? (
-            <Box className={classes.checkAllBtnContainer}>
-              <Fab
-                variant="extended"
-                color="secondary"
-                className={classes.checkAllBtn}
-                onClick={handleSubmitActivity}
-              >
-                <CheckIcon />
-                <Typography className={classes.checkTypography}>
-                  {strings.actionCheckAll}
-                </Typography>
-              </Fab>
-            </Box>
-          ) : <></>}
+          {fillableElements.length && <CheckAllButton onClick={handleSubmitActivity} />}
           <SuccessSnackbar
             open={showSuccess}
             onClose={handleSuccessSnackbarClose}
             rtl={rtl}
           />
         </Container>
-        {/* When you click anywhere inside a ScrollTop it scrolls to the top */}
-        <ScrollTop>
-          <Fab color="secondary" size="small" aria-label="scroll back to top">
-            <KeyboardArrowUpIcon />
-          </Fab>
-        </ScrollTop>
+        <ScrollToTopButton />
       </RTL>
       <p className={classes.version}>{version}</p>
     </ThemeProvider>
@@ -311,7 +253,7 @@ function App({ structure, savedAnswers }) {
 
 App.propTypes = {
   structure: activityStructureType,
-  savedAnswers: PropTypes.shape(),
+  savedAnswers: PropTypes.objectOf(PropTypes.string),
 };
 
 App.defaultProps = {
