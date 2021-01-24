@@ -11,13 +11,9 @@ import produce from 'immer';
 
 import { DEFAULT_SECTION, DEFAULT_STRUCTURE } from '../../constants';
 import { activityStructureType } from '../../../../common/types';
-import { calculateNoticeObjects } from '../../utils/notices';
-import {
-  downloadFileWithContents,
-  replaceIds,
-  saveWorkFile,
-} from '../../utils';
+import { calculateNoticeObjects } from '../../notices';
 import { makeActivityContainer } from '../../../../common/make-activity-file';
+import { saveWorkFile } from '../../file-management';
 import { version } from '../../../package.json';
 import Editable from '../common/Editable';
 import FocusAwarePaper from '../common/FocusAwarePaper';
@@ -26,6 +22,8 @@ import Menu from './Menu';
 import PreviewWindow from './PreviewWindow';
 import Section from './Section';
 import dndReorder from '../../dnd-reorder';
+import downloadFile from '../../../../common/download-file';
+import replaceIds from '../../replace-ids';
 import theme from '../../theme';
 
 const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
@@ -136,7 +134,7 @@ function App({ initial }) {
     setExportButtonLoading(true);
     const filename = prompt('Save as:');
     if (filename) {
-      downloadFileWithContents(
+      downloadFile(
         `${filename}.hapi.html`,
         makeActivityContainer(structure, {}, filename, ACTIVITY_URL),
       );

@@ -3,18 +3,18 @@ import katex from 'katex';
 export const noticeMessages = {
   emptyActivityHeader: {
     title: 'כותרת ריקה לפעילות',
-    description: 'חייבת להיות כותרת לפעילות.'
+    description: 'חייבת להיות כותרת לפעילות.',
   },
   emptySection: {
     title: 'היחידה ריקה',
-    description: 'יחידה חייבת להכיל לפחות רכיב אחד.'
+    description: 'יחידה חייבת להכיל לפחות רכיב אחד.',
   },
   emptySectionHeader: {
     title: 'כותרת ריקה ליחידה',
-    description: 'מומלץ לכתוב כותרת מתאימה עבור כל יחידה.'
+    description: 'מומלץ לכתוב כותרת מתאימה עבור כל יחידה.',
   },
   emptyElementText: {
-    title: 'חסר כיתוב לרכיב'
+    title: 'חסר כיתוב לרכיב',
   },
   emptyImageSrc: {
     title: 'חסר קישור לתמונה',
@@ -41,11 +41,11 @@ export const noticeMessages = {
   },
   emptyMultichoiceOption: {
     title: 'ישנה תשובה ריקה',
-    description: 'התשובות חייבות להכיל טקסט.'
+    description: 'התשובות חייבות להכיל טקסט.',
   },
   emptyMultichoiceCorrect: {
     title: 'אף תשובה לא נכונה בשאלה',
-    description: 'חייבת להיות תשובה נכונה בשאלה.'
+    description: 'חייבת להיות תשובה נכונה בשאלה.',
   },
   emptyNumberInputRange: {
     title: 'חסרים ערכים נכונים בשאלה',
@@ -53,9 +53,9 @@ export const noticeMessages = {
   },
   invalidNumberInputRange: {
     title: 'התחום שצוין לא הגיוני',
-    description: 'תחום התשובה הנכונה לא הגיוני (אולי התבלבלת בין המינימום למקסימום?)'
+    description: 'תחום התשובה הנכונה לא הגיוני (אולי התבלבלת בין המינימום למקסימום?)',
   },
-}
+};
 
 export function calculateNoticeObjects(structure) {
   const noticeObjects = [];
@@ -89,7 +89,7 @@ export function calculateNoticeObjects(structure) {
           }
           break;
         case 'youtube':
-          if (!element.youtubId) {
+          if (!element.youtubeId) {
             elementNotices.push(noticeMessages.emptyYoutubeId);
           }
           break;

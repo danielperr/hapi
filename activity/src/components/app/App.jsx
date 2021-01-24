@@ -9,7 +9,7 @@ import produce from 'immer';
 
 import { activityStructureType } from '../../../../common/types';
 import { checkActivity, checkSection } from '../../checking';
-import { download, getPhrase } from '../../utils';
+import { getPhrase } from '../../utils';
 import { makeActivityContainer } from '../../../../common/make-activity-file';
 import { strings } from '../../localization';
 import { version } from '../../../package.json';
@@ -20,6 +20,7 @@ import Section from '../section/Section';
 import SuccessSnackbar from './SuccessSnackbar';
 import TableOfContents from './TableOfContents';
 import TopBar from './TopBar';
+import downloadFile from '../../../../common/download-file';
 import dropConfetti from '../../confetti';
 import theme from '../../theme';
 
@@ -154,7 +155,7 @@ function App({ structure, savedAnswers }) {
   const handleSaveActivity = () => {
     const filename = prompt('Save as:');
     if (filename && filename !== '') {
-      download(`${filename}.hapi.html`, makeActivityContainer(structure, answers, filename, ACTIVITY_URL));
+      downloadFile(`${filename}.hapi.html`, makeActivityContainer(structure, answers, filename, ACTIVITY_URL));
     }
   };
 

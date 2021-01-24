@@ -1,18 +1,5 @@
-import produce from 'immer';
 import { v1 as uuid } from 'uuid';
-
-/**
- * Find object in array by its id property
- * @param {Array}  array
- * @param {String} id
- */
-export function findById(array, id) {
-  array.forEach((object, index, array) => {
-    if (object.id === id) {
-      return array[index];
-    }
-  });
-}
+import produce from 'immer';
 
 /**
  * Replace all ids in given object with new generated ids of length 10.
@@ -21,8 +8,9 @@ export function findById(array, id) {
  * object is immutable.
  * @param {Object} object
  * @returns {Object} result
+ * Todo: Replace JSON with recursive implementation
  */
-export function replaceIds(object) {
+export default function replaceIds(object) {
   return JSON.parse(JSON.stringify(produce(object, (draftObject) => {
     let json = JSON.stringify(draftObject);
     const re = /"id":"(.*?)"/g;

@@ -12,6 +12,7 @@ import {
   Grow,
   Tooltip,
 } from '@material-ui/core';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
@@ -25,8 +26,7 @@ import FocusAwarePaper from '../common/FocusAwarePaper';
 import RotatingIcon from '../common/RotatingIcon';
 import NoticePopup from '../common/NoticePopup';
 import { DEFAULT_ELEMENT } from '../../constants';
-import { replaceIds } from '../../utils';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
+import replaceIds from '../../replace-ids';
 
 const useStyles = makeStyles((theme) => ({
   section: {
