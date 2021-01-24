@@ -223,7 +223,7 @@ function Section({
                     {structure.header}
                   </Editable>
                   <div className={classes.topBarSpacer} />
-                  {totalNoticeCount && (
+                  {Boolean(totalNoticeCount) && (
                     <NoticePopup
                       mainNoticeObject={sectionNoticeObject}
                       childrenNoticeObjects={elementsNoticeObjects}
