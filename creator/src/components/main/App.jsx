@@ -1,69 +1,36 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable no-alert */
+/* eslint-disable no-param-reassign */
+import React, { useEffect, useState } from 'react';
 
-import produce from 'immer';
-import styled from 'styled-components';
-
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { lightBlue } from '@material-ui/core/colors';
-import { CssBaseline, Box, Fab, Modal, Fade, Backdrop } from '@material-ui/core';
-import { useBeforeunload } from 'react-beforeunload';
+import { Box, Fab } from '@material-ui/core';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { v1 as uuid } from 'uuid';
 import AddIcon from '@material-ui/icons/Add';
+import produce from 'immer';
 
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-
+import { DEFAULT_SECTION, DEFAULT_STRUCTURE } from '../../constants';
+import { activityStructureType } from '../../../../common/types';
 import { calculateNoticeObjects } from '../../utils/notices';
-import { version } from '../../../package.json';
-import { reorder, saveWorkFile, exportToActivity, reorderStructure, findById, replaceIds, downloadFileWithContents } from '../../utils';
-import { DEFAULT_STRUCTURE, DEFAULT_SECTION } from '../../constants';
+import {
+  downloadFileWithContents,
+  replaceIds,
+  saveWorkFile,
+} from '../../utils';
 import { makeActivityContainer } from '../../../../common/make-activity-file';
-import LanguageContext from '../../language-context';
-import FocusAwarePaper from '../common/FocusAwarePaper';
+import { version } from '../../../package.json';
 import Editable from '../common/Editable';
-import Section from './Section';
+import FocusAwarePaper from '../common/FocusAwarePaper';
+import LanguageContext from '../../language-context';
 import Menu from './Menu';
 import PreviewWindow from './PreviewWindow';
+import Section from './Section';
+import dndReorder from '../../dnd-reorder';
+import theme from '../../theme';
 
 const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
-const THEME = createMuiTheme({
-  direction: 'rtl',
-  spacing: 8,
-  palette: {
-    primary: {
-      main: '#4a95d3'
-    },
-    secondary: lightBlue,
-    negative: {
-      main: '#cf5959',
-    },
-    warning: {
-      main: '#f9a825',
-    },
-    error: {
-      main: '#f92525',
-    },
-  },
-  overrides: {
-    MuiIconButton: {
-      root: {
-        color: '#333333',
-      }
-    },
-    MuiTouchRipple: {
-      rippleVisible: {
-        animationDuration: '300ms',
-      },
-      childLeaving: {
-        animationDuration: '300ms',
-      },
-    },
-  },
-});
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   mainContainer: {
     width: '800px',
     padding: '32px',
@@ -85,211 +52,174 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- * Main app component, blah blah blah
+ * Main app component
  */
 function App({ initial }) {
   const classes = useStyles();
 
   const initialStructure = DEFAULT_STRUCTURE;
   initialStructure.id = uuid(20);
+
+  /* STATE VARIABLES */
   const [structure, setStructure] = useState(initial || initialStructure);
   const [exportButtonLoading, setExportButtonLoading] = useState(false);
   const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
   const [noticeObjects, setNoticeObjects] = useState([]);
 
-  // <AutoSave>
   const saveToLocalStorage = () => {
     localStorage.setItem('creator-last-save', JSON.stringify(structure));
   };
 
   useEffect(() => {
-    const interval = setInterval(() => { saveToLocalStorage(); }, 60 * 1000);
-    return () => { clearInterval(interval); }
-  });
-
-  useEffect(() => {
+    // This is called only once when the component finishes loading
     window.onbeforeunload = () => {
+      // This is called when the window is about to be closed
       saveToLocalStorage();
       return true;
-    }
+    };
+    const interval = setInterval(() => { saveToLocalStorage(); }, 60 * 1000);
+    return () => {
+      // This is called when the component is about to be unmounted (right before closing)
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
+    // This is called whenever the structure state is changed
     setNoticeObjects(calculateNoticeObjects(structure));
   }, [structure]);
 
+  /**
+   * The user selects a language for the activity in the menu
+   * @param language {String} 'en' or 'he'
+   */
   const handleChangeLanguage = (language) => {
     setStructure(produce(structure, (newStructure) => {
       newStructure.language = language;
     }));
   };
 
+  /**
+   * Gets called from the file dropzone whenever the user loads a file from their computer
+   * @param contents {String} The file's contents - structure in JSON string format
+   */
   const handleLoad = (contents) => {
     setStructure(JSON.parse(contents));
   };
 
+  /**
+   * The user clicks to create a new activity (and clears the current one)
+   */
   const handleNewActivity = () => {
     if (window.confirm('WARNING: This will erase the current activity!')) {
       setStructure(DEFAULT_STRUCTURE);
       saveToLocalStorage();
     }
-  }
-  
+  };
+
+  /**
+   * The user clicks to save the activity to a file
+   */
   const handleSave = () => {
     saveWorkFile(JSON.stringify(structure, null, 2));
   };
 
-  const handleExport = async () => {
+  /**
+   * Gets called whenever the user clicks to export the activity to an html file
+   */
+  const handleExport = () => {
     if (noticeObjects.length) {
       if (!window.confirm('You have warnings in your activity, export anyway?')) {
         return;
       }
     }
     setExportButtonLoading(true);
-    // exportToActivity((await (await fetch(EMPTY_ACTIVITY_URL)).text()), JSON.stringify(structure));
     const filename = prompt('Save as:');
-    if (filename && filename !== '') {
-      downloadFileWithContents(`${filename}.hapi.html`, makeActivityContainer(structure, {}, filename, ACTIVITY_URL))
+    if (filename) {
+      downloadFileWithContents(
+        `${filename}.hapi.html`,
+        makeActivityContainer(structure, {}, filename, ACTIVITY_URL),
+      );
     }
     setExportButtonLoading(false);
   };
 
+  /**
+   * The user clicks the preview button
+   */
   const handleLaunchPreview = () => {
     setPreviewWindowOpen(true);
   };
 
+  /**
+   * The user clicks to close the preview window
+   */
   const handleClosePreview = () => {
     setPreviewWindowOpen(false);
   };
 
+  /**
+   * The user changes the main header of the activity
+   * @param text {String} New text to change to
+   */
   const handleChangeMainHeader = (text) => {
-    setStructure(
-      produce(structure, (newStructure) => {
-        newStructure.mainHeader = text;
-      })
-    );
-  };
-
-  const handleUpdateSection = (updatedSection) => {
     setStructure(produce(structure, (newStructure) => {
-      newStructure.sections.forEach((section, i) => {
-        if (section.id === updatedSection.id) {
-          newStructure.sections[i] = updatedSection;
-        }
-      });
+      newStructure.mainHeader = text;
     }));
   };
 
-  const handleClickAddSection = () => {
-    setStructure(
-      produce(structure, (newStructure) => {
-        newStructure.sections.push(
-          produce(DEFAULT_SECTION, (newSection) => {
-            newSection.id = uuid(10);
-          })
-        );
-      })
-    );
+  /**
+   * Gets called from one of the section when its structure needs to update
+   * @param updatedSection {Object} New structure of the section
+   */
+  const handleUpdateSection = (updatedSection) => {
+    setStructure(produce(structure, (newStructure) => {
+      const i = structure.sections.findIndex(({ id }) => id === updatedSection.id);
+      newStructure.sections[i] = updatedSection;
+    }));
   };
 
+  /**
+   * The user clicks the plus button to add a section
+   */
+  const handleClickAddSection = () => {
+    setStructure(produce(structure, (newStructure) => {
+      newStructure.sections.push(produce(DEFAULT_SECTION, (newSection) => {
+        newSection.id = uuid(10);
+      }));
+    }));
+  };
+
+  /**
+   * Gets called from a section when the user clicks on its duplicate button
+   * @param sectionId {String} ID of the section the user wishes to duplicate
+   */
   const handleDuplicateSection = (sectionId) => {
     setStructure(produce(structure, (newStructure) => {
       newStructure.sections.push(replaceIds(structure.sections.find((s) => s.id === sectionId)));
-    }))
+    }));
   };
 
+  /**
+   * Gets called from a section when the user clicks to delete it
+   * @param sectionId
+   */
   const handleDeleteSection = (sectionId) => {
-    setStructure(
-      produce(structure, (newStructure) => {
-        newStructure.sections.forEach((section, index, object) => {
-          if (section.id === sectionId) {
-            object.splice(index, 1);
-          }
-        });
-      })
-    );
+    setStructure(produce(structure, (newStructure) => {
+      const i = structure.sections.findIndex(({ id }) => id === sectionId);
+      newStructure.sections.splice(i, 1);
+    }));
   };
 
+  /**
+   * Gets called from the DragDropContext component of the library 'react-beautiful-dnd' which
+   * manages the drag and drop mechanism of sections and elements.
+   * @param result {Object}
+   */
   const handleDragEnd = (result) => {
-    const { source, destination } = result;
-    
-    // dropped nowhere
-    if (!destination) {
-      return;
-    }
-
-    // did not move
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
-      return;
-    }
-
-    // reorder sections
-    if (result.type === 'SECTION') {
-      setStructure(produce(structure, (newStructure) => {
-        newStructure.sections = reorder(
-          newStructure.sections,
-          source.index,
-          destination.index
-        )
-      }));
-      return;
-    }
-
-    // reorder elements
-    if (result.type === 'ELEMENT') {
-      // element is in the same section as before
-      if (source.droppableId === destination.droppableId) {
-        setStructure(produce(structure, (newStructure) => {
-          newStructure.sections.forEach((section, index, sections) => {
-            if (section.id === destination.droppableId) {
-              sections[index].elements = reorder(
-                section.elements,
-                source.index,
-                destination.index
-              )
-            }
-          })
-        }));
-        return;
-      }
-
-      // element is moving between sections
-      setStructure(produce(structure, (newStructure) => {
-        let element;
-        newStructure.sections.forEach((section, index, sections) => {
-          if (section.id === source.droppableId) {
-            [element] = sections[index].elements.splice(source.index, 1);
-          }
-        })
-        newStructure.sections.forEach((section, index, sections) => {
-          if (section.id === destination.droppableId) {
-            sections[index].elements.splice(destination.index, 0, element);
-          }
-        })
-      }));
-      return;
-    }
-
-    // reorder multichoice options
-    // option is in the same element
-    if (source.droppableId === destination.droppableId) {
-      setStructure(produce(structure, (newStructure) => {
-        newStructure.sections.forEach((section) => {
-          section.elements.forEach((element, index, elements) => {
-            if (element.id === destination.droppableId) {
-              elements[index].options = reorder(
-                element.options,
-                source.index,
-                destination.index
-              );
-            }
-          });
-        });
-      }));
-      return;
+    const { shouldUpdate, newStructure } = dndReorder(result, structure);
+    if (shouldUpdate) {
+      setStructure(newStructure);
     }
   };
 
@@ -302,7 +232,7 @@ function App({ initial }) {
         activityUrl={ACTIVITY_URL}
       />
       <LanguageContext.Provider value={structure.language}>
-        <ThemeProvider theme={THEME}>
+        <ThemeProvider theme={theme}>
           {/* <CssBaseline /> */}
           <Box className={classes.mainContainer}>
             <Menu
@@ -316,7 +246,7 @@ function App({ initial }) {
               onLaunchPreview={handleLaunchPreview}
             />
             <FocusAwarePaper className={classes.mainHeader}>
-              <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed={true} height='64px'>
+              <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed height="64px">
                 {structure.mainHeader}
               </Editable>
             </FocusAwarePaper>
@@ -325,6 +255,7 @@ function App({ initial }) {
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
+                    /* eslint-disable-next-line react/jsx-props-no-spreading */
                     {...provided.droppableProps}
                   >
                     {structure.sections.map((section, index) => (
@@ -357,16 +288,11 @@ function App({ initial }) {
 
 App.propTypes = {
   /** Initial structure to start with */
-  initial: PropTypes.shape({
-    mainHeader: PropTypes.string.isRequired,
-    sections: PropTypes.arrayOf(PropTypes.shape({
-      header: PropTypes.string.isRequired,
-      elements: PropTypes.arrayOf(PropTypes.shape({
-        type: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
-      })).isRequired,
-    })).isRequired,
-  })
-}
+  initial: activityStructureType,
+};
+
+App.defaultProps = {
+  initial: DEFAULT_STRUCTURE,
+};
 
 export default App;

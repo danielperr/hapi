@@ -2,12 +2,10 @@ export {
   downloadFileWithContents,
   saveWorkFile,
   injectStructureToActivity,
-  exportToActivity
+  exportToActivity,
 } from './file-utils';
 
 export {
   findById,
   replaceIds,
 } from './id';
-
-export { reorder } from './reorder';
