@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { sectionStructureType, feedbackType } from '../../../../common/types';
+import { sectionStructureType, feedbackType } from '../../../../common/prop-types';
 import { strings } from '../../localization';
 import GenericElement from '../elements/GenericElement';
 import SectionHeader from './SectionHeader';

@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { strings } from '../../localization';
-import { activityStructureType } from '../../../../common/types';
+import { activityStructureType } from '../../../../common/prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -13,7 +13,7 @@ import {
   Divider,
 } from '@material-ui/core';
 
-import { feedbackType } from '../../../../common/types';
+import { feedbackType } from '../../../../common/prop-types';
 import RichLabel from '../common/RichLabel';
 
 const useStyles = makeStyles((theme) => ({

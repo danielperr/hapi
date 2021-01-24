@@ -7,7 +7,7 @@ import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import produce from 'immer';
 
-import { activityStructureType } from '../../../../common/types';
+import { activityStructureType } from '../../../../common/prop-types';
 import { checkActivity, checkSection } from '../../checking';
 import { getPhrase } from '../../utils';
 import { makeActivityContainer } from '../../../../common/make-activity-file';

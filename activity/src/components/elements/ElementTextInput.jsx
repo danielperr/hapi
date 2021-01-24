@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { feedbackType } from '../../../../common/types';
+import { feedbackType } from '../../../../common/prop-types';
 import RichLabel from '../common/RichLabel';
 
 const useStyles = makeStyles((theme) => ({

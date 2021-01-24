@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { feedbackType } from '../../../../common/types';
+import { feedbackType } from '../../../../common/prop-types';
 import { shuffle } from '../../utils';
 import RichLabel from '../common/RichLabel';
 

@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { elementStructureType, feedbackType } from '../../../../common/types';
+import { elementStructureType, feedbackType } from '../../../../common/prop-types';
 import { strings } from '../../localization';
 import ElementDocs from './ElementDocs';
 // import ElementIfigure from './ElementIfigure';

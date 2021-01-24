@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import produce from 'immer';
 
 import { DEFAULT_SECTION, DEFAULT_STRUCTURE } from '../../constants';
-import { activityStructureType } from '../../../../common/types';
+import { activityStructureType } from '../../../../common/prop-types';
 import { calculateNoticeObjects } from '../../notices';
 import { makeActivityContainer } from '../../../../common/make-activity-file';
 import { saveWorkFile } from '../../file-management';
