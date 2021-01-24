@@ -1,24 +1,27 @@
-import React from "react";
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable no-param-reassign */
+import React from 'react';
 
-import produce from "immer";
-import styled from "styled-components";
 import { Draggable } from 'react-beautiful-dnd';
-
-import { IconButton, Box, Tooltip } from '@material-ui/core';
+import { Box, IconButton, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import DeleteIcon from '@material-ui/icons/Delete';
+import PropTypes from 'prop-types';
 import WarningIcon from '@material-ui/icons/Warning';
+import produce from 'immer';
 
-import ElementLabel from "../elements/ElementLabel";
-import ElementYoutube from "../elements/ElementYoutube";
-import ElementMultichoice from "../elements/ElementMultichoice";
-import ElementTextInput from "../elements/ElementTextInput";
-import ElementImage from "../elements/ElementImage";
-import ElementNumberInput from "../elements/ElementNumberInput";
-import ElementDocs from "../elements/ElementDocs";
-import ElementLatex from "../elements/ElementLatex";
+import { elementStructureType } from '../../../../common/prop-types';
+import { noticeObjectType } from '../../prop-types';
+import ElementDocs from '../elements/ElementDocs';
+import ElementImage from '../elements/ElementImage';
+import ElementLatex from '../elements/ElementLatex';
+import ElementLabel from '../elements/ElementLabel';
+import ElementMultichoice from '../elements/ElementMultichoice';
+import ElementNumberInput from '../elements/ElementNumberInput';
+import ElementTextInput from '../elements/ElementTextInput';
+import ElementYoutube from '../elements/ElementYoutube';
 import NoticePopup from '../common/NoticePopup';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Element({
+function Element({
   index,
   structure,
   noticeObject,
@@ -81,12 +84,12 @@ export default function Element({
       produce(structure, (newStructure) => {
         newStructure.type = e.target.value;
         if (
-          newStructure.type === "multi-choice" &&
-          newStructure.options === undefined
+          newStructure.type === 'multi-choice'
+          && newStructure.options === undefined
         ) {
           newStructure.options = [];
         }
-      })
+      }),
     );
   };
 
@@ -103,38 +106,38 @@ export default function Element({
   };
 
   const elementProps = {
-    structure: structure,
+    structure,
     onUpdate: handleUpdateElement,
   };
 
   let obj;
   switch (structure.type) {
-    case "label":
+    case 'label':
       obj = <ElementLabel {...elementProps} />;
       break;
-    case "image":
+    case 'image':
       obj = <ElementImage {...elementProps} />;
       break;
-    case "youtube":
+    case 'youtube':
       obj = <ElementYoutube {...elementProps} />;
       break;
     case 'latex':
       obj = <ElementLatex {...elementProps} />;
       break;
-    case "docs":
+    case 'docs':
       obj = <ElementDocs {...elementProps} />;
       break;
-    case "multi-choice":
+    case 'multi-choice':
       obj = <ElementMultichoice {...elementProps} />;
       break;
-    case "text-input":
+    case 'text-input':
       obj = <ElementTextInput {...elementProps} />;
       break;
-    case "number-input":
+    case 'number-input':
       obj = <ElementNumberInput {...elementProps} />;
       break;
     default:
-      obj = <span style={{ visibility: "hidden" }}>אלמנט לא תקין</span>;
+      obj = <span style={{ visibility: 'hidden' }}>אלמנט לא תקין</span>;
   }
 
   return (
@@ -150,9 +153,9 @@ export default function Element({
             opacity: (snapshot.isDragging && !snapshot.isDropAnimating) ? 0.6 : 1,
           }}
         >
-          <Box className={classes.dragHandleArea} {...provided.dragHandleProps}></Box>
+          <Box className={classes.dragHandleArea} {...provided.dragHandleProps} />
           <Box className={classes.dragHandleIcon}>
-              <DragHandleIcon />
+            <DragHandleIcon />
           </Box>
           <Box className={classes.topBar}>
             {/* <IconButton aria-label="options" className={classes.collapseButton}>
@@ -194,3 +197,21 @@ export default function Element({
     </Draggable>
   );
 }
+
+Element.propTypes = {
+  index: PropTypes.number.isRequired,
+  structure: elementStructureType.isRequired,
+  noticeObject: noticeObjectType,
+  onUpdate: PropTypes.func,
+  onDuplicate: PropTypes.func,
+  onDelete: PropTypes.func,
+};
+
+Element.defaultProps = {
+  noticeObject: {},
+  onUpdate: () => {},
+  onDuplicate: () => {},
+  onDelete: () => {},
+};
+
+export default Element;
