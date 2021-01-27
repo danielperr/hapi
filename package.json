@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run start-activity && npm run start-creator",
     "build": "npm run build-activity && npm run build-creator",
-    "deploy": "npm run build && node copy-files.js",
+    "deploy": "node deploy.js",
     "start-activity": "cd ./packages/hapi-activity && npm start",
     "start-creator": "cd ./packages/hapi-creator && npm start",
     "build-activity": "cd ./packages/hapi-activity && npm run build",
