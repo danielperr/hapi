@@ -24,6 +24,7 @@ module.exports = {
         },
       ],
     },
+    hideableSidebar: true,
     footer: {
       style: 'dark',
       links: [
