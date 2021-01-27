@@ -26,11 +26,6 @@
     "url": "https://github.com/danielperr/hapi/issues"
   },
   "homepage": "https://github.com/danielperr/hapi",
-  "dependencies": {
-    "async": "^3.2.0",
-    "hapi-activity": "file:packages/hapi-activity",
-    "hapi-creator": "file:packages/hapi-creator"
-  },
   "devDependencies": {
     "copyfiles": "^2.4.0",
     "fs-extra": "^9.0.1"
