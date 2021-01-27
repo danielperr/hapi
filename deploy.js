@@ -14,24 +14,17 @@ const PATH_DEPLOY_ACTIVITY = `${PATH_DEPLOY}/empty.html`;
 const PATH_DEPLOY_CREATOR = PATH_DEPLOY
 const PATH_DEPLOY_DOCS = `${PATH_DEPLOY}/docs`
 
-async function copyToDeployDir() {
+async function main() {
   await fs.ensureDir(PATH_DEPLOY);
   await fs.emptyDir(PATH_DEPLOY);
 
   fs.copy(PATH_ACTIVITY_BUILD, PATH_DEPLOY_ACTIVITY)
     .then(() => { console.log('Copied activity successfully'); })
-    .catch((err) => { console.error(err) });
+    .catch((error) => { throw error; });
 
   fs.copy(PATH_CREATOR_BUILD, PATH_DEPLOY_CREATOR)
     .then(() => { console.log('Copied creator successfully'); })
-    .catch((err) => { console.error(err) });
+    .catch((error) => { throw error; });
 }
 
-function main() {
-  [PATH_ACTIVITY, PATH_CREATOR].forEach((cwd) => {
-    execSync('npm install && npm run build', { cwd, stdio: 'inherit'});
-  });
-  copyToDeployDir().catch((error) => { throw error; });
-}
-
-main();
+main().catch((error) => { throw error; });
