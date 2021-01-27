@@ -1,28 +1,32 @@
 {
-  "name": "hapi-creator",
+  "name": "hapi-activity",
   "version": "0.4.1",
   "private": true,
-  "homepage": ".",
+  "homepage": "./",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "clsx": "^1.1.1",
-    "draft-js": "^0.11.7",
     "immer": "^8.0.1",
+    "jquery": "^3.5.1",
+    "jss": "^10.4.0",
+    "jss-rtl": "^0.3.0",
     "katex": "^0.12.0",
+    "markdown-to-jsx": "^7.1.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
-    "react-beautiful-dnd": "^13.0.0",
-    "react-beforeunload": "^2.4.0",
     "react-dom": "^16.13.1",
-    "react-markdown-editor-lite": "^1.2.2",
+    "react-katex": "^2.0.2",
+    "react-localization": "^1.0.15",
+    "react-markdown": "^5.0.3",
+    "react-number-format": "^4.4.1",
     "react-scripts": "^4.0.0",
-    "serialize-javascript": "^4.0.0",
-    "styled-components": "^5.2.0",
-    "uuid": "^8.3.2"
+    "react-scroll": "^1.8.0",
+    "remark-math": "^4.0.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -46,14 +50,15 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^7.18.0",
+    "eslint": "^7.16.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-only-warn": "^1.0.2",
-    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "react-app-rewired": "^2.1.8",
-    "react-styleguidist": "^11.1.1"
+    "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
+    "html-webpack-plugin": "^4.5.0",
+    "react-app-rewired": "^2.1.8"
   }
 }

@@ -2,8 +2,8 @@ const fs = require('fs');
 
 const packageJsonFiles = [
   'package.json',
-  'activity/package.json',
-  'creator/package.json',
+  'packages/hapi-activity/package.json',
+  'packages/hapi-creator/package.json',
 ];
 
 function main() {
