@@ -240,7 +240,7 @@ function App({ structure, savedAnswers }) {
               key={section.id}
             />
           ))}
-          {fillableElements.length && <CheckAllButton onClick={handleSubmitActivity} />}
+          {!!fillableElements.length && <CheckAllButton onClick={handleSubmitActivity} />}
           <SuccessSnackbar
             open={showSuccess}
             onClose={handleSuccessSnackbarClose}
