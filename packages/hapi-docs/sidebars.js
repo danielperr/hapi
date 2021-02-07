@@ -14,8 +14,8 @@ module.exports = {
       label: 'Getting Started',
       collapsed: false,
       items: [
-        'getting-started/installation',
-        'getting-started/usage',
+        'installation',
+        'usage',
       ],
     },
     {
@@ -23,23 +23,23 @@ module.exports = {
       label: 'Explanations',
       collapsed: false,
       items: [
-        'explanations/project-structure',
-        'explanations/activity-creation',
-        'explanations/short-react',
-        'explanations/activity',
-        'explanations/creator',
+        'project-structure',
+        'activity-creation',
+        'short-react',
+        'activity',
+        'creator',
       ],
     },
     {
       type: 'category',
       label: 'Packages',
       items: [
-        'packages/git',
-        'packages/npm',
-        'packages/webpack',
-        'packages/babel',
-        'packages/react',
-        'packages/docusaurus'
+        'git',
+        'npm',
+        'webpack',
+        'babel',
+        'react',
+        'docusaurus'
       ],
     }
   ],
