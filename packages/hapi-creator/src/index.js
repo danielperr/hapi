@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './components/main/App';
 import './index.css';
 
-console.log(`Copyright (c) 2020 Amir Kedem, Daniel Peretz and Boaz Katz
+console.log(`Copyright (c) ${new Date().getFullYear()} Amir Kedem, Daniel Peretz and Boaz Katz
 https://github.com/1ZouLTReX1/iFigures
 ${process.env.NODE_ENV} environment
 `)
