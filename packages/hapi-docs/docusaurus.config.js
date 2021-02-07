@@ -18,6 +18,24 @@ module.exports = {
       },
       items: [
         {
+          to: '/docs',
+          activeBasePath: 'docs',
+          label: 'Docs',
+          position: 'left',
+        },
+        {
+          to: '/components/activity',
+          activeBasePath: 'components/activity',
+          label: 'Activity Componenets',
+          position: 'left',
+        },
+        {
+          to: '/components/creator',
+          activeBasePath: 'components/creator',
+          label: 'Creator Componenets',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/danielperr/hapi',
           label: 'GitHub',
           position: 'right',
@@ -54,13 +72,38 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/danielperr/hapi/edit/master/hapi-docs/website/',
         },
         blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
+        },
+      },
+    ],
+  ],
+  plugins: [
+    [
+      'docusaurus-plugin-react-docgen',
+      {
+        id: 'docgen-activity',
+        src: ['../hapi-activity/src/components/**/*.jsx'],
+        route: {
+          path: '/components/activity',
+          component: require.resolve('./src/components/ComponentDocPage/index.jsx'),
+          exact: true,
+        },
+      },
+    ],
+    [
+      'docusaurus-plugin-react-docgen',
+      {
+        id: 'docgen-creator',
+        src: ['../hapi-creator/src/components/**/*.jsx'],
+        route: {
+          path: '/components/creator',
+          component: require.resolve('./src/components/ComponentDocPage/index.jsx'),
+          exact: true,
         },
       },
     ],
