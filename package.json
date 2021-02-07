@@ -1,6 +1,6 @@
 {
   "name": "hapi",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "HTML form activities for studying at home",
   "main": "index.js",
   "scripts": {
