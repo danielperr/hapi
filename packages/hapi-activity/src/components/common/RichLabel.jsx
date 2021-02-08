@@ -28,7 +28,6 @@ const CustomCss = withStyles({
 function RichLabel({
   className,
   htmlFor,
-  href,
   children,
 }) {
   const labelRef = useRef(null);
@@ -46,7 +45,7 @@ function RichLabel({
           renderers={{
             link: (linkProps) => (
               <a
-                href={href}
+                href={linkProps.href}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -69,14 +68,12 @@ function RichLabel({
 RichLabel.propTypes = {
   className: PropTypes.string,
   htmlFor: PropTypes.string,
-  href: PropTypes.string,
   children: PropTypes.node.isRequired,
 };
 
 RichLabel.defaultProps = {
   className: '',
   htmlFor: '',
-  href: '',
 };
 
 export default RichLabel;
