@@ -4,16 +4,12 @@
   "description": "HTML form activities for studying at home",
   "main": "index.js",
   "scripts": {
-    "start": "npm run start-activity && npm run start-creator",
-    "build": "npm run build-activity && npm run build-creator",
-    "deploy": "npm run install-activity && npm run install-creator && npm run build && node deploy.js",
-    "install-activity": "cd ./packages/hapi-activity && npm install",
-    "install-creator": "cd ./packages/hapi-creator && npm install",
-    "start-activity": "cd ./packages/hapi-activity && npm start",
-    "start-creator": "cd ./packages/hapi-creator && npm start",
-    "build-activity": "cd ./packages/hapi-activity && npm run build",
-    "build-creator": "cd ./packages/hapi-creator && npm run build",
-    "docs": "cd ./packages/hapi-docs && npm start",
+    "install:hapi-activity": "cd ./packages/hapi-activity && npm install",
+    "install:hapi-creator": "cd ./packages/hapi-creator && npm install",
+    "install:hapi-docs": "cd ./packages/hapi-docs && npm install",
+    "build:hapi-activity": "npm --prefix packages/hapi-activity run build",
+    "build:hapi-creator": "npm --prefix packages/hapi-creator run build",
+    "build:hapi-docs": "npm --prefix packages/hapi-docs run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
