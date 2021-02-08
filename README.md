@@ -6,7 +6,7 @@
 
 <div align="center">
 
-A platform of HTML forms (a.k.a activities) that students and children can complete at home 📝
+A platform of HTML forms (a.k.a. activities) that students and children can complete at home 📝
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/535a86bf-a60b-4607-a4e1-8cded27db33c/deploy-status)](https://app.netlify.com/sites/hapi-activity/deploys)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/02d9eedd-fa96-4f24-99c1-ac63467cc99e/deploy-status)](https://app.netlify.com/sites/hapi-creator/deploys)
