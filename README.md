@@ -1,10 +1,21 @@
-![](./packages/hapi-docs/static/img/banner.png)
+<p align="center">
+  <img src="./packages/hapi-docs/static/img/banner.png" alt="hapi banner" />
+</p>
 
-# iFigures / Hapi :smile: (Work in Progress)
+<h1 align="center">iFigures / Hapi :smile: (Work in Progress)</h1>
+
+<div align="center">
+
+A platform of HTML forms (a.k.a activities) that students and children can complete at home 📝
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/535a86bf-a60b-4607-a4e1-8cded27db33c/deploy-status)](https://app.netlify.com/sites/hapi-activity/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/02d9eedd-fa96-4f24-99c1-ac63467cc99e/deploy-status)](https://app.netlify.com/sites/hapi-creator/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/dc68ef53-f76f-400e-8e2f-c597700a3633/deploy-status)](https://app.netlify.com/sites/hapi-docs/deploys)
+
+</div>
 
 ### **HAPI = HTML Activity Platform Incubator**
 
-A platform of HTML forms (a.k.a activities) that students and children can complete at home. 📝
 These activities can be used to teach subjects and provide questions & excercises with answer checking. 💯
 
 ✔ No registration or log in  
