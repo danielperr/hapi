@@ -9,6 +9,7 @@ import { v1 as uuid } from 'uuid';
 import AddIcon from '@material-ui/icons/Add';
 import produce from 'immer';
 
+import { ACTIVITY_URL } from '../../../../common/constants';
 import { DEFAULT_SECTION, DEFAULT_STRUCTURE } from '../../constants';
 import { activityStructureType } from '../../../../common/prop-types';
 import { calculateNoticeObjects } from '../../notices';
@@ -25,8 +26,6 @@ import dndReorder from '../../dnd-reorder';
 import downloadFile from '../../../../common/download-file';
 import replaceIds from '../../replace-ids';
 import theme from '../../theme';
-
-const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
 
 const useStyles = makeStyles(() => ({
   mainContainer: {
@@ -136,7 +135,7 @@ function App({ initial }) {
     if (filename) {
       downloadFile(
         `${filename}.hapi.html`,
-        makeActivityContainer(structure, {}, filename, ACTIVITY_URL),
+        makeActivityContainer(structure, {}, filename),
       );
     }
     setExportButtonLoading(false);

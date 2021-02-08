@@ -1,4 +1,6 @@
-const CONTAINER_TEMPLATE = (structure, answers, filename, activityUrl) => `
+import { ACTIVITY_URL } from './constants';
+
+const CONTAINER_TEMPLATE = (structure, answers, filename) => `
 <!DOCTYPE html>
 <html>
   <head>
@@ -22,7 +24,7 @@ const CONTAINER_TEMPLATE = (structure, answers, filename, activityUrl) => `
   </head>
   <body>
     <iframe
-      src="${activityUrl}"
+      src="${ACTIVITY_URL}"
       id="container"
     ></iframe>
     <script type="text/javascript">
@@ -46,15 +48,13 @@ const CONTAINER_TEMPLATE = (structure, answers, filename, activityUrl) => `
  * @param {Object} structure   Activity's structure
  * @param {Object} answers     Activity's answers
  * @param {Object} filename    Name of the file to be generated
- * @param {string} activityUrl URL of the activity file online
  */
-export function makeActivityContainer(structure, answers, filename, activityUrl) {
-  console.log({ structure, answers, filename, activityUrl });
+export function makeActivityContainer(structure, answers, filename) {
+  console.log({ structure, answers, filename });
   return CONTAINER_TEMPLATE(
     JSON.stringify(structure),
     JSON.stringify(answers || {}),
     filename,
-    activityUrl,
   );
 }
 

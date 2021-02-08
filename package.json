@@ -4,12 +4,6 @@
   "description": "HTML form activities for studying at home",
   "main": "index.js",
   "scripts": {
-    "install:hapi-activity": "cd ./packages/hapi-activity && npm install",
-    "install:hapi-creator": "cd ./packages/hapi-creator && npm install",
-    "install:hapi-docs": "cd ./packages/hapi-docs && npm install",
-    "build:hapi-activity": "npm --prefix packages/hapi-activity run build",
-    "build:hapi-creator": "npm --prefix packages/hapi-creator run build",
-    "build:hapi-docs": "npm --prefix packages/hapi-docs run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

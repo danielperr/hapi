@@ -24,8 +24,6 @@ import downloadFile from '../../../../common/download-file';
 import dropConfetti from '../../confetti';
 import theme from '../../theme';
 
-const ACTIVITY_URL = 'https://hapi-app.netlify.app/empty.html';
-
 // const thisFileCodeSnapshot = document.documentElement.cloneNode(true);
 
 /**
@@ -155,7 +153,7 @@ function App({ structure, savedAnswers }) {
   const handleSaveActivity = () => {
     const filename = prompt('Save as:');
     if (filename && filename !== '') {
-      downloadFile(`${filename}.hapi.html`, makeActivityContainer(structure, answers, filename, ACTIVITY_URL));
+      downloadFile(`${filename}.hapi.html`, makeActivityContainer(structure, answers, filename));
     }
   };
 
