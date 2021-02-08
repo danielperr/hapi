@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Hapi Documentation',
   tagline: 'DABA Are Hapi',
-  url: 'https://hapi-app.netlify.app/docs',
+  url: 'https://hapi-docs.netlify.app/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
