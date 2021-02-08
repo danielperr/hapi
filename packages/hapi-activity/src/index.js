@@ -46,14 +46,13 @@ function renderApp(structure, answers) {
  */
 function main() {
   let structure = {};
-  let answers = {};
+  const answers = {};
   if (window.self !== window.top) {
     // If we're inside an iFrame, we need to wait to receive the content from the upper frame.
     window.addEventListener('message', (event) => {
       const { message, value } = event.data;
       if (message === 'getContent') {
-        structure = value.structure;
-        answers = value.answers;
+        renderApp(value.structure, value.answers);
       }
     }, false);
   } else if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
@@ -73,8 +72,8 @@ function main() {
       structure = DEVMODE_DEFAULT_STRUCTURE;
       localStorage.setItem('devmode-structure', JSON.stringify(structure));
     }
+    renderApp(structure, answers);
   }
-  renderApp(structure, answers);
 }
 
 main();
