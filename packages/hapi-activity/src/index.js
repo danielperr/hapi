@@ -46,30 +46,34 @@ function renderApp(structure, answers) {
  */
 function main() {
   let structure = {};
-  let answers;
+  const answers = {};
   if (window.self !== window.top) {
     // If we're inside an iFrame, we need to wait to receive the content from the upper frame.
     window.addEventListener('message', (event) => {
       const { message, value } = event.data;
       if (message === 'getContent') {
-        structure = value.structure;
-        answers = value.answers;
+        renderApp(value.structure, value.answers);
       }
     }, false);
   } else if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
     // If inside development environment, use the development structure from local storage
     const localStorageStructure = localStorage.getItem('devmode-structure');
-    try {
-      structure = JSON.parse(localStorageStructure);
-    } catch {
-      alert('There was a problem parsing the current devmode structure');
+    if (localStorageStructure) {
+      try {
+        structure = JSON.parse(localStorageStructure);
+      } catch {
+        alert('There was a problem parsing the current devmode structure');
+      }
+    } else {
+      localStorage.setItem('devmode-structure', '{}');
+      structure = {};
     }
     if (!Object.entries(structure).length) {
       structure = DEVMODE_DEFAULT_STRUCTURE;
       localStorage.setItem('devmode-structure', JSON.stringify(structure));
     }
+    renderApp(structure, answers);
   }
-  renderApp(structure, answers);
 }
 
 main();

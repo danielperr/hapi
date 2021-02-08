@@ -44,13 +44,13 @@ function RichLabel({
         <ReactMarkdown
           plugins={[math]}
           renderers={{
-            link: () => (
+            link: (linkProps) => (
               <a
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {children}
+                {linkProps.children}
               </a>
             ),
             // eslint-disable-next-line react/prop-types
