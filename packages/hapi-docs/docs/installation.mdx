@@ -1,0 +1,68 @@
+---
+id: installation
+title: Installation
+---
+
+import { isMacOs } from 'react-device-detect';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Installing NPM
+
+<Tabs
+groupId="operating-systems"
+defaultValue={isMacOs ? "mac" : "win"}
+values={[
+{ label: 'Windows', value: 'win' },
+{ label: 'macOS', value: 'mac' },
+{ label: 'Linux', value: 'linux' },
+]}
+>
+<TabItem value="win">
+
+Download Node from [nodejs.org](https://nodejs.org/en/) (LTS version)
+and follow the instructions. NPM Should be automatically installed with Node.
+
+</TabItem>
+<TabItem value="mac">
+
+Download Node from [nodejs.org](https://nodejs.org/en/) (LTS version)
+and follow the instructions. NPM Should be automatically installed with Node.
+
+</TabItem>
+<TabItem value="linux">
+
+### If using Debian, Ubuntu, or Linux Mint
+
+Click [here](https://www.geeksforgeeks.org/installation-of-node-js-on-linux/) for more info.
+
+Install Node.js:
+
+```bash
+  sudo apt install nodejs
+```
+
+Install NPM:
+
+```bash
+  sudo apt install npm
+```
+
+### If using other linux distributions
+
+Follow the instructions [here](https://nodejs.org/en/download/package-manager/) for your linux distro.
+
+---
+
+</TabItem>
+</Tabs>
+
+To verify that Node is installed:
+```bash
+  node -v
+```
+
+To verify that npm is installed:
+```bash
+  npm -v
+```
