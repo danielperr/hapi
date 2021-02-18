@@ -26,21 +26,12 @@ module.exports = {
         'npm',
         'project-structure',
         'activity-creation',
-        'short-react',
+        'react',
         'activity',
         'creator',
+        'git',
+        'docusaurus',
       ],
     },
-    {
-      type: 'category',
-      label: 'Packages',
-      items: [
-        'git',
-        'webpack',
-        'babel',
-        'react',
-        'docusaurus'
-      ],
-    }
   ],
 };
