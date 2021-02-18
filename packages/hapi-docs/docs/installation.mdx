@@ -3,20 +3,144 @@ id: installation
 title: Installation
 ---
 
+import TOCInline from '@theme/TOCInline';
+
+<TOCInline toc={toc} />
+
+## Installing With Git
+
+:::note
+Installing Git is not required, but it's highly encouraged if you are willing to
+contribute to the project or make any changes.
+
+If, however, you do not want to install Git you can
+[download the source files instead](https://github.com/danielperr/hapi/archive/master.zip)
+and [skip this part](#installing-npm).
+:::
+
+
+Check if you already have Git installed:
+
+```bash
+git --version
+```
+
 import { isMacOs } from 'react-device-detect';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+<Tabs
+  groupId="operating-systems"
+  defaultValue={isMacOs ? "mac" : "win"}
+  values={[
+    { label: 'Windows', value: 'win' },
+    { label: 'macOS', value: 'mac' },
+    { label: 'Linux', value: 'linux' },
+  ]}
+>
+<TabItem value="win">
+
+[Download the Git installer for windows](http://git-scm.com/download/win)
+
+</TabItem>
+<TabItem value="mac">
+
+There are multiple options to install Git on a macOS.
+[More info](http://git-scm.com/download/mac)
+
+<h3>With Xcode</h3>
+
+Apple ships a binary package of Git with [Xcode](https://developer.apple.com/xcode/).
+
+Xcode is an app development suite for Apple's iOS, macOS, etc.
+
+<h3>With Homebrew</h3>
+
+[Homebrew](https://brew.sh/) is a helpful package manager for macOS.
+
+If you don't have it, install it using the following command:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Then run
+
+```bash
+brew install git
+```
+
+<h3>With A Binary Installer</h3>
+
+There are non-official binaries for Git that you can
+[download](https://sourceforge.net/projects/git-osx-installer/).
+
+</TabItem>
+<TabItem value="linux">
+
+<h3>For Debian / Ubuntu / Linux Mint</h3>
+
+```bash
+sudo apt-get update
+sudo apt-get install git
+```
+
+<h3>For Other Linux Distributions</h3>
+
+[Instructions](https://git-scm.com/download/linux)
+
+</TabItem>
+</Tabs>
+
+---
+
+Verify that Git is installed:
+
+```bash
+git --version
+```
+
+
+### Configuring Git for commits
+
+Configure your Git username and email using the following commands.
+These details will be associated with any commits that you create:
+
+```bash
+git config --global user.name "Firstname Lastname"
+git config --global user.email "your@email.com"
+```
+
+### Downloading the project from GitHub
+
+Finally, clone (download) the project's repository from GitHub:
+
+```bash
+git clone https://github.com/danielperr/hapi
+```
+
+This will create a folder at your current location containing the project's files.
+
 ## Installing NPM
 
+This project is built with [NPM](npm), so you will need to install it.
+
+Check if you already have NPM installed:
+
+```bash
+npm -v
+```
+
+NPM is shipped with Node, a JavaScript runtime engine.
+
 <Tabs
-groupId="operating-systems"
-defaultValue={isMacOs ? "mac" : "win"}
-values={[
-{ label: 'Windows', value: 'win' },
-{ label: 'macOS', value: 'mac' },
-{ label: 'Linux', value: 'linux' },
-]}
+  groupId="operating-systems"
+  defaultValue={isMacOs ? "mac" : "win"}
+  values={[
+    { label: 'Windows', value: 'win' },
+    { label: 'macOS', value: 'mac' },
+    { label: 'Linux', value: 'linux' },
+  ]}
 >
 <TabItem value="win">
 
@@ -32,37 +156,68 @@ and follow the instructions. NPM Should be automatically installed with Node.
 </TabItem>
 <TabItem value="linux">
 
-### If using Debian, Ubuntu, or Linux Mint
+<h3>For Debian / Ubuntu / Linux Mint</h3>
 
 Click [here](https://www.geeksforgeeks.org/installation-of-node-js-on-linux/) for more info.
 
 Install Node.js:
 
 ```bash
-  sudo apt install nodejs
+sudo apt install nodejs
 ```
 
 Install NPM:
 
 ```bash
-  sudo apt install npm
+sudo apt install npm
 ```
 
-### If using other linux distributions
+<h3>For Other Linux Distributions</h3>
 
-Follow the instructions [here](https://nodejs.org/en/download/package-manager/) for your linux distro.
+Follow the instructions [here](https://nodejs.org/en/download/package-manager/) for your distro.
 
 ---
 
 </TabItem>
 </Tabs>
 
-To verify that Node is installed:
+Verify that Node is installed:
 ```bash
-  node -v
+node -v
 ```
 
-To verify that npm is installed:
+Verify that npm is installed:
 ```bash
-  npm -v
+npm -v
 ```
+
+## Installing depencencies
+
+After [cloning with Git](#downloading-the-project-from-github) (or just downloading the files),
+navigate to the project's root directory:
+
+```bash
+cd hapi
+```
+
+Every package has its own dependencies (NPM packages that it depends on).
+
+There are 3 packages, located at `packages/` (see [Project Structure](project-structure)):
+
+* `hapi-activity`
+* `hapi-creator`
+* `hapi-docs`
+
+To install packages for `hapi-creator` for example, first navigate to it:
+
+```bash
+cd packages/hapi-creator
+```
+
+Then use NPM to install its dependencies:
+
+```bash
+npm install
+```
+
+This will create the folder `node_modules`, containing the required packages.
