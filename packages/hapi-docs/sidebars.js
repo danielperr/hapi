@@ -23,7 +23,7 @@ module.exports = {
       label: 'Explanations',
       collapsed: false,
       items: [
-        'npm-packages',
+        'npm',
         'project-structure',
         'activity-creation',
         'short-react',
@@ -36,7 +36,6 @@ module.exports = {
       label: 'Packages',
       items: [
         'git',
-        'npm',
         'webpack',
         'babel',
         'react',
