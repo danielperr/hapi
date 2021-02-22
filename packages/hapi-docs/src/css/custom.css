@@ -16,6 +16,10 @@
   --ifm-color-primary-lightest: #7b88d1;
   --ifm-code-font-size: 95%;
   --ifm-pre-padding: 1rem;
+  --ifm-color-type-number: rgb(247, 140, 108);
+  --ifm-color-type-boolean: rgb(255, 88, 116);
+  --ifm-color-type-string: rgb(195, 232, 141);
+  --ifm-color-type-other: rgb(199, 146, 234);
 }
 
 html {

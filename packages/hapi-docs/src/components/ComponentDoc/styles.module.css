@@ -1,0 +1,20 @@
+.propRequired {
+    opacity: 50%;
+    font-style: italic;
+}
+
+.propTypeNumber {
+    color: var(--ifm-color-type-number);
+}
+
+.propTypeBoolean {
+    color: var(--ifm-color-type-boolean);
+}
+
+.propTypeString {
+    color: var(--ifm-color-type-string);
+}
+
+.propTypeOther {
+    color: var(--ifm-color-type-other);
+}
