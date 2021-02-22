@@ -22,6 +22,24 @@ html {
   scroll-behavior: smooth;
 }
 
+html[data-theme='dark'] {
+  --ifm-color-primary: #ff8f00;
+  --ifm-color-primary-dark: #e68200;
+  --ifm-color-primary-darker: #cc7400;
+  --ifm-color-primary-darkest: #cc7400;
+  --ifm-color-primary-light: #ff9c1a;
+  --ifm-color-primary-lighter: #ffa733;
+  --ifm-color-primary-lightest: #ffb24d;
+}
+
+img {
+  border-radius: 4px;
+}
+
+img.no-border-radius {
+  border-radius: 0;
+}
+
 .docusaurus-highlight-code-line {
   background-color: rgb(72, 77, 91);
   display: block;
