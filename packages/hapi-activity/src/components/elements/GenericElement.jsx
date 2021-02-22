@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-mport { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { elementStructureType, feedbackType } from '../../../../common/prop-types';
 import { strings } from '../../localization';
