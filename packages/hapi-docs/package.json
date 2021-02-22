@@ -21,6 +21,7 @@
     "react-device-detect": "^1.15.0",
     "react-docgen": "^5.3.1",
     "react-dom": "^16.8.4",
+    "react-json-view": "^1.21.1",
     "react-router-dom": "^5.2.0"
   },
   "browserslist": {
