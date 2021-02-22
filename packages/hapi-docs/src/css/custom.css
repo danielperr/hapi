@@ -46,3 +46,7 @@ img.no-border-radius {
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
 }
+
+.navbar__title {
+  color: var(--ifm-color-primary);
+}
