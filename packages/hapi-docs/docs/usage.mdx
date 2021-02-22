@@ -1,0 +1,67 @@
+---
+id: usage
+title: Usage
+sidebar_label: Usage
+---
+
+All the apps in this repository (activity, creator, docs) are using `react-scripts`
+to manage running, building and bundling.
+You will have to use it exclusively for running and building each package.
+
+Before continuing, make sure you've navigated inside one of the packages:
+
+* `packages/hapi-activity`
+* `packages/hapi-creator`
+* `packages/hapi-docs`
+
+## Installing
+
+To make sure you have the app's requirements, run:
+
+```bash
+npm install
+```
+
+NPM will look at `package.json` in the current directory and will figure out what to download
+and in which version.
+
+## Running
+
+While developing, you will certainly want to run the package to see the results of your changes.
+
+To start the app, run:
+
+```bash
+npm start
+```
+
+`react-scripts` will then launch a development server which listens at `localhost:3000`.
+
+Every time you change one of the app's source files, the site should refresh automatically.
+
+The website you'll be viewing is in development mode (`NODE_ENV=development`),
+which means that React is not optimized and isn't suited for running in production.
+
+:::tip
+Press Ctrl+C (Windows and Mac) to terminate a command or a process running in the terminal.
+:::
+
+To export the app for production, you will need to [Build](#building) it.
+
+## Building
+
+Building will create final HTML and JS files to put in production.
+
+To build a React app, run:
+
+```bash
+npm run build
+```
+
+This will bundle the app and export the final files to a directory named `build`.
+Open `build/index.html` in the browser to see the app in production mode.
+
+This process is done automatically with [Netlify](https://www.netlify.com/)
+(a free website hosting service).
+Every time the `master` branch in the [GitHub repository](https://github.com/danielperr/hapi)
+is updated, Netlify will run `npm build` in each app and deploy them to the internet.

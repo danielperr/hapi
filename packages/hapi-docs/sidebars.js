@@ -23,24 +23,16 @@ module.exports = {
       label: 'Explanations',
       collapsed: false,
       items: [
+        'npm',
+        'react',
         'project-structure',
+        'activity-structure',
         'activity-creation',
-        'short-react',
         'activity',
         'creator',
+        'git',
+        'hapi-docs',
       ],
     },
-    {
-      type: 'category',
-      label: 'Packages',
-      items: [
-        'git',
-        'npm',
-        'webpack',
-        'babel',
-        'react',
-        'docusaurus'
-      ],
-    }
   ],
 };

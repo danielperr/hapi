@@ -73,7 +73,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/danielperr/hapi/edit/master/hapi-docs/website/',
+          editUrl: 'https://github.com/danielperr/hapi/tree/master/packages/hapi-docs',
         },
         blog: false,
         theme: {
