@@ -27,6 +27,8 @@ import downloadFile from '../../../../common/download-file';
 import replaceIds from '../../replace-ids';
 import theme from '../../theme';
 
+const AUTO_SAVE_INTERVAL = 60; // seconds
+
 const useStyles = makeStyles(() => ({
   mainContainer: {
     width: '800px',
@@ -64,7 +66,14 @@ function App({ initial }) {
   const [noticeObjects, setNoticeObjects] = useState([]);
 
   const saveToLocalStorage = () => {
-    localStorage.setItem('creator-last-save', JSON.stringify(structure));
+    /* We're using setStructure although we don't need to change the structure
+    because when we're in an event handler the state is pre-saved when the function is created.
+    The setStructure function gives us access to the current value of structure. */
+    setStructure((currentStructure) => {
+      localStorage.setItem('creator-last-save', JSON.stringify(currentStructure));
+      // React won't re-render this component because the structure hasn't changed.
+      return structure;
+    });
   };
 
   useEffect(() => {
@@ -74,7 +83,7 @@ function App({ initial }) {
       saveToLocalStorage();
       return true;
     };
-    const interval = setInterval(() => { saveToLocalStorage(); }, 60 * 1000);
+    const interval = setInterval(() => { saveToLocalStorage(); }, AUTO_SAVE_INTERVAL * 1000);
     return () => {
       // This is called when the component is about to be unmounted (right before closing)
       clearInterval(interval);
