@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   languageSelectLabel: {
-    top: theme.spacing(-0.75),
+    top: theme.spacing(-1),
     left: 'auto',
     right: theme.spacing(-1),
   },
@@ -212,7 +212,7 @@ function Menu({
               variant="outlined"
             >
               <InputLabel
-                variant="subtitle2"
+                variant="standard"
                 id="language-input-label"
                 className={classes.languageSelectLabel}
               >
