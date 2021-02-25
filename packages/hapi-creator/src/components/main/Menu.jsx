@@ -111,10 +111,9 @@ const useStyles = makeStyles((theme) => ({
     height: '42px',
     '& legend': {
       textAlign: 'right',
-    }
+    },
   },
 }));
-
 
 function Menu({
   onLoad,
@@ -127,20 +126,20 @@ function Menu({
   onLaunchPreview,
 }) {
   const classes = useStyles();
-  
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClickPreview = () => {
     onLaunchPreview();
-  }
-  
+  };
+
   const handleClickHamburger = () => {
     setIsOpen(!isOpen);
   };
 
   const handleClickNewActivity = () => {
     onNewActivity();
-  }
+  };
 
   const handleDropzoneRead = (contents) => {
     onLoad(contents);
@@ -159,7 +158,7 @@ function Menu({
   };
 
   return (
-    <React.Fragment>
+    <>
       <div className={classes.floatingButtonContainer}>
         <IconButton aria-label="preview" className={classes.floatingButton} onClick={handleClickPreview}>
           <VisibilityIcon />
@@ -168,70 +167,73 @@ function Menu({
           <RotatingIcon
             active={isOpen}
             passiveIcon={<MenuIcon />}
-            activeIcon={<ArrowForwardIcon/>}
+            activeIcon={<ArrowForwardIcon />}
           />
         </IconButton>
       </div>
       <Slide direction="left" in={isOpen} mountOnEnter unmountOnExit>
         <div className={classes.buttonMenu}>
+          <Button
+            className={`${classes.menuButton} ${classes.newActivityButton}`}
+            variant="outlined"
+            onClick={handleClickNewActivity}
+            startIcon={<CreateIcon className={classes.startIcon} />}
+          >
+            פעילות חדשה
+          </Button>
+          <Dropzone className={classes.dropzone} onRead={handleDropzoneRead}>
+            <Typography variant="subtitle1">
+              <FolderOpenIcon className={classes.textIcon} />
+              טעינת קובץ
+            </Typography>
+            <Typography variant="caption">ניתן ללחוץ או לגרור הנה</Typography>
+          </Dropzone>
+          <Button
+            className={classes.menuButton}
+            variant="outlined"
+            onClick={handleClickSave}
+            startIcon={<SaveIcon className={classes.startIcon} />}
+          >
+            שמירת קובץ
+          </Button>
+          <Box className={classes.exportContainer}>
             <Button
-              className={`${classes.menuButton} ${classes.newActivityButton}`}
+              className={`${classes.menuButton} ${classes.exportButton}`}
               variant="outlined"
-              onClick={handleClickNewActivity}
-              startIcon={<CreateIcon className={classes.startIcon} />}
+              onClick={handleClickExport}
+              disabled={exportLoading}
+              startIcon={<LaunchIcon className={classes.startIcon} />}
             >
-              פעילות חדשה
+              ייצוא פעילות
             </Button>
-            <Dropzone className={classes.dropzone} onRead={handleDropzoneRead}>
-              <Typography variant="subtitle1"><FolderOpenIcon className={classes.textIcon} />טעינת קובץ</Typography>
-              <Typography variant="caption">ניתן ללחוץ או לגרור הנה</Typography>
-            </Dropzone>
-            <Button
-              className={classes.menuButton}
-              variant="outlined"
-              onClick={handleClickSave}
-              startIcon={<SaveIcon className={classes.startIcon} />}
+            {exportLoading && <CircularProgress size={24} className={classes.exportProgress} />}
+          </Box>
+          <Divider className={classes.divider} />
+          <FormControl
+            className={classes.languageFormControl}
+            variant="outlined"
+          >
+            <InputLabel
+              variant="standard"
+              id="language-input-label"
+              className={classes.languageSelectLabel}
             >
-              שמירת קובץ
-            </Button>
-            <Box className={classes.exportContainer}>
-              <Button
-                className={`${classes.menuButton} ${classes.exportButton}`}
-                variant="outlined"
-                onClick={handleClickExport}
-                disabled={exportLoading}
-                startIcon={<LaunchIcon className={classes.startIcon} />}
-              >
-                ייצוא פעילות
-              </Button>
-              {exportLoading && <CircularProgress size={24} className={classes.exportProgress} />}
-            </Box>
-            <Divider className={classes.divider} />
-            <FormControl
-              className={classes.languageFormControl}
-              variant="outlined"
+              שפת הפעילות
+            </InputLabel>
+            <Select
+              value={language}
+              onChange={handleChangeLanguage}
+              labelId="language-input-label"
+              label="שפת הפעילות"
+              className={classes.languageSelect}
             >
-              <InputLabel
-                variant="standard"
-                id="language-input-label"
-                className={classes.languageSelectLabel}
-              >
-                שפת הפעילות
-              </InputLabel>
-              <Select
-                value={language}
-                onChange={handleChangeLanguage}
-                labelId="language-input-label"
-                label="שפת הפעילות"
-                className={classes.languageSelect}
-              >
-                <MenuItem value="en">אנגלית</MenuItem>
-                <MenuItem value="he">עברית</MenuItem>
-              </Select>
-            </FormControl>
+              <MenuItem value="en">אנגלית</MenuItem>
+              <MenuItem value="he">עברית</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       </Slide>
-    </React.Fragment>
+    </>
   );
 }
 
