@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
   },
   questionLabel: {
+    marginBottom: theme.spacing(1),
     color: theme.palette.text.secondary,
     '&$errorState,&:active': {
       color: theme.palette.error.main,

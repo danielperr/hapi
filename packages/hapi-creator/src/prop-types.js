@@ -5,7 +5,10 @@ export const noticeType = PropTypes.shape({
   description: PropTypes.string,
 });
 
-export const noticeObjectType = PropTypes.shape({
-  id: PropTypes.string.isRequired,
-  notices: PropTypes.arrayOf(noticeType),
-});
+export const noticeObjectType = PropTypes.oneOfType([
+  PropTypes.exact({
+    id: PropTypes.string.isRequired,
+    notices: PropTypes.arrayOf(noticeType),
+  }),
+  PropTypes.object,
+]);

@@ -27,6 +27,8 @@ import downloadFile from '../../../../common/download-file';
 import replaceIds from '../../replace-ids';
 import theme from '../../theme';
 
+const AUTO_SAVE_INTERVAL = 10; // seconds
+
 const useStyles = makeStyles(() => ({
   mainContainer: {
     width: '800px',
@@ -63,20 +65,40 @@ function App({ initial }) {
   const [previewWindowOpen, setPreviewWindowOpen] = useState(false);
   const [noticeObjects, setNoticeObjects] = useState([]);
 
-  const saveToLocalStorage = () => {
-    localStorage.setItem('creator-last-save', JSON.stringify(structure));
+  const saveToLocalStorage = (structureToSave) => {
+    localStorage.setItem('creator-last-save', JSON.stringify(structureToSave));
   };
 
+  // This is called only once when the component finishes loading
   useEffect(() => {
-    // This is called only once when the component finishes loading
+    const getCurrentStructure = () => {
+      /* We're using `setStructure` although we don't need to change the structure,
+      because this function gives us the current state of `structure`.
+      If we didn't use `setStructure` and just read `structure`, its value would have
+      been the value at the time of the initialization of this function, outdated. */
+      let result = null;
+      setStructure((currentStructure) => {
+        result = currentStructure;
+        // React won't re-render because the structure hasn't changed.
+        return currentStructure;
+      });
+      return result;
+    };
+
+    // This is called when the window wants to be closed (user closed the tab etc.)
     window.onbeforeunload = () => {
-      // This is called when the window is about to be closed
-      saveToLocalStorage();
+      saveToLocalStorage(getCurrentStructure());
+      // Prompt the user about unsaved changes.
       return true;
     };
-    const interval = setInterval(() => { saveToLocalStorage(); }, 60 * 1000);
+
+    // Setting up auto saving timer
+    const interval = setInterval(() => {
+      saveToLocalStorage(getCurrentStructure());
+    }, AUTO_SAVE_INTERVAL * 1000);
+
+    // This is called when the component is about to be unmounted (right before closing)
     return () => {
-      // This is called when the component is about to be unmounted (right before closing)
       clearInterval(interval);
     };
   }, []);
@@ -110,7 +132,7 @@ function App({ initial }) {
   const handleNewActivity = () => {
     if (window.confirm('WARNING: This will erase the current activity!')) {
       setStructure(DEFAULT_STRUCTURE);
-      saveToLocalStorage();
+      saveToLocalStorage(DEFAULT_STRUCTURE);
     }
   };
 

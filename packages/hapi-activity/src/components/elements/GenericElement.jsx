@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { makeStyles } from '@material-ui/core/styles';
+
 import { elementStructureType, feedbackType } from '../../../../common/prop-types';
 import { strings } from '../../localization';
 import ElementDocs from './ElementDocs';
@@ -14,6 +16,12 @@ import ElementTextInput from './ElementTextInput';
 import ElementYoutube from './ElementYoutube';
 import ElementLatex from './ElementLatex';
 
+const useStyles = makeStyles((theme) => ({
+  element: {
+    margin: theme.spacing(4, 0),
+  },
+}));
+
 /**
  * Renders the required element according to its type.
  */
@@ -23,6 +31,8 @@ function GenericElement({
   answer,
   onAnswer,
 }) {
+  const classes = useStyles();
+
   // An answer event we get from the element and pass it up to the section.
   // Here we add the id of the element, so the section knows which question is answered.
   const handleAnswer = (a) => {
@@ -69,7 +79,7 @@ function GenericElement({
   }
 
   return (
-    <div id={structure.id}>
+    <div className={classes.element} id={structure.id}>
       {elementToRender}
     </div>
   );
