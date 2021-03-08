@@ -113,6 +113,10 @@ because it depends on it.
 
 By the way, `express` also has its dependencies (which are installed in `node_modules`),
 but we don't see them here because we don't directly use them.
+That way, when there are multiple dependencies for each package, we get a small ecosystem of shared code
+all inside this `node_modules` folder, that can sometimes get very large.
+
+![node_modules is huge](assets/node-modules-meme.png)
 
 :::note
 When using `npm install`, dependencies are installed **locally, per package**
