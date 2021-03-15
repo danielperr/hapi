@@ -29,7 +29,7 @@ module.exports = {
         {
           type: 'category',
           label: 'Activity',
-          collapsed: true,
+          // collapsed: true,
           items: [
             'activity-index',
             'activity-component-folders',
@@ -40,8 +40,21 @@ module.exports = {
             'activity-full-renders',
           ],
         },
-        'activity-creation',
-        'creator',
+        {
+          type: 'category',
+          label: 'Creator',
+          // collapsed: true,
+          items: [
+            'creator-index',
+            'creator-component-folders',
+            'creator-structure-state',
+            'creator-notices-warnings',
+            'creator-activity-creation',
+            'creator-auto-saving',
+            'creator-dnd',
+            'creator-full-renders',
+          ],
+        },
         'git',
         'hapi-docs',
       ],
