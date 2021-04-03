@@ -25,6 +25,8 @@ Check if you already have Git installed:
 git --version
 ```
 
+If Git is not installed, there are multiple ways to install it depending on your operating system.
+
 import { isMacOs } from 'react-device-detect';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -131,7 +133,10 @@ Check if you already have NPM installed:
 npm -v
 ```
 
-NPM is shipped with Node, a JavaScript runtime engine.
+If NPM is installed, you can [skip](#installing-depencencies) this part of the page.
+If NPM is not installed for you, follow the following steps.
+
+NPM is shipped with Node, a JavaScript runtime engine, so its installation comes with the Node installation process:
 
 <Tabs
   groupId="operating-systems"
@@ -208,7 +213,10 @@ There are 3 packages, located at `packages/` (see [Project Files and Folders](pr
 * `hapi-creator`
 * `hapi-docs`
 
-To install packages for `hapi-creator` for example, first navigate to it:
+The same following steps will work for each of the 2 other packages.
+Here we will take as an example the `hapi-creator` package.
+
+To install packages for `hapi-creator`, first navigate to it:
 
 ```bash
 cd packages/hapi-creator
