@@ -26,6 +26,7 @@ module.exports = {
         'npm',
         'react',
         'project-files-folders',
+        'structure-object',
         {
           type: 'category',
           label: 'Activity',
