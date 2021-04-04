@@ -1,0 +1,195 @@
+---
+id: structure-object
+title: The Structure Object
+---
+
+The following is a concept which is used throughout the explanations of the activity and the creator, and
+it's important to understand it in order to even understand the code alone.
+
+The structure object is an object describing an activity. It defines its headers, its sections, elements,
+visuals, questions and correct answers for these questions, and in general - it holds all the information needed
+to display a fully functional activity in our format.
+
+Every activity consists of sections, and each section consists of elements.
+Each element has a type (text, image, question), as well as other properties.
+
+Let's see an example of such a structure object:
+
+![Activity structure example](assets/activity-structure-example1.png)
+
+![Activity structure example](assets/activity-structure-example1-marks.png)
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ReactJson from 'react-json-view';
+import ThemeContextConsumer from '../src/components/ThemeContextConsumer';
+
+<Tabs
+  defaultValue="tree"
+  values={[
+    { label: 'JavaScript Object', value: 'raw' },
+    { label: 'Interactive Tree', value: 'tree' },
+  ]}
+>
+  <TabItem value="raw">
+
+    ```js
+    {
+      mainHeader: "Example Activity",
+      language: "en",
+      id: "dde1ad60-69f9-11eb-837c-93c9df913391",
+      sections: [
+    {
+      header: "First Section",
+      id: "3b821cb0-745f-11eb-9455-5fc5d8dcc5e7",
+      elements: [
+    {
+      type: "label",
+      id: "3ff1d2e0-745f-11eb-9455-5fc5d8dcc5e7",
+      text: "This element contains **formattable text** that supports $ LaTeX $.",
+    },
+    {
+      type: "image",
+      id: "6657b030-745f-11eb-9455-5fc5d8dcc5e7",
+      src: "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/icMTqxFzFeVY/v1/1000x-1.jpg",
+    },
+    {
+      type: "multi-choice",
+      id: "928580b0-745f-11eb-9455-5fc5d8dcc5e7",
+      options: [
+    {
+      text: "The chicken was actually a construction worker trying to fix a pothole.",
+      id: "bda78680-745f-11eb-9455-5fc5d8dcc5e7",
+    },
+    {
+      text: "To do some exercise.",
+      id: "31081db0-7460-11eb-97e0-2b4499bf2b66",
+    },
+    {
+      text: "To get to the other side.",
+      id: "cef6d490-745f-11eb-9455-5fc5d8dcc5e7",
+    },
+      ],
+      text: "Why did the chicken cross the road?",
+      correct: [
+      "cef6d490-745f-11eb-9455-5fc5d8dcc5e7",
+      ],
+      dontShuffle: true,
+    },
+      ],
+    },
+      ],
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="tree">
+    <ThemeContextConsumer>
+      {({ isDarkTheme }) => (
+        <ReactJson
+          name="structure"
+          theme={isDarkTheme ? 'bright' : 'bright:inverted'}
+          style={{ backgroundColor: 'transparent', fontFamily: 'var(--ifm-font-family-monospace)'}}
+          collapsed={4}
+          enableClipboard={false}
+          displayObjectSize={false}
+          displayDataTypes={false}
+          src={
+            {
+              mainHeader: "Example Activity",
+              language: "en",
+              id: "dde1ad60-69f9-11eb-837c-93c9df913391",
+              sections: [
+                {
+                  header: "First Section",
+                  id: "3b821cb0-745f-11eb-9455-5fc5d8dcc5e7",
+                  elements: [
+                    {
+                      type: "label",
+                      id: "3ff1d2e0-745f-11eb-9455-5fc5d8dcc5e7",
+                      text: "This element contains **formattable text** that supports $ LaTeX $.",
+                    },
+                    {
+                      type: "image",
+                      id: "6657b030-745f-11eb-9455-5fc5d8dcc5e7",
+                      src: "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/icMTqxFzFeVY/v1/1000x-1.jpg",
+                    },
+                    {
+                      type: "multi-choice",
+                      id: "928580b0-745f-11eb-9455-5fc5d8dcc5e7",
+                      options: [
+                        {
+                          text: "The chicken was actually a construction worker trying to fix a pothole.",
+                          id: "bda78680-745f-11eb-9455-5fc5d8dcc5e7",
+                        },
+                        {
+                          text: "To do some exercise.",
+                          id: "31081db0-7460-11eb-97e0-2b4499bf2b66",
+                        },
+                        {
+                          text: "To get to the other side.",
+                          id: "cef6d490-745f-11eb-9455-5fc5d8dcc5e7",
+                        },
+                      ],
+                      text: "Why did the chicken cross the road?",
+                      correct: [
+                        "cef6d490-745f-11eb-9455-5fc5d8dcc5e7",
+                      ],
+                      dontShuffle: true,
+                    },
+                  ],
+                },
+              ],
+            }
+          }
+        />
+      )}
+    </ThemeContextConsumer>
+  </TabItem>
+</Tabs>
+
+At the root of the structure we describe the activity's properties, such as its name, its supported language,
+its id, and the sections it contains.
+
+Each section, similarly, has a name, an id, and the elements it contains.
+
+And finally, each element describes its type, its id and its other relevant properties.
+
+:::info Good to Know
+## Answers to Questions
+
+Every question element that can be automatically checked by the activity (`multi-choice` & `number-input`)
+have their correct answer in the structure.
+
+### Multi Choice
+
+```jsx {6}
+{
+  id: '...',
+  type: 'multi-choice',
+  text: '...',
+  options: [...],
+  correct: '...'
+}
+```
+
+`correct` holds the ID of the correct option.
+The activity checks if the student's selection matches the correct selection's ID.
+
+### Number Input
+
+```jsx {5-6}
+{
+  id: '...',
+  type: 'number-input',
+  text: '...',
+  min: 3.10,
+  max: 3.20
+}
+```
+
+The correct answer here can be defined to be between a minimum and a maximum value,
+in order to account for any computational inaccuracies.
+
+More info about automatic question checking can be found at [Checking Questions](activity-checking#automatically-checking-questions).
+:::

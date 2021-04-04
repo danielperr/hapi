@@ -18,12 +18,6 @@ module.exports = {
       },
       items: [
         {
-          to: '/userguide',
-          activeBasePath: 'userguide',
-          label: 'User Guide',
-          position: 'left',
-        },
-        {
           to: '/docs',
           activeBasePath: 'docs',
           label: 'Developer Docs',
