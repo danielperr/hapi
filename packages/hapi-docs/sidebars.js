@@ -53,7 +53,6 @@ module.exports = {
             'creator-notices-warnings',
             'creator-activity-creation',
             'creator-auto-saving',
-            'creator-dnd',
             'creator-full-renders',
           ],
         },

@@ -3,3 +3,237 @@ id: creator-full-renders
 title: Full Rendering Explanations
 ---
 
+## App
+
+The App component is located at `hapi-creator/src/components/main/App.jsx`.
+
+```jsx title="App.jsx"
+return (
+  <>
+    {/* PreviewWindow is a custom component that displays an activity-preview window
+      * on top of everything else, when the `open` prop is true.
+      */}
+    <PreviewWindow
+      open={previewWindowOpen}
+      onClose={handleClosePreview}
+      structure={structure}
+      activityUrl={ACTIVITY_URL}
+    />
+    {/* LanguageContext is out custom React context variable, which means that we
+      * put its provider here, and the value in the `value` prop will be globally
+      * known across the whole app, without needing to pass the language prop down
+      * to every component. This way, every component who wants to know the activity's
+      * language (he/en) can use `const language = useContext(LanguageContext)`.
+      */}
+    <LanguageContext.Provider value={structure.language}>
+      {/* Similarly to the acivity, ThemeProvider is a MaterialUI theme, and it
+        * provides a global theme to which every MaterialUI component conforms.
+        * It gives us theme colors and other measures and info.
+        */}
+      <ThemeProvider theme={theme}>
+        {/* Box is a MaterialUI component and it's just a custom div with default
+          * spacings and other properties.
+          */}
+        <Box className={classes.mainContainer}>
+          {/* Menu is a custom component, and it's responsible for rendering the
+            * menu at the right, as well as the button that opens it and the preview
+            * button.
+            */}
+          <Menu
+            language={structure.language}
+            onChangeLanguage={handleChangeLanguage}
+            onLoad={handleLoad}
+            onNewActivity={handleNewActivity}
+            onSave={handleSave}
+            onExport={handleExport}
+            exportLoading={exportButtonLoading}
+            onLaunchPreview={handleLaunchPreview}
+          />
+          {/* FocusAwarePaper is a custom component that simply renders a
+            * MaterialUI Paper component that rises (and increases its shadow) when
+            * it's in focus or when it is dragged.
+            */}
+          <FocusAwarePaper className={classes.mainHeader}>
+            {/* Editable is a custom component that you will see a lot throughout
+              * the project. It's simply an editable field that the author can edit.
+              */}
+            <Editable size={1} onChange={handleChangeMainHeader} isHeightFixed height="64px">
+              {structure.mainHeader}
+            </Editable>
+          </FocusAwarePaper>
+          {/* DragDropContext is given by the react-beautiful-dnd library (that
+            * enables us to do drag and drop). All it does is define scripts and
+            * styles that make the drag and drop work in the project (it needs to
+            * be rendered only once in the project, but every drag-n-drop element
+            * must be inside it, as one of its children).
+            * It's also given the callback function `onDragEnd`, which is called
+            * after the user finished performing a dragging action, and the structure
+            * needs to be reordered.
+            */}
+          <DragDropContext onDragEnd={handleDragEnd}>
+            {/* Droppable is a react-beautiful-dnd component that defines a droppable
+              * container, onto which Draggable components can be dropped and rested.
+              * Every droppable has a type, so draggables that are inside of droppables
+              * of different types can't interfere. This is good in our case because
+              * we have section drag-n-drop and also element drag-n-drop.
+              * We wouldn't want an element draggable to be droppable in the section area.
+              */}
+            <Droppable droppableId="sections" type="SECTION">
+              {/* Here we are about to render the sections, but first we need to
+                * receive other useful props about the droppable, supplied to us
+                * by the Droppable component. We put the needed droppableProps to
+                * make the dnd work.
+                */}
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  /* eslint-disable-next-line react/jsx-props-no-spreading */
+                  {...provided.droppableProps}
+                >
+                  {structure.sections.map((section, index) => (
+                    <Section
+                      key={section.id}
+                      index={index}
+                      structure={section}
+                      noticeObjects={noticeObjects}
+                      onUpdate={handleUpdateSection}
+                      onDuplicate={handleDuplicateSection}
+                      onDelete={handleDeleteSection}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          <br />
+          {/* The 'add section' round button. Fab is a MaterialUI component. */}
+          <Fab onClick={handleClickAddSection} color="primary">
+            <AddIcon />
+          </Fab>
+        </Box>
+        <p className={classes.version}>{version}</p>
+      </ThemeProvider>
+    </LanguageContext.Provider>
+  </>
+);
+```
+
+## Section
+
+The Section component is at `hapi-creator/src/components/main/Section.jsx`.
+
+```jsx title="Section.jsx"
+return (
+  // Draggable is a react-beautiful-dnd component, which we described earlier in the App
+  <Draggable draggableId={structure.id} index={index}>
+    {(provided, snapshot) => (
+      <div
+        id={structure.id}
+        ref={provided.innerRef}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...provided.draggableProps}
+        style={{
+          ...provided.draggableProps.style,
+          opacity: (snapshot.isDragging && !snapshot.isDropAnimating) ? 0.8 : 1,
+        }}
+      >
+        <Grow
+          in={isVisible}
+          onExited={handleDeleteTransitionExited}
+          timeout={{ enter: 400, exit: 200 }}
+        >
+          <Box className={classes.sectionContainer}>
+            <FocusAwarePaper
+              className={classes.section}
+              isDragging={snapshot.isDragging && !snapshot.isDropAnimating}
+            >
+              <Box className={classes.dragHandle}>
+                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                <div {...provided.dragHandleProps}>
+                  <DragHandleIcon />
+                </div>
+              </Box>
+              <Box className={classes.topBar}>
+                <Editable size={2} onChange={handleChangeHeader} isHeightFixed height="50px">
+                  {structure.header}
+                </Editable>
+                <div className={classes.topBarSpacer} />
+                {Boolean(totalNoticeCount) && (
+                  <NoticePopup
+                    mainNoticeObject={sectionNoticeObject}
+                    childrenNoticeObjects={elementsNoticeObjects}
+                  >
+                    <IconButton className={classes.noticesButton}>
+                      <div className={classes.noticesIcon}>
+                        <span className={classes.noticesNumber}>{totalNoticeCount}</span>
+                      </div>
+                    </IconButton>
+                  </NoticePopup>
+                )}
+                <IconButton onClick={handleCollapseClick} id={`${structure.id}`}>
+                  <RotatingIcon
+                    active={isOpen}
+                    passiveIcon={<ArrowDownwardIcon />}
+                    activeIcon={<ArrowUpwardIcon />}
+                  />
+                </IconButton>
+                <Tooltip title="שכפל">
+                  <IconButton onClick={handleDuplicateSelf}>
+                    <FileCopyIcon />
+                  </IconButton>
+                </Tooltip>
+                <IconButton className={classes.deleteButton} onClick={handleDeleteSelf}>
+                  <DeleteIcon fontSize="inherit" />
+                </IconButton>
+              </Box>
+              <Collapse in={isOpen} unmountOnExit>
+                <Box className={classes.droppable}>
+                  <Droppable droppableId={structure.id} type="ELEMENT">
+                    {/* eslint-disable-next-line no-shadow */}
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        // eslint-disable-next-line react/jsx-props-no-spreading
+                        {...provided.droppableProps}
+                      >
+                        {structure.elements.map((element, i) => (
+                          <Element
+                            key={element.id}
+                            index={i}
+                            structure={element}
+                            noticeObject={
+                              elementsNoticeObjects.find(({ id }) => id === element.id)
+                            }
+                            onUpdate={handleUpdateElement}
+                            onDuplicate={handleDuplicateElement}
+                            onDelete={handleDeleteElement}
+                            onMoveUp={handleMoveUpElement}
+                            onMoveDown={handleMoveDownElement}
+                          />
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </Box>
+                <br />
+                <Box className={classes.center}>
+                  <Button
+                    onClick={handleClickAddElement}
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<AddIcon className={classes.addIcon} />}
+                  >
+                    <b>רכיב חדש</b>
+                  </Button>
+                </Box>
+              </Collapse>
+            </FocusAwarePaper>
+          </Box>
+        </Grow>
+      </div>
+    )}
+  </Draggable>
+);
+```

@@ -3,4 +3,202 @@ id: activity-full-renders
 title: Full Rendering Explanations
 ---
 
+## App
 
+The App component is located at `hapi-activity/src/components/app/App.jsx`.
+
+```jsx title="App.jsx"
+return (
+  /* ThemeProvider is supplied by the MaterialUI library (a UI library).
+   * The theme variable is defined earlier and it defines global properties like
+   * spacing size and global theme colors. Every MaterialUI component that is under
+   * this ThemeProvider will automatically conform to the theme.
+   */
+  <ThemeProvider theme={theme}>
+    {/* RTL is a custom component, and all it does is wrap its child components in an
+      * RTL-inducing theme. If activated (given by the `active` prop), it will wrap
+      * its children in another ThemeProvider that enables right-to-left alignment
+      * globally, throughout the activity.
+      */}
+    <RTL active={rtl}>
+      {/* CssBaseLine is a MaterialUI component, and it provides MaterialUI a way
+        * to apply its basic CSS from the theme. For example, if we specify a background
+        * color in the theme, MaterialUI won't have another way to apply the style
+        * (ThemeProvider only provides the theme information, and doesn't apply it).
+        */}
+      <CssBaseline />
+      {/* This div is here to provide a way for the 'scroll-to-top button' to scroll
+        * to the top of the page. All the button does it just scroll to this div
+        * with the id `back-to-top-anchor`.
+        */}
+      <div id="back-to-top-anchor" />
+      {/* TopBar is a custom component, and it displays the top app bar with the
+        * activity's main headern and buttons.
+        * elevation: how much units to elevate the top bar - how much shadow to
+        *      add. When at the top of the page, the top bar won't have a
+        *      shadow, but when starting to scroll, it will raise up.
+        *      All of this is managed with the `topBarElevation` state.
+        * onDownload, onReset: Callback functions for when the student presses one
+        *      of the buttons (download / reset).
+        */}
+      <TopBar
+        elevation={topBarElevation}
+        mainHeader={structure.mainHeader}
+        onDownload={handleSaveActivity}
+        onReset={handleResetActivity}
+      />
+      {/* This empty toolbar provides spacing at the top */}
+      <Toolbar />
+      {/* TableOfContents is a custom component that displays a small table of contents
+        * at the top-left of the app. It displays every section's header, with a
+        * clickable link that scrolls to the section.
+        */}
+      <TableOfContents structure={structure} />
+      {/* Container is a MaterialUI component, and it is just a div to which we
+        * can supply a `maxWidth` prop. md = medium.
+        */}
+      <Container maxWidth="md" className={classes.container}>
+        {/*
+          * Right now we are about to iterate over the sections in the activity.
+          * For each section, return the Section component (our custom component,
+          * of course) with the current section's attributes.
+          */}
+        {structure.sections.map((section) => (
+          <Section
+            structure={section}
+            answers={answers}
+            elementsFeedback={elementsFeedback}
+            onAnswer={handleAnswer}
+            onCheck={handleCheckSection}
+            id={section.id}
+            key={section.id}
+          />
+        ))}
+        {/* If there are any fillable elements in the activity, then display the
+          * check-all button. CheckAllButton is a custom component and it displays
+          * This big orange button that checks the activity for the student.
+          */}
+        {fillableElements.length && <CheckAllButton onClick={handleSubmitActivity} />}
+        {/* SuccessSnackbar is a custom component that renders a custom MaterialUI
+          * snackabr. Snackbars are small UI components that appear as messages
+          * or notifications at the bottom of the app.
+          */}
+        <SuccessSnackbar
+          open={showSuccess}
+          onClose={handleSuccessSnackbarClose}
+          rtl={rtl}
+        />
+      </Container>
+      <ScrollToTopButton />
+    </RTL>
+    {/* Displays the version number of the current build. */}
+    <p className={classes.version}>{version}</p>
+  </ThemeProvider>
+);
+```
+
+## Section
+
+The Section component is located at `hapi-activity/src/components/section/Section.jsx`.
+
+```jsx title="Section.jsx"
+return (
+  /* Paper is a MaterialUI component that displays a page-like div, with round corners
+   * and shadow.
+   */
+  <Paper
+    id={id}
+    className={classes.sectionPaper}
+  >
+    {/* SectionHeader is a custom component, displaying the header of the section.
+      * It's a simple h1 element with custom styling.
+      */}
+    <SectionHeader>{structure.header}</SectionHeader>
+    {/* Each section is like a form and you can submit it with a submit button. */}
+    <form
+      onSubmit={handleSubmit}
+      className="section-elements"
+    >
+      {/* Here we iterate over the elements in the section, and render each one
+        * with its own attributes. GenericElement is a custom component and it
+        * takes care of rendering the needed element type.
+        */}
+      {structure.elements.map((element) => (
+        <GenericElement
+          structure={element}
+          feedback={elementsFeedback[element.id] || undefined}
+          answer={answers[element.id] || undefined}
+          onAnswer={handleAnswer}
+          key={element.id}
+        />
+      ))}
+      {/* If there are checkable elements in this section, display the 'check answers`
+        * button.
+        */}
+      {checkablesAmount > 0 && (
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
+          {strings.actionCheckAnswer}
+        </Button>
+      )}
+    </form>
+  </Paper>
+);
+```
+
+## GenericElement
+
+GenericElement is located at `hapi-activity/src/components/elements/GenericElement.jsx`.
+
+```jsx title="GenericElement.jsx"
+// Props to pass when the element is a fillable element, with feedback properties and
+// answers.
+const questionProps = {
+  structure,
+  feedback,
+  answer,
+  onAnswer: handleAnswer,
+};
+
+// Here we select the appropriate element component to render, based on the type.
+let elementToRender;
+switch (structure.type) {
+  case 'label':
+    elementToRender = <ElementLabel structure={structure} />;
+    break;
+  case 'image':
+    elementToRender = <ElementImage structure={structure} />;
+    break;
+  case 'docs':
+    elementToRender = <ElementDocs structure={structure} />;
+    break;
+  case 'youtube':
+    elementToRender = <ElementYoutube structure={structure} />;
+    break;
+  case 'latex':
+    elementToRender = <ElementLatex structure={structure} />;
+    break;
+  case 'text-input':
+    elementToRender = <ElementTextInput {...questionProps} />;
+    break;
+  case 'multi-choice':
+    elementToRender = <ElementMultiChoice {...questionProps} />;
+    break;
+  case 'number-input':
+    elementToRender = <ElementNumberInput {...questionProps} />;
+    break;
+  default:
+    elementToRender = <span>{strings.unknownElement}</span>;
+    break;
+}
+
+return (
+  <div id={structure.id}>
+    {elementToRender}
+  </div>
+);
+```
