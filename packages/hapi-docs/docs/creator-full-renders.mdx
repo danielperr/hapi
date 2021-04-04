@@ -125,8 +125,10 @@ The Section component is at `hapi-creator/src/components/main/Section.jsx`.
 
 ```jsx title="Section.jsx"
 return (
-  // Draggable is a react-beautiful-dnd component, which we described earlier in the App
+  // Draggable is a react-beautiful-dnd component. It describes a draggable component
+  // inside a Droppable.
   <Draggable draggableId={structure.id} index={index}>
+    {/* Receiving information about the current dragging state, from the draggable */}
     {(provided, snapshot) => (
       <div
         id={structure.id}
@@ -138,6 +140,10 @@ return (
           opacity: (snapshot.isDragging && !snapshot.isDropAnimating) ? 0.8 : 1,
         }}
       >
+        {/* Grow is a MaterialUI component which adds a 'grow' transition to its children.
+          * When the `in` prop is true, it activates the transition and shows the children.
+          * When the `in` prop is false, it transitions out and hides the children.
+          */}
         <Grow
           in={isVisible}
           onExited={handleDeleteTransitionExited}
@@ -159,11 +165,13 @@ return (
                   {structure.header}
                 </Editable>
                 <div className={classes.topBarSpacer} />
+                {/* NoticePopup is a custom component that displays notices / warnings */}
                 {Boolean(totalNoticeCount) && (
                   <NoticePopup
                     mainNoticeObject={sectionNoticeObject}
                     childrenNoticeObjects={elementsNoticeObjects}
                   >
+                    {/* IconButton is a MaterialUI component */}
                     <IconButton className={classes.noticesButton}>
                       <div className={classes.noticesIcon}>
                         <span className={classes.noticesNumber}>{totalNoticeCount}</span>
@@ -172,12 +180,14 @@ return (
                   </NoticePopup>
                 )}
                 <IconButton onClick={handleCollapseClick} id={`${structure.id}`}>
+                  {/* RotatingIcon is a custom component which implements an icon-switching button */}
                   <RotatingIcon
                     active={isOpen}
                     passiveIcon={<ArrowDownwardIcon />}
                     activeIcon={<ArrowUpwardIcon />}
                   />
                 </IconButton>
+                {/* Tooltip is a MaterialUI component that adds a helpful tooltip when mouse hovering */}
                 <Tooltip title="שכפל">
                   <IconButton onClick={handleDuplicateSelf}>
                     <FileCopyIcon />
@@ -187,8 +197,10 @@ return (
                   <DeleteIcon fontSize="inherit" />
                 </IconButton>
               </Box>
+              {/* Collapse is a MaterialUI component, similar to the Grow transition, but with other animation */}
               <Collapse in={isOpen} unmountOnExit>
                 <Box className={classes.droppable}>
+                  {/* Another Droppable, this time it's for the elements */}
                   <Droppable droppableId={structure.id} type="ELEMENT">
                     {/* eslint-disable-next-line no-shadow */}
                     {(provided) => (
@@ -219,6 +231,7 @@ return (
                 </Box>
                 <br />
                 <Box className={classes.center}>
+                  {/* Button is a MaterialUI component */}
                   <Button
                     onClick={handleClickAddElement}
                     variant="outlined"
