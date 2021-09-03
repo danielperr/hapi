@@ -11,7 +11,7 @@
     "@testing-library/user-event": "^7.2.1",
     "clsx": "^1.1.1",
     "draft-js": "^0.11.7",
-    "immer": "^8.0.1",
+    "immer": "^9.0.6",
     "katex": "^0.12.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
